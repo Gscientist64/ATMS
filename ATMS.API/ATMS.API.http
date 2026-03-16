@@ -1,0 +1,6 @@
+@ATMS.API_HostAddress = http://localhost:5087
+
+GET {{ATMS.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
