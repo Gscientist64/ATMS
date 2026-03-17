@@ -1,4 +1,3 @@
-import React from 'react'
 import './EcewsSupervisorDashboard.css'
 import AppButton from '../../shared/AppButton'
 import AppTable from '../../shared/AppTable'

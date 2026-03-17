@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './TimesheetDetail.css'
 import AppButton from '../../shared/AppButton'
 
 const TimesheetDetail = () => {
-  const { id } = useParams()
+  useParams()
   const [activeTab, setActiveTab] = useState('details')
 
   const entries = [
@@ -48,7 +48,7 @@ const TimesheetDetail = () => {
       <div className="ts-detail-workflow">
         <div className="ts-workflow-tracker">
           {stages.map((stage, index) => (
-            <React.Fragment key={stage.name}>
+            <span key={stage.name} style={{ display: 'contents' }}>
               <div className="ts-workflow-step">
                 <div className={`ts-workflow-stage ${stage.completed ? 'completed' : ''} ${stage.current ? 'current' : ''}`}>
                   {stage.completed ? (
@@ -65,7 +65,7 @@ const TimesheetDetail = () => {
                 </span>
               </div>
               {index < stages.length - 1 && <div className="ts-workflow-connector" />}
-            </React.Fragment>
+            </span>
           ))}
         </div>
       </div>

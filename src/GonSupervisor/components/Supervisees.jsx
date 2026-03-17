@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './Supervisees.css'
 import AppButton from '../../shared/AppButton'
 import AppTable from '../../shared/AppTable'

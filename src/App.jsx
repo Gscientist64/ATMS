@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import Sidebar from './shared/Sidebar'
 import Header from './shared/Header'
@@ -18,6 +17,8 @@ import TimesheetReviewDetail from './GonSupervisor/components/TimesheetReviewDet
 import ApprovalAction from './GonSupervisor/components/ApprovalAction'
 import Supervisees from './GonSupervisor/components/Supervisees'
 import Login from './auth/pages/Login'
+import ProgramsDashboard from './Programs/components/ProgramsDashboard'
+import ProgramsTimesheetDetail from './Programs/components/ProgramsTimesheetDetail'
 import './App.css'
 
 const AppShell = () => {
@@ -47,6 +48,8 @@ function App() {
           <Route path="/timesheet/create" element={<SignTimesheet />} />
           <Route path="/timesheet/:id" element={<TimesheetDetail />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/programs" element={<ProgramsDashboard />} />
+          <Route path="/programs/timesheet/:id" element={<ProgramsTimesheetDetail />} />
           <Route path="/gon-supervisor" element={<GonSupervisorDashboard />} />
           <Route path="/ecews-supervisor" element={<EcewsSupervisorDashboard />} />
           <Route path="/ecews-supervisor/timesheet-review" element={<EcewsTimesheetReview />} />

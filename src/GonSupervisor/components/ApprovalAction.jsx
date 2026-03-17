@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './TimesheetReviewDetail.css'
 import AppButton from '../../shared/AppButton'
 
 const ApprovalAction = () => {
-  const { id } = useParams()
+  useParams()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
   const [isDeclineOpen, setIsDeclineOpen] = useState(false)

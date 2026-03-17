@@ -363,7 +363,7 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 28px 32px 24px;
-  max-width: 420px;
+  max-width: 350px;
   width: 100%;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
   text-align: center;
@@ -402,7 +402,7 @@
 .gon-aa-success-ok-btn {
   min-width: 120px;
   padding: 10px 28px;
-  border-radius: 999px;
+  border-radius: 9px;
   background-color: #096D49;
   color: #ffffff;
   font-size: 14px;
@@ -494,7 +494,7 @@
 .gon-aa-decline-btn-cancel {
   min-width: 100px;
   padding: 10px 18px;
-  border-radius: 999px;
+  border-radius: 9px;
   border: none;
   background-color: #f3f4f6;
   color: #111827;
@@ -505,7 +505,7 @@
 .gon-aa-decline-btn-send {
   min-width: 120px;
   padding: 10px 20px;
-  border-radius: 999px;
+  border-radius: 9px;
   border: none;
   background-color: #ef4444;
   color: #ffffff;

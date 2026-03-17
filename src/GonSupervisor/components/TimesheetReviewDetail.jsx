@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './TimesheetReviewDetail.css'
 import AppButton from '../../shared/AppButton'
 
 const TimesheetReviewDetail = () => {
-  const { id } = useParams()
+  useParams()
   const [activeTab, setActiveTab] = useState('details')
 
   const entries = [

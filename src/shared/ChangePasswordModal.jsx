@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import AppButton from './AppButton'
 
 const ChangePasswordModal = ({ isOpen, isClosing, onClose, onContinue }) => {

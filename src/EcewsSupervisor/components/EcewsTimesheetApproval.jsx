@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './EcewsTimesheetApproval.css'
 import AppButton from '../../shared/AppButton'
 
 const EcewsTimesheetApproval = () => {
-  const { id } = useParams()
+  useParams()
   const [activeTab, setActiveTab] = useState('details')
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [isContractOpen, setIsContractOpen] = useState(false)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './Header.css'
 import AppButton from './AppButton'
 import ChangePasswordModal from './ChangePasswordModal'
@@ -44,11 +44,6 @@ const Header = () => {
       setIsChangePasswordOpen(false)
       setIsChangePasswordClosing(false)
     }, 250)
-  }
-
-  const openPasswordSuccess = () => {
-    setIsPasswordSuccessClosing(false)
-    setIsPasswordSuccessOpen(true)
   }
 
   const closePasswordSuccess = () => {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import './Timesheet.css'
 import AppTable from '../../shared/AppTable'

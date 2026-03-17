@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import './Sidebar.css'
 
@@ -147,6 +147,34 @@ const ecewsItems = [
   },
 ]
 
+const programsItems = [
+  {
+    key: 'programs-dashboard',
+    label: 'Dashboard',
+    to: '/programs',
+    end: true,
+    renderIcon: employeeItems[0].renderIcon,
+  },
+  {
+    key: 'programs-timesheet-review',
+    label: 'Timesheet Review',
+    to: '/programs/timesheet-review',
+    renderIcon: employeeItems[1].renderIcon,
+  },
+  {
+    key: 'programs-personnel',
+    label: 'Personnel',
+    to: '/programs/personnel',
+    renderIcon: employeeItems[2].renderIcon,
+  },
+  {
+    key: 'programs-governance',
+    label: 'Governance',
+    to: '/programs/governance',
+    renderIcon: employeeItems[2].renderIcon,
+  },
+]
+
 const Sidebar = ({ items }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const location = useLocation()
@@ -186,6 +214,8 @@ const Sidebar = ({ items }) => {
     items ||
     (location.pathname.startsWith('/ecews-supervisor')
       ? ecewsItems
+      : location.pathname.startsWith('/programs')
+      ? programsItems
       : location.pathname.startsWith('/gon-supervisor')
       ? gonItems
       : employeeItems)
