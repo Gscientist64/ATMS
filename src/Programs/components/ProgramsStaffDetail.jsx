@@ -342,11 +342,11 @@ const ProgramsStaffDetail = () => {
             <div className="psd-kv-grid">
               <div className="psd-kv">
                 <div className="psd-k">Phone Number</div>
-                <div className="psd-v">Field Operations</div>
+                <div className="psd-v">+2348060000000</div>
               </div>
               <div className="psd-kv">
                 <div className="psd-k">Email Address</div>
-                <div className="psd-v">Lagos State</div>
+                <div className="psd-v">abc@gmail.com</div>
               </div>
               <div className="psd-kv">
                 <div className="psd-k">Emergency Contact Name</div>
@@ -354,7 +354,7 @@ const ProgramsStaffDetail = () => {
               </div>
               <div className="psd-kv">
                 <div className="psd-k">Emergency Contact Phone</div>
-                <div className="psd-v">Mike Bolaji</div>
+                <div className="psd-v">+2348060000000</div>
               </div>
             </div>
           </div>
@@ -405,7 +405,7 @@ const ProgramsStaffDetail = () => {
             </div>
           </div>
 
-          <div className="psd-info-card">
+          {/* <div className="psd-info-card">
             <div className="psd-card-title">NIN and TIN Details</div>
             <div className="psd-card-divider" />
             <div className="psd-kv-grid">
@@ -426,7 +426,7 @@ const ProgramsStaffDetail = () => {
                 <div className="psd-v">1234567890</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
