@@ -1,0 +1,78 @@
+.app-dropdown {
+  position: relative;
+}
+
+.app-dropdown-btn {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #6b7280;
+  background: #ffffff;
+  min-width: 120px;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.app-dropdown-btn:hover {
+  border-color: #096d49;
+}
+
+.app-dropdown-btn:focus-visible {
+  border-color: #096d49;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.18);
+}
+
+.app-dropdown-label.placeholder {
+  color: #9ca3af;
+}
+
+.app-dropdown-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  transition: transform 0.2s ease;
+}
+
+.app-dropdown-caret.open {
+  transform: rotate(180deg);
+}
+
+.app-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  padding: 6px;
+  z-index: 50;
+}
+
+.app-dropdown-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #111827;
+  background: transparent;
+}
+
+.app-dropdown-item:hover {
+  background: #F3F8F6;
+  color: #096d49;
+}
+
+.app-dropdown-item.selected {
+  background: rgba(9, 109, 73, 0.08);
+  color: #096d49;
+}
+

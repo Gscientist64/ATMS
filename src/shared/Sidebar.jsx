@@ -163,8 +163,10 @@ const programsItems = [
   },
   {
     key: 'programs-personnel',
-    label: 'Personnel',
+    getLabel: (pathname) => (pathname.startsWith('/programs/staff') ? 'Staff' : 'Personnel'),
     to: '/programs/personnel',
+    isActive: (pathname) =>
+      pathname.startsWith('/programs/personnel') || pathname.startsWith('/programs/staff'),
     renderIcon: employeeItems[2].renderIcon,
   },
   {
@@ -237,11 +239,14 @@ const Sidebar = ({ items }) => {
               key={item.key}
               to={item.to}
               end={item.end}
-              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              className={({ isActive }) => {
+                const forcedActive = item.isActive ? item.isActive(location.pathname) : false
+                return `nav-item ${isActive || forcedActive ? 'active' : ''}`
+              }}
               onClick={closeMobileMenu}
             >
               {item.renderIcon()}
-              <span>{item.label}</span>
+              <span>{item.getLabel ? item.getLabel(location.pathname) : item.label}</span>
             </NavLink>
           ))}
         </nav>

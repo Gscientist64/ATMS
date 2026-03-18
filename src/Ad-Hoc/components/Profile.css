@@ -37,6 +37,7 @@
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
+  position: relative;
 }
 
 .profile-photo {
@@ -44,6 +45,80 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.profile-photo-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 24, 39, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.profile-photo-wrapper:hover .profile-photo-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.profile-photo-edit-btn {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+
+.profile-photo-edit-btn:hover {
+  border-color: #096D49;
+  background: #F3F8F6;
+}
+
+.profile-photo-actions {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.profile-photo-cancel-btn,
+.profile-photo-save-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.profile-photo-cancel-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  color: #111827;
+}
+
+.profile-photo-cancel-btn:hover {
+  border-color: #096D49;
+  background: #F3F8F6;
+}
+
+.profile-photo-save-btn {
+  background: #096D49;
+  border: 1px solid #096D49;
+  color: #ffffff;
+}
+
+.profile-photo-save-btn:hover {
+  background: #6BA792;
+  border-color: #6BA792;
 }
 
 .profile-summary {

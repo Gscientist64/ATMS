@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import AppButton from '../../shared/AppButton'
 
@@ -16,6 +16,15 @@ const Profile = () => {
   const [isSuccessClosing, setIsSuccessClosing] = useState(false)
   const [signaturePreview, setSignaturePreview] = useState(null)
   const fileInputRef = useRef(null)
+  const profilePhotoInputRef = useRef(null)
+  const [profilePhoto, setProfilePhoto] = useState(() => {
+    try {
+      return localStorage.getItem('adhoc.profilePhoto') || './profile-images/profile-photo.png'
+    } catch {
+      return './profile-images/profile-photo.png'
+    }
+  })
+  const [pendingProfilePhoto, setPendingProfilePhoto] = useState(null)
 
   const openSignatureModal = () => {
     setSignatureMode('draw')
@@ -94,6 +103,48 @@ const Profile = () => {
     }
     reader.readAsDataURL(file)
   }
+
+  useEffect(() => {
+    // Keep photo synced if localStorage changes elsewhere
+    const onStorage = (e) => {
+      if (e.key !== 'adhoc.profilePhoto') return
+      setProfilePhoto(e.newValue || './profile-images/profile-photo.png')
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [])
+
+  const openProfilePhotoPicker = () => {
+    if (profilePhotoInputRef.current) profilePhotoInputRef.current.click()
+  }
+
+  const onProfilePhotoFileChange = (event) => {
+    const file = event.target.files && event.target.files[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPendingProfilePhoto(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const saveProfilePhoto = () => {
+    if (!pendingProfilePhoto) return
+    setProfilePhoto(pendingProfilePhoto)
+    try {
+      localStorage.setItem('adhoc.profilePhoto', pendingProfilePhoto)
+    } catch {
+      // ignore
+    }
+    setPendingProfilePhoto(null)
+    if (profilePhotoInputRef.current) profilePhotoInputRef.current.value = ''
+  }
+
+  const cancelProfilePhotoChange = () => {
+    setPendingProfilePhoto(null)
+    if (profilePhotoInputRef.current) profilePhotoInputRef.current.value = ''
+  }
   return (
     <div className="profile-page">
       <div className="profile-header">
@@ -104,9 +155,31 @@ const Profile = () => {
       <div className="profile-top-card">
         <div className="profile-photo-wrapper">
           <img
-            src="./profile-images/profile-photo.png"
+            src={pendingProfilePhoto || profilePhoto}
             alt="John Adeyemi"
             className="profile-photo"
+          />
+          <div className="profile-photo-overlay">
+            <AppButton type="button" className="profile-photo-edit-btn" onClick={openProfilePhotoPicker}>
+              Edit
+            </AppButton>
+          </div>
+          {pendingProfilePhoto && (
+            <div className="profile-photo-actions">
+              <AppButton type="button" className="profile-photo-cancel-btn" onClick={cancelProfilePhotoChange}>
+                Cancel
+              </AppButton>
+              <AppButton type="button" className="profile-photo-save-btn" onClick={saveProfilePhoto}>
+                Save
+              </AppButton>
+            </div>
+          )}
+          <input
+            ref={profilePhotoInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={onProfilePhotoFileChange}
           />
         </div>
         <div className="profile-summary">

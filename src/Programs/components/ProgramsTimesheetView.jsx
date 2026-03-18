@@ -4,16 +4,9 @@ import AppButton from '../../shared/AppButton'
 import '../../GonSupervisor/components/TimesheetReviewDetail.css'
 import './ProgramsTimesheetDetail.css'
 
-const ProgramsTimesheetDetail = () => {
-  useParams()
+const ProgramsTimesheetView = () => {
+  const { id } = useParams()
   const [activeTab, setActiveTab] = useState('details')
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-  const [isSuccessOpen, setIsSuccessOpen] = useState(false)
-  const [isDeclineOpen, setIsDeclineOpen] = useState(false)
-  const [successMessage, setSuccessMessage] = useState('')
-  const [isContractRecOpen, setIsContractRecOpen] = useState(false)
-  const [contractRec, setContractRec] = useState('')
-  const [contractReason, setContractReason] = useState('')
 
   const entries = [
     {
@@ -40,10 +33,10 @@ const ProgramsTimesheetDetail = () => {
   ]
 
   return (
-    <div className="gon-tsd-page">
+    <div className="gon-tsd-page" data-timesheet-id={id}>
       <div className="gon-tsd-header">
         <div className="gon-tsd-header-left">
-          <Link to="/programs" className="gon-tsd-back-link">
+          <Link to="/programs/timesheet-review" className="gon-tsd-back-link">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
                 d="M12 4L6 10L12 16"
@@ -53,7 +46,7 @@ const ProgramsTimesheetDetail = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            Back to Dashboard
+            Back
           </Link>
           <h1 className="gon-tsd-title">Timesheet - January 2026</h1>
           <p className="gon-tsd-user">John Adeyemi</p>
@@ -138,43 +131,20 @@ const ProgramsTimesheetDetail = () => {
           <div className="gon-tsd-card-header">
             <h3 className="gon-tsd-card-title">Approval actions</h3>
           </div>
-          <div className="gon-aa-approval-actions">
-            <AppButton type="button" className="gon-aa-approve-btn" onClick={() => setIsConfirmOpen(true)}>
-              <span className="gon-aa-approve-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-                  <path
-                    d="M4.5 8L7 10.5L11.5 6"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              <span>Approve &amp; Forward</span>
-            </AppButton>
-
-            <AppButton type="button" className="gon-aa-decline-btn" onClick={() => setIsDeclineOpen(true)}>
-              <span className="gon-aa-decline-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-                  <path
-                    d="M5.5 5.5L10.5 10.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M10.5 5.5L5.5 10.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-              <span>Decline with Feedback</span>
-            </AppButton>
+          <div className="gon-tsd-approval-body">
+            <div className="gon-tsd-approval-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="19" stroke="#10B981" strokeWidth="2" fill="none" />
+                <path
+                  d="M13 20L18 25L27 16"
+                  stroke="#10B981"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <div className="gon-tsd-approval-text">Approved &amp; Forwarded</div>
           </div>
         </div>
       </div>
@@ -314,184 +284,9 @@ const ProgramsTimesheetDetail = () => {
           </div>
         )}
       </div>
-
-      {isConfirmOpen && (
-        <div className="gon-aa-modal-overlay" onClick={() => setIsConfirmOpen(false)}>
-          <div className="gon-aa-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="gon-aa-modal-header">
-              <h3 className="gon-aa-modal-title">Confirm Approval</h3>
-              <AppButton type="button" className="gon-aa-modal-close" onClick={() => setIsConfirmOpen(false)}>
-                ✕
-              </AppButton>
-            </div>
-            <div className="gon-aa-modal-body">
-              <p className="gon-aa-modal-text">
-                You are about to approve this timesheet.
-                <br />
-                If you want to make a contract recommendation, continue below and provide the necessary
-                details before proceeding.
-              </p>
-
-              <AppButton
-                type="button"
-                className={`pg-contract-toggle ${isContractRecOpen ? 'open' : ''}`}
-                onClick={() => setIsContractRecOpen((v) => !v)}
-              >
-                <span className="pg-contract-toggle-label">Contract Recommendation (Optional)</span>
-                <span className="pg-contract-toggle-icon" aria-hidden="true">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M4 6L8 10L12 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </AppButton>
-
-              {isContractRecOpen && (
-                <div className="pg-contract-body">
-                  <div className="pg-contract-help">
-                    Use this option only if performance or contract status requires HR review.
-                  </div>
-
-                  <label className="pg-contract-radio">
-                    <input
-                      type="radio"
-                      name="contractRec"
-                      value="renewal"
-                      checked={contractRec === 'renewal'}
-                      onChange={() => setContractRec('renewal')}
-                    />
-                    <span>Recommend Renewal</span>
-                  </label>
-
-                  <label className="pg-contract-radio">
-                    <input
-                      type="radio"
-                      name="contractRec"
-                      value="pip"
-                      checked={contractRec === 'pip'}
-                      onChange={() => setContractRec('pip')}
-                    />
-                    <span>Recommend PIP</span>
-                  </label>
-
-                  <label className="pg-contract-radio">
-                    <input
-                      type="radio"
-                      name="contractRec"
-                      value="termination"
-                      checked={contractRec === 'termination'}
-                      onChange={() => setContractRec('termination')}
-                    />
-                    <span>Recommend Termination</span>
-                  </label>
-
-                  <textarea
-                    className="pg-contract-reason"
-                    rows={4}
-                    placeholder="Provide reason"
-                    value={contractReason}
-                    onChange={(e) => setContractReason(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="gon-aa-modal-footer">
-              <AppButton
-                type="button"
-                className="gon-aa-modal-btn gon-aa-modal-cancel"
-                onClick={() => setIsConfirmOpen(false)}
-              >
-                Cancel
-              </AppButton>
-              <AppButton
-                type="button"
-                className="gon-aa-modal-btn gon-aa-modal-confirm"
-                onClick={() => {
-                  setIsConfirmOpen(false)
-                  setIsContractRecOpen(false)
-                  setContractRec('')
-                  setContractReason('')
-                  setSuccessMessage('Timesheet has been successfully approved')
-                  setIsSuccessOpen(true)
-                }}
-              >
-                Confirm
-              </AppButton>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isSuccessOpen && (
-        <div className="gon-aa-modal-overlay" onClick={() => setIsSuccessOpen(false)}>
-          <div className="gon-aa-success-modal" onClick={(e) => e.stopPropagation()}>
-            <AppButton type="button" className="gon-aa-success-close" onClick={() => setIsSuccessOpen(false)}>
-              ✕
-            </AppButton>
-            <div className="gon-aa-success-body">
-              <h3 className="gon-aa-success-title">Done!</h3>
-              <p className="gon-aa-success-message">
-                {successMessage || 'Timesheet has been successfully approved'}
-              </p>
-              <div className="gon-aa-success-footer">
-                <AppButton type="button" className="gon-aa-success-ok-btn" onClick={() => setIsSuccessOpen(false)}>
-                  Okay
-                </AppButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isDeclineOpen && (
-        <div className="gon-aa-modal-overlay" onClick={() => setIsDeclineOpen(false)}>
-          <div className="gon-aa-decline-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="gon-aa-decline-header">
-              <h3 className="gon-aa-decline-title">Return Timesheet with Feedback</h3>
-              <AppButton type="button" className="gon-aa-decline-close" onClick={() => setIsDeclineOpen(false)}>
-                ✕
-              </AppButton>
-            </div>
-            <div className="gon-aa-decline-body">
-              <p className="gon-aa-decline-text">
-                Provide feedback to help the staff member correct their timesheet.
-              </p>
-              <label className="gon-aa-decline-label">
-                Feedback<span className="gon-aa-decline-required">*</span>
-              </label>
-              <textarea
-                className="gon-aa-decline-textarea"
-                rows={4}
-                placeholder="Explain what needs to be corrected..."
-              />
-            </div>
-            <div className="gon-aa-decline-footer">
-              <AppButton type="button" className="gon-aa-decline-btn-cancel" onClick={() => setIsDeclineOpen(false)}>
-                Cancel
-              </AppButton>
-              <AppButton
-                type="button"
-                className="gon-aa-decline-btn-send"
-                onClick={() => {
-                  setIsDeclineOpen(false)
-                  setSuccessMessage('Your feedback has been sent and staff notified.')
-                  setIsSuccessOpen(true)
-                }}
-              >
-                Send Feedback
-              </AppButton>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
 
-export default ProgramsTimesheetDetail
+export default ProgramsTimesheetView
 

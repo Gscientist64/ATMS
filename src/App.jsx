@@ -19,6 +19,10 @@ import Supervisees from './GonSupervisor/components/Supervisees'
 import Login from './auth/pages/Login'
 import ProgramsDashboard from './Programs/components/ProgramsDashboard'
 import ProgramsTimesheetDetail from './Programs/components/ProgramsTimesheetDetail'
+import ProgramsTimesheetReview from './Programs/components/ProgramsTimesheetReview'
+import ProgramsTimesheetView from './Programs/components/ProgramsTimesheetView'
+import ProgramsPersonnel from './Programs/components/ProgramsPersonnel'
+import ProgramsStaffDetail from './Programs/components/ProgramsStaffDetail'
 import './App.css'
 
 const AppShell = () => {
@@ -50,6 +54,10 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/programs" element={<ProgramsDashboard />} />
           <Route path="/programs/timesheet/:id" element={<ProgramsTimesheetDetail />} />
+          <Route path="/programs/timesheet-review" element={<ProgramsTimesheetReview />} />
+          <Route path="/programs/timesheet/view/:id" element={<ProgramsTimesheetView />} />
+          <Route path="/programs/personnel" element={<ProgramsPersonnel />} />
+          <Route path="/programs/staff/:id" element={<ProgramsStaffDetail />} />
           <Route path="/gon-supervisor" element={<GonSupervisorDashboard />} />
           <Route path="/ecews-supervisor" element={<EcewsSupervisorDashboard />} />
           <Route path="/ecews-supervisor/timesheet-review" element={<EcewsTimesheetReview />} />
