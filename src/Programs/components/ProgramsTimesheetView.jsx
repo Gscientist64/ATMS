@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import AppButton from '../../shared/AppButton'
+import AppTable from '../../shared/AppTable'
 import '../../GonSupervisor/components/TimesheetReviewDetail.css'
 import './ProgramsTimesheetDetail.css'
 
@@ -30,6 +31,19 @@ const ProgramsTimesheetView = () => {
       totalHours: '9 hrs',
       workDone: 'Follow-up visits to beneficiaries',
     },
+  ]
+
+  const entriesColumns = [
+    { header: 'Date', accessor: 'date', key: 'date' },
+    { header: 'Start Time', accessor: 'startTime', key: 'startTime' },
+    { header: 'End Time', accessor: 'endTime', key: 'endTime' },
+    {
+      header: 'Total Hours',
+      accessor: 'totalHours',
+      key: 'totalHours',
+      cellClassName: 'gon-tsd-hours-cell',
+    },
+    { header: 'Work Done', accessor: 'workDone', key: 'workDone' },
   ]
 
   return (
@@ -183,28 +197,7 @@ const ProgramsTimesheetView = () => {
 
         {activeTab === 'details' && (
           <div className="gon-tsd-table-wrap">
-            <table className="gon-tsd-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Total Hours</th>
-                  <th>Work Done</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry, index) => (
-                  <tr key={index}>
-                    <td>{entry.date}</td>
-                    <td>{entry.startTime}</td>
-                    <td>{entry.endTime}</td>
-                    <td className="gon-tsd-hours-cell">{entry.totalHours}</td>
-                    <td>{entry.workDone}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <AppTable columns={entriesColumns} data={entries} tableClassName="gon-tsd-table" />
             <div className="gon-tsd-total-row">
               <span className="gon-tsd-total-label">Total Hours this month:</span>
               <span className="gon-tsd-total-value">27 hours</span>

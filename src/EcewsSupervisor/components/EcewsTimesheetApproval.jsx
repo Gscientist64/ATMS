@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './EcewsTimesheetApproval.css'
 import AppButton from '../../shared/AppButton'
+import AppTable from '../../shared/AppTable'
 
 const EcewsTimesheetApproval = () => {
   useParams()
@@ -36,6 +37,19 @@ const EcewsTimesheetApproval = () => {
       totalHours: '9 hrs',
       workDone: 'Follow-up visits to beneficiaries',
     },
+  ]
+
+  const entriesColumns = [
+    { header: 'Date', accessor: 'date', key: 'date' },
+    { header: 'Start Time', accessor: 'startTime', key: 'startTime' },
+    { header: 'End Time', accessor: 'endTime', key: 'endTime' },
+    {
+      header: 'Total Hours',
+      accessor: 'totalHours',
+      key: 'totalHours',
+      cellClassName: 'ecews-ta-hours-cell',
+    },
+    { header: 'Work Done', accessor: 'workDone', key: 'workDone' },
   ]
 
   return (
@@ -212,28 +226,7 @@ const EcewsTimesheetApproval = () => {
 
         {activeTab === 'details' && (
           <div className="ecews-ta-table-wrap">
-            <table className="ecews-ta-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Total Hours</th>
-                  <th>Work Done</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry, index) => (
-                  <tr key={index}>
-                    <td>{entry.date}</td>
-                    <td>{entry.startTime}</td>
-                    <td>{entry.endTime}</td>
-                    <td className="ecews-ta-hours-cell">{entry.totalHours}</td>
-                    <td>{entry.workDone}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <AppTable columns={entriesColumns} data={entries} tableClassName="ecews-ta-table" />
             <div className="ecews-ta-total-row">
               <span className="ecews-ta-total-label">Total Hours this month:</span>
               <span className="ecews-ta-total-value">27 hours</span>

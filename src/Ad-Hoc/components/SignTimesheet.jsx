@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import './SignTimesheet.css'
 import AppButton from '../../shared/AppButton'
+import AppTable from '../../shared/AppTable'
 
 const SignTimesheet = () => {
   const [staffExpanded, setStaffExpanded] = useState(false)
@@ -70,6 +71,124 @@ const SignTimesheet = () => {
     }
     return dateStr
   }
+
+  const entriesColumns = [
+    {
+      header: 'Date',
+      key: 'date',
+      render: (entry) => (
+        <span className={`sign-cell-value ${!entry.date ? 'sign-cell-placeholder' : ''}`}>
+          {formatDateDisplay(entry.date)}
+        </span>
+      ),
+    },
+    {
+      header: 'Start Time',
+      key: 'startTime',
+      render: (entry) => (
+        <span
+          className={`sign-cell-value sign-cell-value-sm ${!entry.startTime ? 'sign-cell-placeholder' : ''}`}
+        >
+          {entry.startTime || '--:--'}
+        </span>
+      ),
+    },
+    {
+      header: 'End Time',
+      key: 'endTime',
+      render: (entry) => (
+        <span
+          className={`sign-cell-value sign-cell-value-sm ${!entry.endTime ? 'sign-cell-placeholder' : ''}`}
+        >
+          {entry.endTime || '--:--'}
+        </span>
+      ),
+    },
+    {
+      header: 'Total Hours',
+      key: 'totalHours',
+      render: (entry) => <span className="sign-hours-display">{entry.totalHours}</span>,
+    },
+    {
+      header: 'Work Done',
+      key: 'workDone',
+      render: (entry) => (
+        <span
+          className={`sign-cell-value sign-cell-value-wide ${!entry.workDone ? 'sign-cell-placeholder' : ''}`}
+        >
+          {entry.workDone || 'Describe work done...'}
+        </span>
+      ),
+    },
+    {
+      header: 'Action',
+      key: 'action',
+      render: (entry) => (
+        <div className="sign-action-icons">
+          <button
+            type="button"
+            className="sign-icon-btn"
+            aria-label="Edit"
+            onClick={() => openEntryModal(entry)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="sign-icon-btn"
+            aria-label="Delete"
+            onClick={() => removeEntry(entry.id)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3 6H5H21"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M10 11V17"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M14 11V17"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      ),
+    },
+  ]
 
   return (
     <div className="sign-timesheet-page">
@@ -154,65 +273,13 @@ const SignTimesheet = () => {
               Add Entry
             </AppButton>
           </div>
-        <div className="sign-entries-table-container">
-          <table className="sign-entries-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Total Hours</th>
-                <th>Work Done</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry) => (
-                <tr key={entry.id}>
-                  <td>
-                    <span className={`sign-cell-value ${!entry.date ? 'sign-cell-placeholder' : ''}`}>
-                      {formatDateDisplay(entry.date)}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`sign-cell-value sign-cell-value-sm ${!entry.startTime ? 'sign-cell-placeholder' : ''}`}>
-                      {entry.startTime || '--:--'}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`sign-cell-value sign-cell-value-sm ${!entry.endTime ? 'sign-cell-placeholder' : ''}`}>
-                      {entry.endTime || '--:--'}
-                    </span>
-                  </td>
-                  <td><span className="sign-hours-display">{entry.totalHours}</span></td>
-                  <td>
-                    <span className={`sign-cell-value sign-cell-value-wide ${!entry.workDone ? 'sign-cell-placeholder' : ''}`}>
-                      {entry.workDone || 'Describe work done...'}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="sign-action-icons">
-                      <button type="button" className="sign-icon-btn" aria-label="Edit" onClick={() => openEntryModal(entry)}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                          <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </button>
-                      <button type="button" className="sign-icon-btn" aria-label="Delete" onClick={() => removeEntry(entry.id)}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                          <path d="M3 6H5H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M10 11V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M14 11V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <AppTable
+          columns={entriesColumns}
+          data={entries}
+          rowKey="id"
+          containerClassName="sign-entries-table-container"
+          tableClassName="sign-entries-table"
+        />
         <div className="sign-total-row">
           <span className="sign-total-label">Total Hours this month:</span>
           <span className="sign-total-value">0.0 hours</span>

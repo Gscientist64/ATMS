@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './TimesheetDetail.css'
 import AppButton from '../../shared/AppButton'
+import AppTable from '../../shared/AppTable'
 
 const TimesheetDetail = () => {
   useParams()
@@ -11,6 +12,19 @@ const TimesheetDetail = () => {
     { date: '28-02-2026', startTime: '08:00', endTime: '05:00', totalHours: '9 hrs', workDone: 'Community sensitization on health programs' },
     { date: '28-02-2026', startTime: '08:00', endTime: '05:00', totalHours: '9 hrs', workDone: 'Data collection in Ikeja area' },
     { date: '28-02-2026', startTime: '08:00', endTime: '05:00', totalHours: '9 hrs', workDone: 'Follow-up visits to beneficiaries' },
+  ]
+
+  const entriesColumns = [
+    { header: 'Date', accessor: 'date', key: 'date' },
+    { header: 'Start Time', accessor: 'startTime', key: 'startTime' },
+    { header: 'End Time', accessor: 'endTime', key: 'endTime' },
+    {
+      header: 'Total Hours',
+      accessor: 'totalHours',
+      key: 'totalHours',
+      cellClassName: 'ts-hours-cell',
+    },
+    { header: 'Work Done', accessor: 'workDone', key: 'workDone' },
   ]
 
   const stages = [
@@ -108,28 +122,7 @@ const TimesheetDetail = () => {
             </div>
 
             <div className="ts-entries-table-container">
-              <table className="ts-entries-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Total Hours</th>
-                    <th>Work Done</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {entries.map((entry, index) => (
-                    <tr key={index}>
-                      <td>{entry.date}</td>
-                      <td>{entry.startTime}</td>
-                      <td>{entry.endTime}</td>
-                      <td className="ts-hours-cell">{entry.totalHours}</td>
-                      <td>{entry.workDone}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <AppTable columns={entriesColumns} data={entries} tableClassName="ts-entries-table" />
               <div className="ts-total-hours-row">
                 <span className="ts-total-label">Total Hours this month:</span>
                 <span className="ts-total-value">27 hours</span>

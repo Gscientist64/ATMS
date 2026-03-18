@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import AppButton from '../../shared/AppButton'
 import AppDropdown from '../../shared/AppDropdown'
+import AppTable from '../../shared/AppTable'
 import './ProgramsStaffDetail.css'
 
 const ProgramsStaffDetail = () => {
@@ -31,6 +32,66 @@ const ProgramsStaffDetail = () => {
     }),
     [id],
   )
+
+  const timesheetRows = [
+    {
+      id: 1,
+      monthYear: 'January 2026',
+      daysWorked: '3 Days',
+      submittedDate: '05-02-2026',
+      status: 'GON Review',
+      statusClass: 'psd-status-gon',
+      actionTo: '/programs/timesheet/1',
+    },
+    {
+      id: 2,
+      monthYear: 'January 2026',
+      daysWorked: '3 Days',
+      submittedDate: '05-02-2026',
+      status: 'Approved',
+      statusClass: 'psd-status-approved',
+      actionTo: '/programs/timesheet/view/101',
+    },
+    {
+      id: 3,
+      monthYear: 'January 2026',
+      daysWorked: '3 Days',
+      submittedDate: '05-02-2026',
+      status: 'Approved',
+      statusClass: 'psd-status-approved',
+      actionTo: '/programs/timesheet/view/102',
+    },
+    {
+      id: 4,
+      monthYear: 'January 2026',
+      daysWorked: '3 Days',
+      submittedDate: '05-02-2026',
+      status: 'Approved',
+      statusClass: 'psd-status-approved',
+      actionTo: '/programs/timesheet/view/103',
+    },
+  ]
+
+  const timesheetColumns = [
+    { header: 'Month/Year', accessor: 'monthYear', key: 'monthYear' },
+    { header: 'Days Worked', accessor: 'daysWorked', key: 'daysWorked' },
+    { header: 'Submitted Date', accessor: 'submittedDate', key: 'submittedDate' },
+    {
+      header: 'Status',
+      accessor: 'status',
+      key: 'status',
+      render: (row) => <span className={`psd-status-pill ${row.statusClass}`}>{row.status}</span>,
+    },
+    {
+      header: 'Action',
+      key: 'action',
+      render: (row) => (
+        <AppButton to={row.actionTo} className="psd-view-link">
+          View Details
+        </AppButton>
+      ),
+    },
+  ]
 
   useEffect(() => {
     if (!isChangeFacilityOpen && !isChangeFacilityDoneOpen && !isManageSupervisorsOpen) return
@@ -432,73 +493,13 @@ const ProgramsStaffDetail = () => {
 
       {activeTab === 'timesheets' && (
         <div className="psd-timesheets-card">
-          <div className="psd-timesheets-table-wrap">
-            <table className="psd-timesheets-table">
-              <thead>
-                <tr>
-                  <th>Month/Year</th>
-                  <th>Days Worked</th>
-                  <th>Submitted Date</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>January 2026</td>
-                  <td>3 Days</td>
-                  <td>05-02-2026</td>
-                  <td>
-                    <span className="psd-status-pill psd-status-gon">GON Review</span>
-                  </td>
-                  <td>
-                    <AppButton to="/programs/timesheet/1" className="psd-view-link">
-                      View Details
-                    </AppButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>January 2026</td>
-                  <td>3 Days</td>
-                  <td>05-02-2026</td>
-                  <td>
-                    <span className="psd-status-pill psd-status-approved">Approved</span>
-                  </td>
-                  <td>
-                    <AppButton to="/programs/timesheet/view/101" className="psd-view-link">
-                      View Details
-                    </AppButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>January 2026</td>
-                  <td>3 Days</td>
-                  <td>05-02-2026</td>
-                  <td>
-                    <span className="psd-status-pill psd-status-approved">Approved</span>
-                  </td>
-                  <td>
-                    <AppButton to="/programs/timesheet/view/102" className="psd-view-link">
-                      View Details
-                    </AppButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>January 2026</td>
-                  <td>3 Days</td>
-                  <td>05-02-2026</td>
-                  <td>
-                    <span className="psd-status-pill psd-status-approved">Approved</span>
-                  </td>
-                  <td>
-                    <AppButton to="/programs/timesheet/view/103" className="psd-view-link">
-                      View Details
-                    </AppButton>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <AppTable
+            columns={timesheetColumns}
+            data={timesheetRows}
+            rowKey="id"
+            containerClassName="psd-timesheets-table-wrap"
+            tableClassName="psd-timesheets-table"
+          />
         </div>
       )}
 
