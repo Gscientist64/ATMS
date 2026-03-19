@@ -325,16 +325,23 @@ namespace ATMS.API.Services
             if (concern == null) return;
 
             // Notify ECEWS supervisor
-            if (concern.TargetUser?.EcewsSupervisorId != null)
+            var targetUser = await _context.Users.FindAsync(targetUserId);
+            if (targetUser != null && targetUser.EcewsSupervisorId.HasValue)
             {
+                string message = concern.TimesheetId.HasValue 
+                    ? $"{raiserName} raised a concern about {targetUser.FullName} regarding their timesheet"
+                    : $"{raiserName} raised a concern about {targetUser.FullName}";
+
                 await CreateNotification(new CreateNotificationDto
                 {
-                    UserId = concern.TargetUser.EcewsSupervisorId.Value,
+                    UserId = targetUser.EcewsSupervisorId.Value,
                     Type = "concern",
                     Title = "Concern Raised",
-                    Message = $"{raiserName} raised a concern about {concern.TargetUser.FullName}",
+                    Message = message,
                     Data = new { concernId, timesheetId = concern.TimesheetId, raiserName },
-                    ActionUrl = $"/ecews-supervisor/supervisees/{concern.TargetUserId}",
+                    ActionUrl = concern.TimesheetId.HasValue 
+                        ? $"/ecews-supervisor/timesheet/{concern.TimesheetId}" 
+                        : $"/ecews-supervisor/supervisees/{targetUserId}",
                     Priority = "High"
                 });
             }

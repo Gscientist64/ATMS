@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using ATMS.API.Data;
 using ATMS.API.DTOs;
+using ATMS.API.Models;
 using ATMS.API.Services;
 
 namespace ATMS.API.Controllers
@@ -11,115 +14,530 @@ namespace ATMS.API.Controllers
     [Authorize(Roles = "GonSupervisor")]
     public class GonSupervisorController : ControllerBase
     {
-        private readonly ITimesheetService _timesheetService;
-        private readonly IUserService _userService;
+        private readonly ApplicationDbContext _context;
+        private readonly INotificationService _notificationService;
+        private readonly ILogger<GonSupervisorController> _logger;
 
-        public GonSupervisorController(ITimesheetService timesheetService, IUserService userService)
+        public GonSupervisorController(
+            ApplicationDbContext context,
+            INotificationService notificationService,
+            ILogger<GonSupervisorController> logger)
         {
-            _timesheetService = timesheetService;
-            _userService = userService;
+            _context = context;
+            _notificationService = notificationService;
+            _logger = logger;
         }
 
+        // GET: api/GonSupervisor/dashboard
         [HttpGet("dashboard")]
         public async Task<IActionResult> GetDashboard()
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            
-            var pendingTimesheets = await _timesheetService.GetTimesheetsForReview(supervisorId, "GonSupervisor", "GONReview");
-            
-            return Ok(new
+            try
             {
-                PendingTimesheets = pendingTimesheets.Count,
-                ActiveTimesheets = pendingTimesheets
-            });
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                // Get supervisee IDs
+                var superviseeIds = await _context.Users
+                    .Where(u => u.GonSupervisorId == supervisorId)
+                    .Select(u => u.Id)
+                    .ToListAsync();
+
+                // Pending timesheets (GONReview status)
+                var pendingTimesheets = await _context.Timesheets
+                    .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "GONReview");
+
+                // Approved this month
+                var now = DateTime.UtcNow;
+                var approvedThisMonth = await _context.Timesheets
+                    .CountAsync(t => superviseeIds.Contains(t.UserId) && 
+                        t.Status == "Approved" &&
+                        t.ApprovedAt.HasValue &&
+                        t.ApprovedAt.Value.Month == now.Month &&
+                        t.ApprovedAt.Value.Year == now.Year);
+
+                // Returned for correction
+                var returnedForCorrection = await _context.Timesheets
+                    .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "Rejected");
+
+                // Supervisees count
+                var superviseesCount = superviseeIds.Count;
+
+                // Active timesheets (GONReview status)
+                var activeTimesheets = await _context.Timesheets
+                    .Include(t => t.User)
+                    .Where(t => superviseeIds.Contains(t.UserId) && t.Status == "GONReview")
+                    .OrderByDescending(t => t.SubmittedAt)
+                    .Take(10)
+                    .Select(t => new GonActiveTimesheetDto
+                    {
+                        Id = t.Id,
+                        StaffName = t.User != null ? t.User.FullName : "Unknown",
+                        Department = t.User != null ? t.User.Department ?? "Not specified" : "Unknown",
+                        Month = $"{t.Month} {t.Year}",
+                        SubmissionDate = t.SubmittedAt.ToString("dd-MM-yyyy"),
+                        Status = "GON Review"
+                    })
+                    .ToListAsync();
+
+                var dashboard = new GonDashboardDto
+                {
+                    PendingTimesheets = pendingTimesheets,
+                    ApprovedThisMonth = approvedThisMonth,
+                    ReturnedForCorrection = returnedForCorrection,
+                    SuperviseesCount = superviseesCount,
+                    ActiveTimesheets = activeTimesheets
+                };
+
+                return Ok(dashboard);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting GON dashboard for supervisor {SupervisorId}", 
+                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred while loading dashboard" });
+            }
         }
 
+        // GET: api/GonSupervisor/timesheets/review?tab=pending
         [HttpGet("timesheets/review")]
-        public async Task<IActionResult> GetTimesheetsForReview([FromQuery] string status = "pending")
+        public async Task<IActionResult> GetTimesheetsForReview([FromQuery] string tab = "pending")
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            
-            string timesheetStatus = status.ToLower() switch
+            try
             {
-                "pending" => "GONReview",
-                "approved" => "Approved,ProgramsTeam,HR",
-                "returned" => "Rejected",
-                _ => "GONReview"
-            };
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
-            var timesheets = await _timesheetService.GetTimesheetsForReview(supervisorId, "GonSupervisor", timesheetStatus);
-            return Ok(timesheets);
+                var superviseeIds = await _context.Users
+                    .Where(u => u.GonSupervisorId == supervisorId)
+                    .Select(u => u.Id)
+                    .ToListAsync();
+
+                IQueryable<Timesheet> query = _context.Timesheets
+                    .Include(t => t.User)
+                    .Where(t => superviseeIds.Contains(t.UserId));
+
+                // Filter based on tab
+                switch (tab.ToLower())
+                {
+                    case "pending":
+                        query = query.Where(t => t.Status == "GONReview");
+                        break;
+                    case "approved":
+                        query = query.Where(t => t.Status == "Approved" || t.Status == "ProgramsTeam" || t.Status == "HR");
+                        break;
+                    case "returned":
+                        query = query.Where(t => t.Status == "Rejected");
+                        break;
+                    default:
+                        query = query.Where(t => t.Status == "GONReview");
+                        break;
+                }
+
+                // Fetch data first
+                var timesheets = await query
+                    .OrderByDescending(t => t.SubmittedAt)
+                    .Select(t => new
+                    {
+                        t.Id,
+                        t.Status,
+                        t.SubmittedAt,
+                        t.Month,
+                        t.Year,
+                        StaffName = t.User != null ? t.User.FullName : "Unknown",
+                        Department = t.User != null ? t.User.Department ?? "Not specified" : "Unknown"
+                    })
+                    .ToListAsync();
+
+                // Map to DTO after fetching
+                var result = timesheets.Select(t => new GonTimesheetReviewDto
+                {
+                    Id = t.Id,
+                    StaffName = t.StaffName,
+                    Department = t.Department,
+                    Month = $"{t.Month} {t.Year}",
+                    SubmissionDate = t.SubmittedAt != default ? t.SubmittedAt.ToString("dd-MM-yyyy") : "",
+                    Status = GetStatusDisplayStatic(t.Status),
+                    StatusType = GetStatusTypeStatic(t.Status, tab)
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting timesheets for review for supervisor {SupervisorId}, tab {Tab}", 
+                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value, tab);
+                return StatusCode(500, new { message = "An error occurred loading timesheets" });
+            }
         }
 
+        // GET: api/GonSupervisor/timesheets/{id}
         [HttpGet("timesheets/{id}")]
-        public async Task<IActionResult> GetTimesheet(int id)
+        public async Task<IActionResult> GetTimesheetDetail(int id)
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var timesheet = await _timesheetService.GetTimesheetById(id, supervisorId, "GonSupervisor");
-            
-            if (timesheet == null)
+            try
             {
-                return NotFound();
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                var timesheet = await _context.Timesheets
+                    .Include(t => t.User)
+                    .Include(t => t.Entries)
+                    .Include(t => t.CommentsList)
+                        .ThenInclude(c => c.User)
+                    .FirstOrDefaultAsync(t => t.Id == id);
+
+                if (timesheet == null)
+                    return NotFound(new { message = "Timesheet not found" });
+
+                // Verify supervisor has access to this timesheet
+                if (timesheet.User == null || timesheet.User.GonSupervisorId != supervisorId)
+                    return Forbid();
+
+                var detail = new GonTimesheetDetailDto
+                {
+                    Id = timesheet.Id,
+                    MonthYear = $"{timesheet.Month} {timesheet.Year}",
+                    StaffName = timesheet.User.FullName,
+                    FullName = timesheet.User.FullName,
+                    Department = timesheet.User.Department ?? "Not specified",
+                    Location = timesheet.User.State ?? "Not specified",
+                    BankName = timesheet.User.BankName ?? "Not specified",
+                    AccountNumber = MaskAccountNumber(timesheet.User.AccountNumber),
+                    Status = GetStatusDisplayStatic(timesheet.Status),
+                    StatusPill = GetStatusPillClass(timesheet.Status),
+                    Entries = timesheet.Entries.Select(e => new GonTimesheetEntryDto
+                    {
+                        Date = e.Date.ToString("dd-MM-yyyy"),
+                        StartTime = e.StartTime.ToString(@"hh\:mm"),
+                        EndTime = e.EndTime.ToString(@"hh\:mm"),
+                        TotalHours = $"{e.TotalHours} hrs",
+                        WorkDone = e.WorkDone
+                    }).ToList(),
+                    TotalHours = timesheet.TotalHours,
+                    SummaryInfo = $"{timesheet.TotalDaysWorked} days, {timesheet.TotalHours} hours",
+                    Comments = timesheet.CommentsList.Select(c => new GonCommentDto
+                    {
+                        Id = c.Id,
+                        AuthorName = c.User?.FullName ?? "Unknown",
+                        AuthorRole = c.UserRole,
+                        AuthorAvatar = GetInitials(c.User?.FullName ?? ""),
+                        CommentText = c.CommentText,
+                        CreatedAt = c.CreatedAt.ToString("dd-MM-yyyy HH:mm")
+                    }).ToList()
+                };
+
+                return Ok(detail);
             }
-            
-            return Ok(timesheet);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting timesheet detail {TimesheetId} for supervisor {SupervisorId}", 
+                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred loading timesheet details" });
+            }
         }
 
+        // POST: api/GonSupervisor/timesheets/{id}/approve
         [HttpPost("timesheets/{id}/approve")]
-        public async Task<IActionResult> ApproveTimesheet(int id, ApproveTimesheetDto dto)
+        public async Task<IActionResult> ApproveTimesheet(int id, [FromBody] GonApproveTimesheetDto dto)
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var timesheet = await _timesheetService.ReviewTimesheet(id, supervisorId, "Approve", dto.Comments ?? "");
-            
-            if (timesheet == null)
+            try
             {
-                return NotFound();
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var supervisor = await _context.Users.FindAsync(supervisorId);
+
+                var timesheet = await _context.Timesheets
+                    .Include(t => t.User)
+                    .FirstOrDefaultAsync(t => t.Id == id);
+
+                if (timesheet == null)
+                    return NotFound(new { message = "Timesheet not found" });
+
+                // Verify supervisor has access
+                if (timesheet.User == null || timesheet.User.GonSupervisorId != supervisorId)
+                    return Forbid();
+
+                // Update timesheet status
+                timesheet.Status = "Approved";
+                timesheet.GonReviewedAt = DateTime.UtcNow;
+                timesheet.GonReviewerId = supervisorId;
+                timesheet.Comments = dto.Comments ?? timesheet.Comments;
+                timesheet.UpdatedAt = DateTime.UtcNow;
+
+                // Create concern if flagged
+                if (dto.FlagConcern && !string.IsNullOrWhiteSpace(dto.ConcernDescription))
+                {
+                    var concern = new Concern
+                    {
+                        TimesheetId = id,
+                        RaisedById = supervisorId,
+                        TargetUserId = timesheet.UserId,
+                        ConcernType = dto.ConcernType ?? "Performance",
+                        Severity = dto.Severity ?? "Medium",
+                        Description = dto.ConcernDescription,
+                        Status = "Open",
+                        RaisedAt = DateTime.UtcNow
+                    };
+                    _context.Concerns.Add(concern);
+                }
+
+                await _context.SaveChangesAsync();
+
+                // Send notification to staff and ECEWS supervisor
+                await _notificationService.CreateTimesheetApprovedNotification(id, timesheet.UserId, supervisor?.FullName ?? "GON Supervisor", "GON Supervisor");
+
+                return Ok(new { message = "Timesheet approved successfully" });
             }
-            
-            return Ok(new { message = "Timesheet approved successfully", timesheet });
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error approving timesheet {TimesheetId} for supervisor {SupervisorId}", 
+                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred while approving timesheet" });
+            }
         }
 
+        // POST: api/GonSupervisor/timesheets/{id}/decline
         [HttpPost("timesheets/{id}/decline")]
-        public async Task<IActionResult> DeclineTimesheet(int id, DeclineTimesheetDto dto)
+        public async Task<IActionResult> DeclineTimesheet(int id, [FromBody] GonDeclineTimesheetDto dto)
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            
-            if (string.IsNullOrWhiteSpace(dto.Feedback))
+            try
             {
-                return BadRequest(new { message = "Feedback is required when declining a timesheet" });
-            }
+                if (string.IsNullOrWhiteSpace(dto.Feedback))
+                    return BadRequest(new { message = "Feedback is required" });
 
-            var timesheet = await _timesheetService.ReviewTimesheet(id, supervisorId, "Reject", dto.Feedback);
-            
-            if (timesheet == null)
-            {
-                return NotFound();
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var supervisor = await _context.Users.FindAsync(supervisorId);
+
+                var timesheet = await _context.Timesheets
+                    .Include(t => t.User)
+                    .FirstOrDefaultAsync(t => t.Id == id);
+
+                if (timesheet == null)
+                    return NotFound(new { message = "Timesheet not found" });
+
+                // Verify supervisor has access
+                if (timesheet.User == null || timesheet.User.GonSupervisorId != supervisorId)
+                    return Forbid();
+
+                // Update timesheet status
+                timesheet.Status = "Rejected";
+                timesheet.GonReviewedAt = DateTime.UtcNow;
+                timesheet.GonReviewerId = supervisorId;
+                timesheet.Comments = dto.Feedback;
+                timesheet.UpdatedAt = DateTime.UtcNow;
+
+                // Add comment
+                var comment = new Comment
+                {
+                    TimesheetId = id,
+                    UserId = supervisorId,
+                    UserRole = "GON Supervisor",
+                    UserAvatar = GetInitials(supervisor?.FullName ?? ""),
+                    CommentText = dto.Feedback,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.Comments.Add(comment);
+
+                await _context.SaveChangesAsync();
+
+                // Send notification to staff
+                await _notificationService.CreateTimesheetRejectedNotification(id, timesheet.UserId, supervisor?.FullName ?? "GON Supervisor", "GON Supervisor", dto.Feedback);
+
+                return Ok(new { message = "Timesheet returned with feedback" });
             }
-            
-            return Ok(new { message = "Timesheet returned with feedback", timesheet });
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error declining timesheet {TimesheetId} for supervisor {SupervisorId}", 
+                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred while declining timesheet" });
+            }
         }
 
-        [HttpPost("timesheets/{id}/comments")]
-        public async Task<IActionResult> AddComment(int id, AddCommentDto dto)
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var timesheet = await _timesheetService.AddComment(id, userId, dto.Comment);
-            
-            return Ok(timesheet);
-        }
-
+        // GET: api/GonSupervisor/supervisees
         [HttpGet("supervisees")]
         public async Task<IActionResult> GetSupervisees()
         {
-            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            
-            var supervisees = await _userService.GetSupervisees(supervisorId, "GonSupervisor");
-            
-            return Ok(new
+            try
             {
-                Total = supervisees.Count,
-                Items = supervisees
-            });
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                var supervisees = await _context.Users
+                    .Where(u => u.GonSupervisorId == supervisorId)
+                    .Select(u => new GonSuperviseeListDto
+                    {
+                        Id = u.Id,
+                        Name = u.FullName,
+                        Designation = u.Designation ?? "Not specified",
+                        StaffId = u.EmployeeCode ?? "Not assigned",
+                        ContractStatus = u.ContractStatus ?? "Active",
+                        ContractStatusClass = GetContractStatusClass(u.ContractStatus)
+                    })
+                    .ToListAsync();
+
+                return Ok(supervisees);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting supervisees for supervisor {SupervisorId}", 
+                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred loading supervisees" });
+            }
         }
+
+        // POST: api/GonSupervisor/supervisees/{id}/concerns
+        [HttpPost("supervisees/{id}/concerns")]
+        public async Task<IActionResult> RaiseConcern(int id, [FromBody] GonRaiseConcernDto dto)
+        {
+            try
+            {
+                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                // Verify supervisee exists and is under this supervisor
+                var supervisee = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id && u.GonSupervisorId == supervisorId);
+
+                if (supervisee == null)
+                    return NotFound(new { message = "Supervisee not found" });
+
+                if (string.IsNullOrWhiteSpace(dto.Description))
+                    return BadRequest(new { message = "Description is required" });
+
+                var concern = new Concern
+                {
+                    // Don't set TimesheetId - it's nullable
+                    RaisedById = supervisorId,
+                    TargetUserId = id,
+                    ConcernType = dto.ConcernType ?? "Performance",
+                    Severity = dto.Severity ?? "Medium",
+                    Description = dto.Description,
+                    Status = "Open",
+                    RaisedAt = DateTime.UtcNow
+                };
+
+                _context.Concerns.Add(concern);
+                await _context.SaveChangesAsync();
+
+                // Notify ECEWS supervisor
+                if (supervisee.EcewsSupervisorId.HasValue)
+                {
+                    await _notificationService.CreateConcernRaisedNotification(concern.Id, id, supervisee.FullName);
+                }
+
+                return Ok(new { message = "Concern raised successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error raising concern for supervisee {SuperviseeId} by supervisor {SupervisorId}", 
+                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred while raising concern" });
+            }
+        }
+        // POST: api/GonSupervisor/timesheets/{id}/comments
+        [HttpPost("timesheets/{id}/comments")]
+        public async Task<IActionResult> AddComment(int id, [FromBody] string comment)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = await _context.Users.FindAsync(userId);
+
+                var timesheet = await _context.Timesheets
+                    .Include(t => t.User)
+                    .FirstOrDefaultAsync(t => t.Id == id);
+
+                if (timesheet == null)
+                    return NotFound(new { message = "Timesheet not found" });
+
+                var newComment = new Comment
+                {
+                    TimesheetId = id,
+                    UserId = userId,
+                    UserRole = "GON Supervisor",
+                    UserAvatar = GetInitials(user?.FullName ?? ""),
+                    CommentText = comment,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Comments.Add(newComment);
+                await _context.SaveChangesAsync();
+
+                // Notify staff
+                await _notificationService.CreateCommentNotification(id, timesheet.UserId, user?.FullName ?? "GON Supervisor", "GON Supervisor");
+
+                return Ok(new { message = "Comment added successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding comment to timesheet {TimesheetId} by supervisor {SupervisorId}", 
+                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { message = "An error occurred while adding comment" });
+            }
+        }
+
+        #region Helper Methods
+
+        private static string GetStatusDisplayStatic(string status)
+        {
+            return status switch
+            {
+                "GONReview" => "GON Review",
+                "Approved" => "Approved",
+                "Rejected" => "Returned",
+                "ProgramsTeam" => "Programs Review",
+                "HR" => "HR Review",
+                _ => status
+            };
+        }
+
+        private static string GetStatusTypeStatic(string status, string tab)
+        {
+            if (tab == "returned") return "returned";
+            
+            return status switch
+            {
+                "GONReview" => "gon",
+                "Approved" => "approved",
+                "ProgramsTeam" => "programs",
+                "HR" => "hr",
+                _ => "gon"
+            };
+        }
+
+        private static string GetStatusPillClass(string status)
+        {
+            return status switch
+            {
+                "GONReview" => "gon-review",
+                "Approved" => "approved",
+                "Rejected" => "returned",
+                _ => "pending"
+            };
+        }
+
+        private static string GetContractStatusClass(string? status)
+        {
+            return status?.ToLower().Replace(" ", "") switch
+            {
+                "active" => "active",
+                "expiringsoon" => "expiringsoon",
+                "onpip" => "onpip",
+                _ => "active"
+            } ?? "active";
+        }
+
+        private string GetInitials(string? fullName)
+        {
+            if (string.IsNullOrEmpty(fullName)) return "U";
+            var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2)
+                return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+            return fullName.Length > 0 ? fullName[0].ToString().ToUpper() : "U";
+        }
+
+        private string MaskAccountNumber(string? accountNumber)
+        {
+            if (string.IsNullOrEmpty(accountNumber) || accountNumber.Length < 4)
+                return accountNumber ?? "Not provided";
+            return "****" + accountNumber.Substring(accountNumber.Length - 4);
+        }
+
+        #endregion
     }
 }

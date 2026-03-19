@@ -9,15 +9,15 @@ namespace ATMS.API.DTOs
         public int PipAdvised { get; set; }
         public int ContractReviewRequired { get; set; }
         public int SuperviseesCount { get; set; }
-        public List<TimesheetListDto> ActiveTimesheets { get; set; } = new();
+        public List<EcewsActiveTimesheetDto> ActiveTimesheets { get; set; } = new();
     }
-    
-    public class GonDashboardDto
+
+    public class EcewsActiveTimesheetDto
     {
-        public int PendingTimesheets { get; set; }
-        public int ApprovedThisMonth { get; set; }
-        public int ReturnedForCorrection { get; set; }
-        public int SuperviseesCount { get; set; }
-        public List<TimesheetListDto> ActiveTimesheets { get; set; } = new();
+        public int Id { get; set; }
+        public string StaffName { get; set; } = string.Empty;
+        public string SubmissionDate { get; set; } = string.Empty;
+        public string GonSupervisor { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
     }
 }

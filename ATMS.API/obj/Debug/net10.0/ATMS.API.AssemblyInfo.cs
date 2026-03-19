@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ATMS.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ca29890b83ae1677aea00541e61be7d2d457a01")]
 [assembly: System.Reflection.AssemblyProductAttribute("ATMS.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ATMS.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

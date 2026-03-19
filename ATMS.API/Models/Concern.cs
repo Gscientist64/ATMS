@@ -7,7 +7,7 @@ namespace ATMS.API.Models
     {
         public int Id { get; set; }
         
-        public int TimesheetId { get; set; }
+        public int? TimesheetId { get; set; } // Make this nullable
         public Timesheet? Timesheet { get; set; }
         
         public int RaisedById { get; set; }
