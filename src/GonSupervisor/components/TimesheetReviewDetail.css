@@ -1,0 +1,791 @@
+.gon-tsd-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+  padding-bottom: 24px;
+}
+
+.gon-tsd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.gon-tsd-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gon-tsd-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #096D49;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.gon-tsd-back-link:hover {
+  text-decoration: underline;
+}
+
+.gon-tsd-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.gon-tsd-user {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.gon-tsd-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: #333;
+  border: 1px solid transparent;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gon-tsd-download-btn:hover {
+  background-color: #f9fafb;
+  border-color: #096D49;
+}
+
+.gon-tsd-section-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 16px;
+}
+
+.gon-tsd-overview-grid {
+  display: grid;
+  grid-template-columns: 2.3fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.gon-tsd-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.gon-tsd-card-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.gon-tsd-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.gon-tsd-staff-card {
+  padding-bottom: 16px;
+}
+
+.gon-tsd-staff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding: 16px 24px 8px;
+}
+
+.gon-tsd-staff-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gon-tsd-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gon-tsd-info-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.gon-tsd-info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.gon-tsd-info-strong {
+  font-weight: 700;
+}
+
+.gon-tsd-status-pill {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: #fff7ed;
+  color: #ea580c;
+}
+
+.gon-tsd-approval-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.gon-tsd-approval-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.gon-tsd-approval-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Approval Action page specific styles */
+.gon-aa-approval-actions {
+  padding: 20px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gon-aa-approve-btn,
+.gon-aa-decline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 17px 18px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.gon-aa-approve-btn {
+  background-color: #096D49;
+  color: #fff;
+  border: none;
+}
+
+.gon-aa-approve-btn:hover {
+  background-color: #6BA792;
+}
+
+.gon-aa-approve-icon,
+.gon-aa-decline-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gon-aa-decline-btn {
+  background-color: #fff;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.gon-aa-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.gon-aa-modal {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px 28px 20px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+}
+
+.gon-aa-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.gon-aa-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.gon-aa-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.gon-aa-modal-body {
+  margin-bottom: 20px;
+}
+
+.gon-aa-modal-text {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.gon-aa-flag-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gon-aa-textarea {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 96px;
+  color: #111827;
+}
+
+.gon-aa-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.gon-aa-toggle {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  background-color: #e5e7eb;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.gon-aa-toggle-knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.gon-aa-toggle.on {
+  background-color: #22c55e;
+}
+
+.gon-aa-toggle.on .gon-aa-toggle-knob {
+  transform: translateX(16px);
+}
+
+.gon-aa-flag-label {
+  font-size: 14px;
+  color: #111827;
+}
+
+.gon-aa-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.gon-aa-modal-btn {
+  min-width: 96px;
+  padding: 14px 18px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+}
+
+.gon-aa-modal-cancel {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.gon-aa-modal-confirm {
+  background-color: #096D49;
+  color: #ffffff;
+}
+
+.gon-aa-modal-confirm:hover {
+  background-color: #6BA792;
+}
+
+.gon-aa-success-modal {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 28px 32px 24px;
+  max-width: 350px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+  text-align: center;
+}
+
+.gon-aa-success-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.gon-aa-success-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.gon-aa-success-message {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.gon-aa-success-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.gon-aa-success-ok-btn {
+  min-width: 120px;
+  padding: 10px 28px;
+  border-radius: 9px;
+  background-color: #096D49;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+}
+
+.gon-aa-success-ok-btn:hover {
+  background-color: #6BA792;
+}
+
+.gon-aa-decline-modal {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px 28px 20px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+}
+
+.gon-aa-decline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.gon-aa-decline-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.gon-aa-decline-close {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.gon-aa-decline-body {
+  margin-bottom: 20px;
+}
+
+.gon-aa-decline-text {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.gon-aa-decline-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.gon-aa-decline-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.gon-aa-decline-textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+  color: #111827;
+}
+
+.gon-aa-decline-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.gon-aa-decline-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.gon-aa-decline-btn-cancel {
+  min-width: 100px;
+  padding: 10px 18px;
+  border-radius: 9px;
+  border: none;
+  background-color: #f3f4f6;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gon-aa-decline-btn-send {
+  min-width: 120px;
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: none;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gon-aa-decline-btn-send:hover {
+  background-color: #dc2626;
+}
+
+.gon-tsd-summary-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.gon-tsd-summary-month {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.gon-tsd-summary-sep {
+  width: 1px;
+  height: 20px;
+  background-color: #e0e0e0;
+}
+
+.gon-tsd-summary-days {
+  font-size: 15px;
+  color: #333;
+}
+
+.gon-tsd-summary-hours {
+  margin-left: auto;
+  background-color: #d1d5dc;
+  color: #333;
+  padding: 6px 33px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gon-tsd-detail-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.gon-tsd-tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 0 24px;
+  background-color: #f9f9f9;
+}
+
+.gon-tsd-tab {
+  background: none;
+  border: none;
+  padding: 16px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gon-tsd-tab.active {
+  color: #096D49;
+  border-bottom: 2px solid #096D49;
+}
+
+.gon-tsd-comments-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background-color: #f97316;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.gon-tsd-table-wrap {
+  padding: 24px;
+}
+
+.gon-tsd-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gon-tsd-table thead {
+  background-color: #f5f5f5;
+}
+
+.gon-tsd-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: normal !important;
+}
+
+.gon-tsd-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: normal !important;
+}
+
+.gon-tsd-hours-cell {
+  font-weight: 700;
+}
+
+.gon-tsd-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: -1px;
+}
+
+.gon-tsd-total-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.gon-tsd-total-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.gon-tsd-comments-panel {
+  padding: 24px;
+}
+
+.gon-tsd-comment-card {
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.gon-tsd-comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.gon-tsd-comment-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gon-tsd-comment-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #096D49;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.gon-tsd-comment-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gon-tsd-comment-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.gon-tsd-comment-role {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+}
+
+.gon-tsd-comment-date {
+  font-size: 13px;
+  color: #666;
+}
+
+.gon-tsd-comment-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  padding-left: 56px;
+}
+
+@media (max-width: 768px) {
+  .gon-tsd-page {
+    padding: 0 16px 24px;
+  }
+
+  .gon-tsd-header {
+    flex-direction: column;
+  }
+
+  .gon-tsd-title {
+    font-size: 20px;
+  }
+
+  .gon-tsd-user {
+    font-size: 14px;
+  }
+
+  .gon-tsd-download-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .gon-tsd-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gon-tsd-staff-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gon-tsd-summary-bar {
+    flex-wrap: wrap;
+  }
+
+  .gon-tsd-summary-hours {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .gon-tsd-tabs {
+    padding: 0 12px;
+  }
+
+  .gon-tsd-tab {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .gon-tsd-table-wrap {
+    padding: 16px;
+  }
+
+  .gon-tsd-table th,
+  .gon-tsd-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+

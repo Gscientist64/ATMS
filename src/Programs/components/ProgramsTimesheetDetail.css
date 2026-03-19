@@ -1,0 +1,220 @@
+.pg-status-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pg-mini-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.pg-mini-pill-green {
+  background-color: #ecfdf3;
+  color: #047857;
+}
+
+.pg-mini-pill-amber {
+  background-color: #fff7ed;
+  color: #ea580c;
+}
+
+.pg-empty-panel {
+  padding: 24px;
+  min-height: 260px;
+}
+
+.pg-contract-toggle {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.pg-contract-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  transition: transform 0.2s ease;
+}
+
+.pg-contract-toggle.open .pg-contract-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.pg-contract-body {
+  margin-top: 10px;
+}
+
+.pg-contract-help {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.pg-contract-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.pg-contract-radio input {
+  width: 14px;
+  height: 14px;
+  accent-color: #096d49;
+}
+
+.pg-contract-reason {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 96px;
+  margin-top: 10px;
+  color: #111827;
+}
+
+.pg-contract-reason::placeholder {
+  color: #9ca3af;
+}
+
+.pg-concerns-panel {
+  padding: 24px;
+}
+
+.pg-concern-card {
+  background-color: #f9fafb;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+
+.pg-concern-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.pg-concern-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pg-concern-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #096d49;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pg-concern-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pg-concern-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.pg-concern-role {
+  font-size: 13px;
+  color: #666;
+}
+
+.pg-concern-date {
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.pg-concern-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.pg-concern-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pg-concern-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg-concern-meta-label {
+  font-size: 13px;
+  color: #666;
+}
+
+.pg-concern-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pg-concern-pill-high {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.pg-concern-pill-type {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+@media (max-width: 768px) {
+  .pg-concerns-panel {
+    padding: 16px;
+  }
+
+  .pg-concern-card {
+    padding: 16px;
+  }
+}
+
