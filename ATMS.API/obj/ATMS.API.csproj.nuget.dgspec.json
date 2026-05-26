@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ATMS_NEW\\ATMS.API\\ATMS.API.csproj": {}
+    "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj": {}
   },
   "projects": {
-    "C:\\ATMS_NEW\\ATMS.API\\ATMS.API.csproj": {
+    "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ATMS_NEW\\ATMS.API\\ATMS.API.csproj",
+        "projectUniqueName": "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj",
         "projectName": "ATMS.API",
-        "projectPath": "C:\\ATMS_NEW\\ATMS.API\\ATMS.API.csproj",
+        "projectPath": "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj",
         "packagesPath": "C:\\Users\\Isaac\\.nuget\\packages\\",
-        "outputPath": "C:\\ATMS_NEW\\ATMS.API\\obj\\",
+        "outputPath": "C:\\ATMS_New\\ATMS.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Isaac\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,6 +44,10 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Azure.Identity": {
+              "target": "Package",
+              "version": "[1.12.0, )"
+            },
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.1.0, )"
@@ -66,9 +70,17 @@
               "target": "Package",
               "version": "[10.0.4, )"
             },
+            "Microsoft.Graph": {
+              "target": "Package",
+              "version": "[5.54.0, )"
+            },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[10.0.0, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2026.2.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -1,3 +1,5 @@
+// GonSupervisorController.cs - Controller for GON Supervisor functionalities like dashboard, timesheet review, and supervisee management
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -17,15 +19,20 @@ namespace ATMS.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly INotificationService _notificationService;
         private readonly ILogger<GonSupervisorController> _logger;
-
+        private readonly ITimesheetService _timesheetService;
+        private readonly IPdfService _pdfService;
         public GonSupervisorController(
             ApplicationDbContext context,
             INotificationService notificationService,
-            ILogger<GonSupervisorController> logger)
+            ILogger<GonSupervisorController> logger,
+            ITimesheetService timesheetService,
+            IPdfService pdfService)
         {
             _context = context;
             _notificationService = notificationService;
             _logger = logger;
+            _pdfService = pdfService;
+            _timesheetService = timesheetService;
         }
 
         // GET: api/GonSupervisor/dashboard
@@ -36,24 +43,26 @@ namespace ATMS.API.Controllers
             {
                 var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
-                // Get supervisee IDs
                 var superviseeIds = await _context.Users
                     .Where(u => u.GonSupervisorId == supervisorId)
                     .Select(u => u.Id)
                     .ToListAsync();
 
-                // Pending timesheets (GONReview status)
+                // Pending timesheets - ONLY GONReview status (approved by ECEWS)
                 var pendingTimesheets = await _context.Timesheets
                     .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "GONReview");
 
-                // Approved this month
+                // Approved this month - includes ProgramsReview (approved by Facility Supervisor) and Approved
                 var now = DateTime.UtcNow;
+                var startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+                var endOfMonth = startOfMonth.AddMonths(1).AddSeconds(-1);
+                
                 var approvedThisMonth = await _context.Timesheets
                     .CountAsync(t => superviseeIds.Contains(t.UserId) && 
-                        t.Status == "Approved" &&
-                        t.ApprovedAt.HasValue &&
-                        t.ApprovedAt.Value.Month == now.Month &&
-                        t.ApprovedAt.Value.Year == now.Year);
+                        (t.Status == "ProgramsReview" || t.Status == "Approved") &&
+                        t.UpdatedAt.HasValue &&
+                        t.UpdatedAt.Value >= startOfMonth &&
+                        t.UpdatedAt.Value <= endOfMonth);
 
                 // Returned for correction
                 var returnedForCorrection = await _context.Timesheets
@@ -62,7 +71,7 @@ namespace ATMS.API.Controllers
                 // Supervisees count
                 var superviseesCount = superviseeIds.Count;
 
-                // Active timesheets (GONReview status)
+                // Active timesheets - ONLY GONReview status
                 var activeTimesheets = await _context.Timesheets
                     .Include(t => t.User)
                     .Where(t => superviseeIds.Contains(t.UserId) && t.Status == "GONReview")
@@ -92,12 +101,10 @@ namespace ATMS.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting GON dashboard for supervisor {SupervisorId}", 
-                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                _logger.LogError(ex, "Error getting GON dashboard");
                 return StatusCode(500, new { message = "An error occurred while loading dashboard" });
             }
         }
-
         // GET: api/GonSupervisor/timesheets/review?tab=pending
         [HttpGet("timesheets/review")]
         public async Task<IActionResult> GetTimesheetsForReview([FromQuery] string tab = "pending")
@@ -115,14 +122,14 @@ namespace ATMS.API.Controllers
                     .Include(t => t.User)
                     .Where(t => superviseeIds.Contains(t.UserId));
 
-                // Filter based on tab
                 switch (tab.ToLower())
                 {
                     case "pending":
+                        // ONLY timesheets that have been approved by ECEWS (GONReview status)
                         query = query.Where(t => t.Status == "GONReview");
                         break;
                     case "approved":
-                        query = query.Where(t => t.Status == "Approved" || t.Status == "ProgramsTeam" || t.Status == "HR");
+                        query = query.Where(t => t.Status == "ProgramsReview");
                         break;
                     case "returned":
                         query = query.Where(t => t.Status == "Rejected");
@@ -163,9 +170,8 @@ namespace ATMS.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting timesheets for review for supervisor {SupervisorId}, tab {Tab}", 
-                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value, tab);
-                return StatusCode(500, new { message = "An error occurred loading timesheets" });
+                _logger.LogError(ex, "Error getting timesheets for review");
+                return StatusCode(500, new { message = "An error occurred" });
             }
         }
 
@@ -254,8 +260,8 @@ namespace ATMS.API.Controllers
                 if (timesheet.User == null || timesheet.User.GonSupervisorId != supervisorId)
                     return Forbid();
 
-                // Update timesheet status
-                timesheet.Status = "Approved";
+                
+                timesheet.Status = "ProgramsReview"; 
                 timesheet.GonReviewedAt = DateTime.UtcNow;
                 timesheet.GonReviewerId = supervisorId;
                 timesheet.Comments = dto.Comments ?? timesheet.Comments;
@@ -280,15 +286,14 @@ namespace ATMS.API.Controllers
 
                 await _context.SaveChangesAsync();
 
-                // Send notification to staff and ECEWS supervisor
-                await _notificationService.CreateTimesheetApprovedNotification(id, timesheet.UserId, supervisor?.FullName ?? "GON Supervisor", "GON Supervisor");
+                // Send notification to staff and Programs team
+                await _notificationService.CreateTimesheetUnderReviewNotification(id, timesheet.UserId, "Programs");
 
-                return Ok(new { message = "Timesheet approved successfully" });
+                return Ok(new { message = "Timesheet approved and sent to Programs team" });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error approving timesheet {TimesheetId} for supervisor {SupervisorId}", 
-                    id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                _logger.LogError(ex, "Error approving timesheet");
                 return StatusCode(500, new { message = "An error occurred while approving timesheet" });
             }
         }
@@ -348,6 +353,19 @@ namespace ATMS.API.Controllers
                     id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 return StatusCode(500, new { message = "An error occurred while declining timesheet" });
             }
+        }
+
+        [HttpGet("timesheets/{id}/download")]
+        public async Task<IActionResult> DownloadTimesheet(int id)
+        {
+            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var timesheet = await _timesheetService.GetTimesheetForReview(id, supervisorId, "GonSupervisor");
+            
+            if (timesheet == null)
+                return NotFound();
+
+            var pdfBytes = await _pdfService.GenerateTimesheetPdf(timesheet);
+            return File(pdfBytes, "application/pdf", $"Timesheet_{timesheet.MonthYear}_{timesheet.UserName}.pdf");
         }
 
         // GET: api/GonSupervisor/supervisees

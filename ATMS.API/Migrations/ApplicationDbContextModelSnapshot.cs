@@ -74,6 +74,52 @@ namespace ATMS.API.Migrations
                     b.ToTable("Advisories");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.Announcement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Audience")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Announcements");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.Approval", b =>
                 {
                     b.Property<int>("Id")
@@ -259,6 +305,43 @@ namespace ATMS.API.Migrations
                     b.ToTable("Contracts");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.ContractLetter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("GeneratedByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ContractLetters");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.ContractRecommendation", b =>
                 {
                     b.Property<int>("Id")
@@ -360,6 +443,101 @@ namespace ATMS.API.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.PerformanceImprovementPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionPlan")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CompletionOutcome")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("InitiatedById")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Objective")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SuccessCriteria")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SupportProvided")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InitiatedById");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PerformanceImprovementPlans");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.PipReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PipId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Rating")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PipId");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("PipReviews");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -401,6 +579,18 @@ namespace ATMS.API.Migrations
                             Id = 3,
                             Description = "GON Supervisor",
                             Name = "GonSupervisor"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "HR Administrator",
+                            Name = "HrAdmin"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Programs Team",
+                            Name = "Programs"
                         });
                 });
 
@@ -435,6 +625,101 @@ namespace ATMS.API.Migrations
                     b.HasIndex("SupervisorId");
 
                     b.ToTable("Supervisions");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.SystemUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Permissions")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemUsers");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.TerminationRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalNotes")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("ChecklistNotApplicable")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("EquipmentReturned")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ExitInterviewCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HandoverDocumentsSubmitted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("SeveranceProcessed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("SystemAccessRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("TerminatedById")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TerminatedById");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TerminationRecords");
                 });
 
             modelBuilder.Entity("ATMS.API.Models.Timesheet", b =>
@@ -636,6 +921,9 @@ namespace ATMS.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("text");
+
                     b.Property<int?>("GonSupervisorId")
                         .HasColumnType("integer");
 
@@ -679,6 +967,10 @@ namespace ATMS.API.Migrations
                     b.Property<string>("Project")
                         .HasColumnType("text");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("RefreshToken")
                         .HasColumnType("text");
 
@@ -718,9 +1010,104 @@ namespace ATMS.API.Migrations
 
                     b.HasIndex("GonSupervisorId");
 
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.UserDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDocuments");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.WorkCycle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Audience")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("CreateAnnouncement")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CycleType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EndDay")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Reminder")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Repeat")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StartDay")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("WorkCycles");
                 });
 
             modelBuilder.Entity("ATMS.API.Models.WorkflowStage", b =>
@@ -792,6 +1179,16 @@ namespace ATMS.API.Migrations
                     b.Navigation("TargetUser");
 
                     b.Navigation("Timesheet");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.Announcement", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("ATMS.API.Models.Approval", b =>
@@ -875,6 +1272,25 @@ namespace ATMS.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.ContractLetter", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ATMS.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GeneratedBy");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.ContractRecommendation", b =>
                 {
                     b.HasOne("ATMS.API.Models.User", "RecommendedBy")
@@ -919,6 +1335,43 @@ namespace ATMS.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.PerformanceImprovementPlan", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "InitiatedBy")
+                        .WithMany()
+                        .HasForeignKey("InitiatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ATMS.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InitiatedBy");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.PipReview", b =>
+                {
+                    b.HasOne("ATMS.API.Models.PerformanceImprovementPlan", "Pip")
+                        .WithMany("Reviews")
+                        .HasForeignKey("PipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ATMS.API.Models.User", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Pip");
+
+                    b.Navigation("Reviewer");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.Supervision", b =>
                 {
                     b.HasOne("ATMS.API.Models.User", "Supervisee")
@@ -936,6 +1389,24 @@ namespace ATMS.API.Migrations
                     b.Navigation("Supervisee");
 
                     b.Navigation("Supervisor");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.TerminationRecord", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "TerminatedBy")
+                        .WithMany()
+                        .HasForeignKey("TerminatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ATMS.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TerminatedBy");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ATMS.API.Models.Timesheet", b =>
@@ -999,6 +1470,27 @@ namespace ATMS.API.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("ATMS.API.Models.UserDocument", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.WorkCycle", b =>
+                {
+                    b.HasOne("ATMS.API.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("ATMS.API.Models.WorkflowStage", b =>
                 {
                     b.HasOne("ATMS.API.Models.User", "CompletedByUser")
@@ -1015,6 +1507,11 @@ namespace ATMS.API.Migrations
                     b.Navigation("CompletedByUser");
 
                     b.Navigation("Timesheet");
+                });
+
+            modelBuilder.Entity("ATMS.API.Models.PerformanceImprovementPlan", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("ATMS.API.Models.Role", b =>

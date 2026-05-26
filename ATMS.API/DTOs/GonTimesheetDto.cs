@@ -1,3 +1,5 @@
+// GonTimesheetDto.cs - DTOs for GON Supervisor timesheet management and review features
+
 using System;
 using System.Collections.Generic;
 
@@ -31,6 +33,16 @@ namespace ATMS.API.DTOs
         public string SubmissionDate { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string StatusType { get; set; } = string.Empty;
+
+        public string StatusDisplay => Status switch
+        {
+            "GONReview" => "Pending",
+            "ProgramsReview" => "Programs Review",
+            "Approved" => "Approved",
+            "Rejected" => "Returned",
+            "Submitted" => "Submitted",
+            _ => Status
+        };
     }
 
     public class GonTimesheetDetailDto

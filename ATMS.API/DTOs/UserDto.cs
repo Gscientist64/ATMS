@@ -5,12 +5,13 @@ namespace ATMS.API.DTOs
     public class UserDto
     {
         public int Id { get; set; }
+        public string PublicId { get; set; } = string.Empty;
         public string EmployeeCode { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
         public string? ProfileImageUrl { get; set; }
-        
+   //     public string? Gender { get; set; }
         // Employment
         public string? Designation { get; set; }
         public string? Department { get; set; }
@@ -41,6 +42,8 @@ namespace ATMS.API.DTOs
         public DateTime? ContractStartDate { get; set; }
         public DateTime? ContractEndDate { get; set; }
         
+        public List<ContractLetterDto> ContractLetters { get; set; } = new();
+
         // Signature
         public string? DigitalSignatureUrl { get; set; }
         public bool HasSignature => !string.IsNullOrEmpty(DigitalSignatureUrl);

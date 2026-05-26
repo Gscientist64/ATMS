@@ -1,0 +1,36 @@
+-- Delete timesheet entries first (foreign key relationships)
+DELETE FROM "TimesheetEntries";
+
+-- Delete comments
+DELETE FROM "Comments";
+
+-- Delete approvals
+DELETE FROM "Approvals";
+
+-- Delete workflow stages
+DELETE FROM "WorkflowStages";
+
+-- Delete contract recommendations
+DELETE FROM "ContractRecommendations";
+
+-- Delete advisories that reference timesheets
+DELETE FROM "Advisories" WHERE "TimesheetId" IS NOT NULL;
+
+-- Delete concerns that reference timesheets
+DELETE FROM "Concerns" WHERE "TimesheetId" IS NOT NULL;
+
+-- Finally delete the timesheets
+DELETE FROM "Timesheets";
+
+-- Reset sequences to start from 1
+SELECT setval(pg_get_serial_sequence('"Timesheets"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"TimesheetEntries"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"Comments"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"Approvals"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"WorkflowStages"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"ContractRecommendations"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"Advisories"', 'Id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"Concerns"', 'Id'), 1, false);
+
+-- Verify deletion
+SELECT COUNT(*) AS TimesheetCount FROM "Timesheets";

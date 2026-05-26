@@ -1,3 +1,5 @@
+// ATMS.API/DTOs/RegisterDto.cs
+
 using System.ComponentModel.DataAnnotations;
 
 namespace ATMS.API.DTOs
@@ -11,12 +13,16 @@ namespace ATMS.API.DTOs
         [Required]
         public string FullName { get; set; } = string.Empty;
         
+        public string? Username { get; set; }
+        
         [Required]
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
         
         public string? PhoneNumber { get; set; }
         
+    //    public string? Gender { get; set; }
+
         [Required]
         public string Role { get; set; } = string.Empty;
         
@@ -41,5 +47,8 @@ namespace ATMS.API.DTOs
         
         public int? EcewsSupervisorId { get; set; }
         public int? GonSupervisorId { get; set; }
+        public string? EmployeeCode { get; set; }
+        public string? ContractStatus { get; set; }
+        public string? RoleName { get; set; }   // frontend sends "roleName"
     }
 }

@@ -21,6 +21,9 @@ namespace ATMS.API.DTOs
         public bool GonFlagged { get; set; }
         public string GonSupervisorName { get; set; } = string.Empty;
         
+        // Timesheet Status
+        public string Status { get; set; } = string.Empty;
+
         // Timesheet Entries
         public List<EcewsTimesheetEntryDto> Entries { get; set; } = new();
         public double TotalHours { get; set; }

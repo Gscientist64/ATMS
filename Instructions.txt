@@ -1,115 +1,13 @@
-Summary of Security Features Implemented:
-JWT Authentication with short-lived access tokens (15 minutes)
+If i want to change what type of login credential 
+will be accepted, go to appsettings.json and change
+the login type to true/false;
 
-1. Refresh Tokens stored in database
-2. Password Hashing with PBKDF2 and unique salts
-3. Account Lockout after failed attempts
-4. Password Reset with expiring tokens
-5. HTTPS Enforcement
-6. Security Headers (XSS Protection, Clickjacking prevention, etc.)
-7. Rate Limiting to prevent brute force attacks
-8. Input Validation on all endpoints
-9. Data Masking for sensitive information (account numbers, NIN, etc.)
-10. SQL Injection Prevention via EF Core
-11. XSS Prevention via content encoding
-12. CORS properly configured
-13. Audit Logging for sensitive operations
-14. Email Notifications for critical actions
+"LoginSettings": {
+      "AllowEmailLogin": false,
+      "AllowUsernameLogin": false,
+      "AllowStaffIdLogin": true,
+      "PrimaryLoginMethod": "StaffId"
+    },
 
-
-Summary of what we've built:
-✅ Models (14 files)
-User, Role, Timesheet, TimesheetEntry, Comment, Approval
-
-Supervision, Contract, Concern, Advisory, ContractRecommendation, WorkflowStage
-
-✅ Database Context
-ApplicationDbContext with all relationships and constraints
-
-✅ DTOs (10+ files)
-LoginDto, RegisterDto, UserDto, TimesheetDto, ConcernDto
-
-AdvisoryDto, SuperviseeDto, ApprovalDto, ContractDto, SupervisorDashboardDto
-
-✅ Services (4 services)
-AuthService - Authentication and user management
-
-UserService - Profile and signature management
-
-TimesheetService - Core timesheet operations
-
-Supervisor methods in UserService
-
-✅ Controllers (4 controllers)
-AuthController - Login, register, password management
-
-AdHocController - Regular user operations
-
-EcewsSupervisorController - ECEWS supervisor operations
-
-GonSupervisorController - GON supervisor operations
-
-✅ Security
-JWT Authentication configured
-
-Password hashing with PBKDF2
-
-Role-based authorization
-
-CORS configured for React frontend
-
-
-API Endpoints Summary:
-Auth Controller (/api/Auth)
-POST /login - User login
-
-POST /register - Register new user (Supervisors only)
-
-POST /change-password - Change password
-
-GET /me - Get current user
-
-AdHoc Controller (/api/AdHoc)
-GET /profile - Get user profile
-
-PUT /profile - Update profile
-
-POST /signature - Upload signature
-
-DELETE /signature - Delete signature
-
-GET /timesheets - List user timesheets
-
-GET /timesheets/{id} - Get timesheet details
-
-POST /timesheets - Create timesheet
-
-POST /timesheets/{id}/submit - Submit timesheet
-
-ECEWS Supervisor Controller (/api/EcewsSupervisor)
-GET /dashboard - Supervisor dashboard
-
-GET /timesheets/review - List timesheets for review
-
-GET /timesheets/{id} - Get timesheet details
-
-POST /timesheets/{id}/review - Review timesheet
-
-POST /timesheets/{id}/comments - Add comment
-
-GET /supervisees - List supervisees
-
-GON Supervisor Controller (/api/GonSupervisor)
-GET /dashboard - Supervisor dashboard
-
-GET /timesheets/review - List timesheets for review
-
-GET /timesheets/{id} - Get timesheet details
-
-POST /timesheets/{id}/approve - Approve timesheet
-
-POST /timesheets/{id}/decline - Decline timesheet
-
-POST /timesheets/{id}/comments - Add comment
-
-GET /supervisees - List supervisees
+Then go to C:\ATMS_New\ATMS.API\Helpers\LoginSettings.cs
+and also update it

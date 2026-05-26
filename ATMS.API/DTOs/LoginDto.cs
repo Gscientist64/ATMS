@@ -4,9 +4,9 @@ namespace ATMS.API.DTOs
 {
     public class LoginDto
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; }
+        public string? StaffId { get; set; }
+        public string? Username { get; set; }
         
         [Required]
         public string Password { get; set; } = string.Empty;

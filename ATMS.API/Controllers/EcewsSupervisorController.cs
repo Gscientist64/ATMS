@@ -1,3 +1,5 @@
+// ATMS.API/Controllers/EcewsSupervisorController.cs
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -17,99 +19,54 @@ namespace ATMS.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly INotificationService _notificationService;
         private readonly ILogger<EcewsSupervisorController> _logger;
-
+        private readonly IPdfService _pdfService;
+        private readonly ITimesheetService _timesheetService;
+        
         public EcewsSupervisorController(
             ApplicationDbContext context,
             INotificationService notificationService,
-            ILogger<EcewsSupervisorController> logger)
+            ILogger<EcewsSupervisorController> logger,
+            IPdfService pdfService,
+            ITimesheetService timesheetService)
         {
             _context = context;
             _notificationService = notificationService;
             _logger = logger;
+            _pdfService = pdfService;
+            _timesheetService = timesheetService;
         }
 
         // GET: api/EcewsSupervisor/dashboard
         [HttpGet("dashboard")]
         public async Task<IActionResult> GetDashboard()
         {
-            try
+            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            
+            var superviseeIds = await _context.Users
+                .Where(u => u.EcewsSupervisorId == supervisorId)
+                .Select(u => u.Id)
+                .ToListAsync();
+            
+            var pendingCount = await _context.Timesheets
+                .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "Submitted");
+            
+            var approvedCount = await _context.Timesheets
+                .CountAsync(t => superviseeIds.Contains(t.UserId) && (t.Status == "GONReview" || t.Status == "ProgramsReview" || t.Status == "Approved"));
+            
+            var returnedCount = await _context.Timesheets
+                .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "Rejected");
+            
+            var activePipsCount = await _context.PerformanceImprovementPlans
+                .CountAsync(p => superviseeIds.Contains(p.UserId) && p.Status == "Active");
+            
+            return Ok(new
             {
-                var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-
-                // Get supervisee IDs
-                var superviseeIds = await _context.Users
-                    .Where(u => u.EcewsSupervisorId == supervisorId)
-                    .Select(u => u.Id)
-                    .ToListAsync();
-
-                // Pending timesheets (Submitted status)
-                var pendingTimesheets = await _context.Timesheets
-                    .CountAsync(t => superviseeIds.Contains(t.UserId) && t.Status == "Submitted");
-
-                // Approved this month - Check for both "Approved" and "GONReview" status (since ECEWS approves to GONReview)
-                var now = DateTime.UtcNow;
-                var startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-                var endOfMonth = startOfMonth.AddMonths(1).AddSeconds(-1);
-
-                var approvedThisMonth = await _context.Timesheets
-                    .CountAsync(t => superviseeIds.Contains(t.UserId) && 
-                        (t.Status == "GONReview" || t.Status == "Approved") && // ECEWS approval moves to GONReview
-                        t.EcewsReviewedAt.HasValue &&
-                        t.EcewsReviewedAt.Value >= startOfMonth &&
-                        t.EcewsReviewedAt.Value <= endOfMonth);
-
-                _logger.LogInformation($"Approved this month count: {approvedThisMonth} for supervisor {supervisorId}");
-
-                // PIP Advised
-                var pipAdvised = await _context.Advisories
-                    .CountAsync(a => superviseeIds.Contains(a.TargetUserId) && 
-                        a.AdvisoryType == "PIP" && 
-                        a.Status == "Pending");
-
-                // Contract Review Required (contracts ending in 30 days)
-                var thirtyDaysFromNow = DateTime.UtcNow.AddDays(30);
-                var contractReviewRequired = await _context.Users
-                    .CountAsync(u => superviseeIds.Contains(u.Id) && 
-                        u.ContractEndDate.HasValue && 
-                        u.ContractEndDate.Value <= thirtyDaysFromNow);
-
-                // Supervisees count
-                var superviseesCount = superviseeIds.Count;
-
-                // Active timesheets (Submitted status)
-                var activeTimesheets = await _context.Timesheets
-                    .Include(t => t.User)
-                        .ThenInclude(u => u.GonSupervisor)
-                    .Where(t => superviseeIds.Contains(t.UserId) && t.Status == "Submitted")
-                    .OrderByDescending(t => t.SubmittedAt)
-                    .Take(10)
-                    .Select(t => new EcewsActiveTimesheetDto
-                    {
-                        Id = t.Id,
-                        StaffName = t.User != null ? t.User.FullName : "Unknown",
-                        SubmissionDate = t.SubmittedAt.ToString("dd-MM-yyyy"),
-                        GonSupervisor = t.User != null && t.User.GonSupervisor != null ? t.User.GonSupervisor.FullName : "Not Assigned",
-                        Status = "ECEWS Review"
-                    })
-                    .ToListAsync();
-
-                var dashboard = new EcewsDashboardDto
-                {
-                    PendingTimesheets = pendingTimesheets,
-                    ApprovedThisMonth = approvedThisMonth,
-                    PipAdvised = pipAdvised,
-                    ContractReviewRequired = contractReviewRequired,
-                    SuperviseesCount = superviseesCount,
-                    ActiveTimesheets = activeTimesheets
-                };
-
-                return Ok(dashboard);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting ECEWS dashboard");
-                return StatusCode(500, new { message = "An error occurred while loading dashboard" });
-            }
+                pendingCount,
+                approvedCount,
+                returnedCount,
+                totalStaff = superviseeIds.Count,
+                activePips = activePipsCount
+            });
         }
 
         // GET: api/EcewsSupervisor/timesheets/review?tab=pending
@@ -119,25 +76,23 @@ namespace ATMS.API.Controllers
             try
             {
                 var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-
+                
                 var superviseeIds = await _context.Users
                     .Where(u => u.EcewsSupervisorId == supervisorId)
                     .Select(u => u.Id)
                     .ToListAsync();
-
+                
                 IQueryable<Timesheet> query = _context.Timesheets
                     .Include(t => t.User)
-                        .ThenInclude(u => u.GonSupervisor)
                     .Where(t => superviseeIds.Contains(t.UserId));
-
-                // Filter based on tab
+                
                 switch (tab.ToLower())
                 {
                     case "pending":
                         query = query.Where(t => t.Status == "Submitted");
                         break;
                     case "approved":
-                        query = query.Where(t => t.Status == "GONReview" || t.Status == "ProgramsTeam" || t.Status == "HR" || t.Status == "Approved");
+                        query = query.Where(t => t.Status == "GONReview" || t.Status == "ProgramsReview" || t.Status == "Approved");
                         break;
                     case "returned":
                         query = query.Where(t => t.Status == "Rejected");
@@ -146,70 +101,47 @@ namespace ATMS.API.Controllers
                         query = query.Where(t => t.Status == "Submitted");
                         break;
                 }
-
-                // Fetch data first
+                
                 var timesheets = await query
                     .OrderByDescending(t => t.SubmittedAt)
-                    .Select(t => new
+                    .Select(t => new TimesheetListDto
                     {
-                        t.Id,
-                        t.Status,
-                        t.SubmittedAt,
-                        StaffName = t.User != null ? t.User.FullName : "Unknown",
-                        GonSupervisorName = t.User != null && t.User.GonSupervisor != null ? t.User.GonSupervisor.FullName : "Not Assigned"
+                        Id = t.Id,
+                        MonthYear = $"{t.Month} {t.Year}",
+                        DaysWorked = $"{t.TotalDaysWorked} Day{(t.TotalDaysWorked != 1 ? "s" : "")}",
+                        SubmittedDate = t.SubmittedAt.ToString("dd-MM-yyyy"),
+                        Status = t.Status,
+                        StatusType = GetStatusTypeForTab(t.Status, tab),
+                        StaffName = t.User != null ? t.User.FullName : ""
                     })
                     .ToListAsync();
-
-                // Map to DTO after fetching (now using static methods or local functions)
-                var result = timesheets.Select(t => new EcewsTimesheetReviewDto
-                {
-                    Id = t.Id,
-                    StaffName = t.StaffName,
-                    SubmissionDate = t.SubmittedAt != default ? t.SubmittedAt.ToString("dd-MM-yyyy") : "",
-                    GonSupervisor = t.GonSupervisorName,
-                    Status = GetStatusDisplayStatic(t.Status),
-                    StatusType = GetStatusTypeStatic(t.Status, tab)
-                }).ToList();
-
-                return Ok(result);
+                
+                return Ok(timesheets);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting timesheets for review. SupervisorId: {SupervisorId}, Tab: {Tab}", 
-                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value, tab);
-                return StatusCode(500, new { message = "An error occurred loading timesheets", error = ex.Message });
+                _logger.LogError(ex, "Error getting timesheets for review");
+                return StatusCode(500, new { message = "An error occurred", error = ex.Message });
             }
         }
 
-        // Make these methods static
-        private static string GetStatusDisplayStatic(string status)
+        // Static helper method for EF translation
+        private static string GetStatusTypeForTab(string status, string tab)
         {
-            return status switch
+            if (tab == "returned") return "returned";
+            if (tab == "approved") return "approved";
+            if (tab == "pending") return "pending";
+            
+            return status?.ToLower() switch
             {
-                "Submitted" => "ECEWS Review",
-                "GONReview" => "Programs Review",
-                "ProgramsTeam" => "Programs Review",
-                "HR" => "HR Review",
-                "Approved" => "Approved",
-                "Rejected" => "Returned",
-                _ => status
+                "submitted" => "pending",
+                "programsreview" => "approved",
+                "approved" => "approved",
+                "rejected" => "returned",
+                _ => "pending"
             };
         }
 
-        private static string GetStatusTypeStatic(string status, string tab)
-        {
-            if (tab == "returned") return "returned";
-            
-            return status switch
-            {
-                "Submitted" => "ecews",
-                "GONReview" => "programs",
-                "ProgramsTeam" => "programs",
-                "HR" => "hr",
-                "Approved" => "approved",
-                _ => "ecews"
-            };
-        }
         // GET: api/EcewsSupervisor/timesheets/{id}
         [HttpGet("timesheets/{id}")]
         public async Task<IActionResult> GetTimesheetDetail(int id)
@@ -229,11 +161,9 @@ namespace ATMS.API.Controllers
                 if (timesheet == null)
                     return NotFound(new { message = "Timesheet not found" });
 
-                // Verify supervisor has access to this timesheet
                 if (timesheet.User == null || timesheet.User.EcewsSupervisorId != supervisorId)
                     return Forbid();
 
-                // Get concerns for this user
                 var concerns = await _context.Concerns
                     .Include(c => c.RaisedBy)
                     .Where(c => c.TargetUserId == timesheet.UserId)
@@ -253,6 +183,7 @@ namespace ATMS.API.Controllers
                     GonApproved = timesheet.Status == "GONReview" || timesheet.Status == "Approved",
                     GonFlagged = await _context.Concerns.AnyAsync(c => c.TargetUserId == timesheet.UserId && c.Status == "Open"),
                     GonSupervisorName = timesheet.User.GonSupervisor?.FullName ?? "Not assigned",
+                    Status = timesheet.Status,
                     Entries = timesheet.Entries.Select(e => new EcewsTimesheetEntryDto
                     {
                         Date = e.Date.ToString("dd-MM-yyyy"),
@@ -268,7 +199,7 @@ namespace ATMS.API.Controllers
                         Id = c.Id,
                         AuthorName = c.User?.FullName ?? "Unknown",
                         AuthorRole = c.UserRole,
-                        AuthorAvatar = GetInitials(c.User?.FullName ?? ""),
+                        AuthorAvatar = GetInitialsStatic(c.User?.FullName ?? ""),
                         CommentText = c.CommentText,
                         CreatedAt = c.CreatedAt.ToString("dd-MM-yyyy HH:mm")
                     }).ToList(),
@@ -277,7 +208,7 @@ namespace ATMS.API.Controllers
                         Id = c.Id,
                         AuthorName = c.RaisedBy?.FullName ?? "Unknown",
                         AuthorRole = "GON Supervisor",
-                        AuthorAvatar = GetInitials(c.RaisedBy?.FullName ?? ""),
+                        AuthorAvatar = GetInitialsStatic(c.RaisedBy?.FullName ?? ""),
                         ConcernText = c.Description,
                         Severity = c.Severity,
                         Type = c.ConcernType,
@@ -310,18 +241,15 @@ namespace ATMS.API.Controllers
                 if (timesheet == null)
                     return NotFound(new { message = "Timesheet not found" });
 
-                // Verify supervisor has access
                 if (timesheet.User == null || timesheet.User.EcewsSupervisorId != supervisorId)
                     return Forbid();
 
-                // Update timesheet status
                 timesheet.Status = "GONReview";
                 timesheet.EcewsReviewedAt = DateTime.UtcNow;
                 timesheet.EcewsReviewerId = supervisorId;
                 timesheet.Comments = dto.Comments ?? timesheet.Comments;
                 timesheet.UpdatedAt = DateTime.UtcNow;
 
-                // Create contract recommendation if provided
                 if (!string.IsNullOrEmpty(dto.ContractRecommendation))
                 {
                     var recommendation = new ContractRecommendation
@@ -338,11 +266,9 @@ namespace ATMS.API.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+                await _notificationService.CreateTimesheetUnderReviewNotification(id, timesheet.UserId, "Programs");
 
-                // Send notification to staff
-                await _notificationService.CreateTimesheetUnderReviewNotification(id, timesheet.UserId, "GON");
-
-                return Ok(new { message = "Timesheet approved and forwarded to GON supervisor" });
+                return Ok(new { message = "Timesheet approved and forwarded to Programs" });
             }
             catch (Exception ex)
             {
@@ -370,32 +296,27 @@ namespace ATMS.API.Controllers
                 if (timesheet == null)
                     return NotFound(new { message = "Timesheet not found" });
 
-                // Verify supervisor has access
                 if (timesheet.User == null || timesheet.User.EcewsSupervisorId != supervisorId)
                     return Forbid();
 
-                // Update timesheet status
                 timesheet.Status = "Rejected";
                 timesheet.EcewsReviewedAt = DateTime.UtcNow;
                 timesheet.EcewsReviewerId = supervisorId;
                 timesheet.Comments = dto.Feedback;
                 timesheet.UpdatedAt = DateTime.UtcNow;
 
-                // Add comment
                 var comment = new Comment
                 {
                     TimesheetId = id,
                     UserId = supervisorId,
                     UserRole = "ECEWS Supervisor",
-                    UserAvatar = GetInitials(supervisor?.FullName ?? ""),
+                    UserAvatar = GetInitialsStatic(supervisor?.FullName ?? ""),
                     CommentText = dto.Feedback,
                     CreatedAt = DateTime.UtcNow
                 };
                 _context.Comments.Add(comment);
 
                 await _context.SaveChangesAsync();
-
-                // Send notification to staff
                 await _notificationService.CreateTimesheetRejectedNotification(id, timesheet.UserId, supervisor?.FullName ?? "ECEWS Supervisor", "ECEWS Supervisor", dto.Feedback);
 
                 return Ok(new { message = "Timesheet returned with feedback" });
@@ -414,11 +335,13 @@ namespace ATMS.API.Controllers
             try
             {
                 var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-
+                var supervisor = await _context.Users.FindAsync(supervisorId);
                 var query = _context.Users
                     .Where(u => u.EcewsSupervisorId == supervisorId);
-
-                // Apply filter
+                if (!string.IsNullOrEmpty(supervisor?.State))
+                {
+                    query = query.Where(u => u.State == supervisor.State);
+                }
                 if (!string.IsNullOrEmpty(filter) && filter != "all")
                 {
                     switch (filter.ToLower())
@@ -471,98 +394,75 @@ namespace ATMS.API.Controllers
             try
             {
                 var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-                _logger.LogInformation($"Fetching supervisee detail for ID: {id} by supervisor: {supervisorId}");
-
-                // First fetch the supervisee
+                
                 var supervisee = await _context.Users
-                    .Include(u => u.GonSupervisor)
-                    .FirstOrDefaultAsync(u => u.Id == id);
-
+                    .FirstOrDefaultAsync(u => u.Id == id && u.EcewsSupervisorId == supervisorId);
+                
                 if (supervisee == null)
-                {
-                    _logger.LogWarning($"Supervisee with ID {id} not found");
                     return NotFound(new { message = "Supervisee not found" });
-                }
-
-                // Verify this supervisee belongs to the supervisor
-                if (supervisee.EcewsSupervisorId != supervisorId)
-                {
-                    _logger.LogWarning($"Supervisee {id} does not belong to supervisor {supervisorId}");
-                    return Forbid();
-                }
-
-                // Fetch concerns separately
-                var concerns = await _context.Concerns
-                    .Include(c => c.RaisedBy)
-                    .Where(c => c.TargetUserId == id)
-                    .OrderByDescending(c => c.RaisedAt)
-                    .ToListAsync();
-
-                // Fetch advisories separately
+                
+                // Get advisories for this supervisee
                 var advisories = await _context.Advisories
                     .Include(a => a.IssuedBy)
                     .Where(a => a.TargetUserId == id)
                     .OrderByDescending(a => a.IssuedAt)
+                    .Select(a => new
+                    {
+                        id = a.Id,
+                        advisoryText = a.Justification,
+                        type = a.AdvisoryType,
+                        status = a.Status,
+                        createdAt = a.IssuedAt.ToString("dd-MM-yyyy HH:mm"),
+                        authorName = a.IssuedBy != null ? a.IssuedBy.FullName : "Unknown",
+                        authorRole = a.IssuedBy != null && a.IssuedBy.Role != null ? a.IssuedBy.Role.Name : "ECEWS Supervisor",
+                        authorAvatar = GetInitialsStatic(a.IssuedBy != null ? a.IssuedBy.FullName : "")
+                    })
                     .ToListAsync();
-
-                // Map to DTOs after fetching (using static helper methods)
-                var gonConcerns = concerns.Select(c => new EcewsGonConcernDto
+                
+                // Get concerns from GON supervisor (if any)
+                var concerns = await _context.Concerns
+                    .Include(c => c.RaisedBy)
+                    .Where(c => c.TargetUserId == id)
+                    .OrderByDescending(c => c.RaisedAt)
+                    .Select(c => new
+                    {
+                        id = c.Id,
+                        concernText = c.Description,
+                        severity = c.Severity,
+                        type = c.ConcernType,
+                        createdAt = c.RaisedAt.ToString("dd-MM-yyyy HH:mm"),
+                        authorName = c.RaisedBy != null ? c.RaisedBy.FullName : "Unknown",
+                        authorRole = "GON Supervisor",
+                        authorAvatar = GetInitialsStatic(c.RaisedBy != null ? c.RaisedBy.FullName : "")
+                    })
+                    .ToListAsync();
+                
+                // Map to DTO
+                var result = new
                 {
-                    Id = c.Id,
-                    AuthorName = c.RaisedBy?.FullName ?? "Unknown",
-                    AuthorRole = "GON Supervisor",
-                    AuthorAvatar = GetInitialsStatic(c.RaisedBy?.FullName ?? ""),
-                    ConcernText = c.Description,
-                    Severity = c.Severity,
-                    Type = c.ConcernType,
-                    CreatedAt = c.RaisedAt.ToString("dd-MM-yyyy HH:mm")
-                }).ToList();
-
-                var advisoryDtos = advisories.Select(a => new EcewsAdvisoryDto
-                {
-                    Id = a.Id,
-                    AuthorName = a.IssuedBy?.FullName ?? "Unknown",
-                    AuthorRole = "ECEWS Supervisor",
-                    AuthorAvatar = GetInitialsStatic(a.IssuedBy?.FullName ?? ""),
-                    AdvisoryText = a.Justification,
-                    Severity = "High",
-                    Type = a.AdvisoryType,
-                    CreatedAt = a.IssuedAt.ToString("dd-MM-yyyy HH:mm")
-                }).ToList();
-
-                var detail = new EcewsSuperviseeDetailDto
-                {
-                    Id = supervisee.Id,
-                    FullName = supervisee.FullName,
-                    Department = supervisee.Department ?? "Not specified",
-                    Location = supervisee.State ?? "Not specified",
-                    ContractStatus = supervisee.ContractStatus ?? "Active",
-                    BankName = supervisee.BankName ?? "Not specified",
-                    AccountNumber = MaskAccountNumber(supervisee.AccountNumber),
-                    GonConcerns = gonConcerns,
-                    Advisories = advisoryDtos
+                    id = supervisee.Id,
+                    fullName = supervisee.FullName,
+                    department = supervisee.Department,
+                    location = supervisee.State,
+                    contractStatus = supervisee.ContractStatus,
+                    bankName = supervisee.BankName,
+                    accountNumber = MaskAccountNumber(supervisee.AccountNumber),
+                    email = supervisee.Email,
+                    phoneNumber = supervisee.PhoneNumber,
+                    designation = supervisee.Designation,
+                    employeeCode = supervisee.EmployeeCode,
+                    gonConcerns = concerns,
+                    advisories = advisories
                 };
-
-                _logger.LogInformation($"Successfully fetched supervisee detail for ID: {id}");
-                return Ok(detail);
+                
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting supervisee detail for ID: {SuperviseeId}", id);
-                return StatusCode(500, new { message = "An error occurred loading supervisee details" });
+                _logger.LogError(ex, "Error getting supervisee detail");
+                return StatusCode(500, new { message = "An error occurred" });
             }
         }
-
-       
-        private static string GetInitialsStatic(string fullName)
-        {
-            if (string.IsNullOrEmpty(fullName)) return "U";
-            var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length >= 2)
-                return $"{parts[0][0]}{parts[1][0]}".ToUpper();
-            return fullName.Length > 0 ? fullName[0].ToString().ToUpper() : "U";
-        }
-
         // POST: api/EcewsSupervisor/supervisees/{id}/advisories
         [HttpPost("supervisees/{id}/advisories")]
         public async Task<IActionResult> SendAdvisory(int id, [FromBody] EcewsSendAdvisoryDto dto)
@@ -571,7 +471,6 @@ namespace ATMS.API.Controllers
             {
                 var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
-                // Verify supervisee exists and is under this supervisor
                 var supervisee = await _context.Users
                     .FirstOrDefaultAsync(u => u.Id == id && u.EcewsSupervisorId == supervisorId);
 
@@ -594,8 +493,6 @@ namespace ATMS.API.Controllers
                 _context.Advisories.Add(advisory);
                 await _context.SaveChangesAsync();
 
-                // TODO: Send notification to Programs Team
-
                 return Ok(new { message = "Advisory sent successfully" });
             }
             catch (Exception ex)
@@ -603,6 +500,19 @@ namespace ATMS.API.Controllers
                 _logger.LogError(ex, "Error sending advisory");
                 return StatusCode(500, new { message = "An error occurred" });
             }
+        }
+
+        [HttpGet("timesheets/{id}/download")]
+        public async Task<IActionResult> DownloadTimesheet(int id)
+        {
+            var supervisorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var timesheet = await _timesheetService.GetTimesheetForReview(id, supervisorId, "EcewsSupervisor");
+            
+            if (timesheet == null)
+                return NotFound();
+
+            var pdfBytes = await _pdfService.GenerateTimesheetPdf(timesheet);
+            return File(pdfBytes, "application/pdf", $"Timesheet_{timesheet.MonthYear}_{timesheet.UserName}.pdf");
         }
 
         // POST: api/EcewsSupervisor/timesheets/{id}/comments
@@ -626,15 +536,13 @@ namespace ATMS.API.Controllers
                     TimesheetId = id,
                     UserId = userId,
                     UserRole = "ECEWS Supervisor",
-                    UserAvatar = GetInitials(user?.FullName ?? ""),
+                    UserAvatar = GetInitialsStatic(user?.FullName ?? ""),
                     CommentText = comment,
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _context.Comments.Add(newComment);
                 await _context.SaveChangesAsync();
-
-                // Notify staff
                 await _notificationService.CreateCommentNotification(id, timesheet.UserId, user?.FullName ?? "ECEWS Supervisor", "ECEWS Supervisor");
 
                 return Ok(new { message = "Comment added successfully" });
@@ -648,37 +556,7 @@ namespace ATMS.API.Controllers
 
         #region Helper Methods
 
-        private string GetStatusDisplay(string status)
-        {
-            return status switch
-            {
-                "Submitted" => "ECEWS Review",
-                "GONReview" => "Programs Review",
-                "ProgramsTeam" => "Programs Review",
-                "HR" => "HR Review",
-                "Approved" => "Approved",
-                "Rejected" => "Returned",
-                _ => status
-            };
-        }
-
-        private string GetStatusType(string status, string tab)
-        {
-            if (tab == "returned") return "returned";
-            
-            return status switch
-            {
-                "Submitted" => "ecews",
-                "GONReview" => "programs",
-                "ProgramsTeam" => "programs",
-                "HR" => "hr",
-                "Approved" => "approved",
-                "Rejected" => "returned",
-                _ => "ecews"
-            };
-        }
-
-        private string GetInitials(string fullName)
+        private static string GetInitialsStatic(string? fullName)
         {
             if (string.IsNullOrEmpty(fullName)) return "U";
             var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -687,7 +565,7 @@ namespace ATMS.API.Controllers
             return fullName.Length > 0 ? fullName[0].ToString().ToUpper() : "U";
         }
 
-        private string MaskAccountNumber(string? accountNumber)
+        private static string MaskAccountNumber(string? accountNumber)
         {
             if (string.IsNullOrEmpty(accountNumber) || accountNumber.Length < 4)
                 return accountNumber ?? "Not provided";

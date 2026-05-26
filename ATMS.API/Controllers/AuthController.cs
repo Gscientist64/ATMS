@@ -1,3 +1,5 @@
+// ATMS.API/Controllers/AuthController.cs
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -23,14 +25,14 @@ namespace ATMS.API.Controllers
             var result = await _authService.Authenticate(loginDto);
             if (result == null)
             {
-                return Unauthorized(new { message = "Invalid email or password" });
+                return Unauthorized(new { message = "Invalid staff ID/email or password" });
             }
             
             return Ok(result);
         }
 
         [HttpPost("register")]
-        [Authorize(Roles = "EcewsSupervisor,GonSupervisor")]
+        [Authorize(Roles = "EcewsSupervisor,GonSupervisor,Programs")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var result = await _authService.Register(registerDto);
@@ -40,6 +42,15 @@ namespace ATMS.API.Controllers
             }
             
             return Ok(result);
+        }
+
+        [HttpGet("debug-role")]
+        [Authorize]
+        public IActionResult DebugRole()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            return Ok(new { email, role });
         }
 
         [HttpPost("change-password")]
@@ -55,6 +66,29 @@ namespace ATMS.API.Controllers
             }
             
             return Ok(new { message = "Password changed successfully" });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            var result = await _authService.ForgotPassword(dto.Email);
+            if (!result)
+            {
+                // Don't reveal that the user doesn't exist for security
+                return Ok(new { message = "If an account with that email exists, a password reset link has been sent." });
+            }
+            return Ok(new { message = "Password reset link sent to your email." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = await _authService.ResetPassword(dto.Token, dto.NewPassword);
+            if (!result)
+            {
+                return BadRequest(new { message = "Invalid or expired reset token." });
+            }
+            return Ok(new { message = "Password reset successfully." });
         }
 
         [HttpGet("me")]

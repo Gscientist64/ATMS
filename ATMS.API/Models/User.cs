@@ -1,3 +1,5 @@
+// ATMS.API/Models/User.cs
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +9,9 @@ namespace ATMS.API.Models
     public class User
     {
         public int Id { get; set; }
-        
+
+        public string PublicId { get; set; } = string.Empty;
+
         [Required]
         public string EmployeeCode { get; set; } = string.Empty;
         
@@ -15,6 +19,8 @@ namespace ATMS.API.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
         
+        public string? Username { get; set; }
+
         [Required]
         public string FullName { get; set; } = string.Empty;
         
@@ -24,6 +30,8 @@ namespace ATMS.API.Models
         public string? PhoneNumber { get; set; }
         public string? ProfileImageUrl { get; set; }
         
+        public string? Gender { get; set; }
+
         // Employment Details
         public string? Designation { get; set; }
         public string? Department { get; set; }
@@ -64,7 +72,7 @@ namespace ATMS.API.Models
         public string? PasswordResetToken { get; set; }
         public DateTime? PasswordResetTokenExpiry { get; set; }
         public DateTime? LastLoginAt { get; set; }
-        public int FailedLoginAttempts { get; set; }
+        public int FailedLoginAttempts { get; set; } = 0;
         public DateTime? LockoutEnd { get; set; }
         
         // Audit Fields

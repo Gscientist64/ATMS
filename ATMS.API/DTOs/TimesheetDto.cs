@@ -11,6 +11,7 @@ namespace ATMS.API.DTOs
         public string SubmittedDate { get; set; } = string.Empty; // "05-02-2026"
         public string Status { get; set; } = string.Empty;
         public string StatusType { get; set; } = string.Empty; // "review", "approved", etc.
+        public string StaffName { get; set; } = string.Empty;
     }
     
     public class TimesheetDetailDto

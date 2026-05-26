@@ -1,3 +1,5 @@
+// ATMS.API/Program.cs
+
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using ATMS.API.Data;
 using ATMS.API.Helpers;
 using ATMS.API.Services;
+using ATMS.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +67,22 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITimesheetService, TimesheetService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
+
+builder.Services.AddScoped<IPipService, PipService>();
+builder.Services.AddScoped<ITerminationService, TerminationService>();
+builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+builder.Services.AddScoped<IWorkCycleService, WorkCycleService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IGovernanceService, GovernanceService>();
+builder.Services.Configure<GraphSettings>(builder.Configuration.GetSection("MicrosoftGraph"));
+builder.Services.AddScoped<IEmailService, GraphEmailService>();
+builder.Services.AddScoped<IContractLetterService, ContractLetterService>();
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddHttpContextAccessor();
+// builder.Services.AddScoped<SessionTrackingMiddleware>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+builder.Services.Configure<LoginSettings>(builder.Configuration.GetSection("LoginSettings"));
 
 var app = builder.Build();
 
@@ -80,6 +99,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
+// app.UseMiddleware<SessionTrackingMiddleware>();
 app.MapControllers();
 
 app.Run();

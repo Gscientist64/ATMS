@@ -16,7 +16,9 @@ namespace ATMS.API.Services
         Task<TimesheetDetailDto> CreateTimesheet(int userId, CreateTimesheetDto dto);
         Task<List<TimesheetListDto>> GetUserTimesheets(int userId);
         Task<TimesheetDetailDto> GetTimesheetById(int id, int userId, string userRole);
+        Task<TimesheetDetailDto> UpdateTimesheet(int id, int userId, CreateTimesheetDto dto);
         Task<TimesheetDetailDto> SubmitTimesheet(int id, int userId, string comments);
+        Task<TimesheetDetailDto> GetTimesheetForReview(int id, int reviewerId, string reviewerRole);
         
         // Supervisor Methods
         Task<List<TimesheetListDto>> GetTimesheetsForReview(int supervisorId, string supervisorRole, string status);
@@ -99,6 +101,54 @@ namespace ATMS.API.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating timesheet for user {UserId}", userId);
+                throw;
+            }
+        }
+
+        public async Task<TimesheetDetailDto> UpdateTimesheet(int id, int userId, CreateTimesheetDto dto)
+        {
+            try
+            {
+                var timesheet = await _context.Timesheets
+                    .Include(t => t.Entries)
+                    .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+                if (timesheet == null)
+                    throw new Exception("Timesheet not found");
+
+                if (timesheet.Status != "Draft")
+                    throw new Exception("Only draft timesheets can be updated");
+
+                // Update timesheet properties
+                timesheet.Month = dto.Month;
+                timesheet.Year = dto.Year;
+                timesheet.WeekStarting = dto.WeekStarting;
+                timesheet.WeekEnding = dto.WeekEnding;
+                timesheet.UpdatedAt = DateTime.UtcNow;
+
+                // Remove old entries
+                _context.TimesheetEntries.RemoveRange(timesheet.Entries);
+
+                // Add new entries
+                double totalHours = 0;
+                foreach (var entryDto in dto.Entries)
+                {
+                    var entry = MapToTimesheetEntry(entryDto);
+                    entry.TimesheetId = timesheet.Id;
+                    _context.TimesheetEntries.Add(entry);
+                    totalHours += entry.TotalHours;
+                }
+
+                timesheet.TotalHours = totalHours;
+                timesheet.TotalDaysWorked = dto.Entries.Count;
+
+                await _context.SaveChangesAsync();
+
+                return await GetTimesheetById(id, userId, "AdHoc");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating timesheet {TimesheetId}", id);
                 throw;
             }
         }
@@ -239,6 +289,87 @@ namespace ATMS.API.Services
             }
         }
 
+        public async Task<TimesheetDetailDto> GetTimesheetForReview(int id, int reviewerId, string reviewerRole)
+        {
+            try
+            {
+                var query = _context.Timesheets
+                    .Include(t => t.User)
+                    .Include(t => t.Entries)
+                    .Include(t => t.CommentsList)
+                        .ThenInclude(c => c.User)
+                    .Include(t => t.WorkflowStages)
+                    .AsQueryable();
+
+                var timesheet = await query.FirstOrDefaultAsync(t => t.Id == id);
+                if (timesheet == null) return null;
+
+                // Verify reviewer has access to this timesheet
+                if (reviewerRole == "EcewsSupervisor")
+                {
+                    if (timesheet.User?.EcewsSupervisorId != reviewerId)
+                        return null;
+                }
+                else if (reviewerRole == "GonSupervisor")
+                {
+                    if (timesheet.User?.GonSupervisorId != reviewerId)
+                        return null;
+                }
+
+                return new TimesheetDetailDto
+                {
+                    Id = timesheet.Id,
+                    UserId = timesheet.UserId,
+                    MonthYear = $"{timesheet.Month} {timesheet.Year}",
+                    UserName = timesheet.User?.FullName ?? "",
+                    UserEmployeeCode = timesheet.User?.EmployeeCode ?? "",
+                    FullName = timesheet.User?.FullName ?? "",
+                    Location = timesheet.User?.State ?? "",
+                    Department = timesheet.User?.Department ?? "",
+                    Status = timesheet.Status,
+                    StatusType = GetStatusType(timesheet.Status),
+                    WorkflowStages = timesheet.WorkflowStages?
+                        .OrderBy(w => w.StageOrder)
+                        .Select(w => new WorkflowStageDto
+                        {
+                            Name = w.StageName,
+                            Completed = w.IsCompleted,
+                            Current = w.IsCurrent,
+                            Order = w.StageOrder
+                        }).ToList() ?? GetDefaultWorkflowStages(timesheet.Status),
+                    Entries = timesheet.Entries.Select(e => new TimesheetEntryDto
+                    {
+                        Id = e.Id,
+                        Date = e.Date.ToString("dd-MM-yyyy"),
+                        StartTime = e.StartTime.ToString(@"hh\:mm"),
+                        EndTime = e.EndTime.ToString(@"hh\:mm"),
+                        TotalHours = $"{e.TotalHours} hr{(e.TotalHours != 1 ? "s" : "")}",
+                        WorkDone = e.WorkDone ?? "",
+                        LGA = e.LGA ?? "",
+                        Ward = e.Ward ?? "",
+                        HealthFacility = e.HealthFacility ?? ""
+                    }).ToList(),
+                    TotalHours = timesheet.TotalHours,
+                    Comments = timesheet.CommentsList?
+                        .OrderByDescending(c => c.CreatedAt)
+                        .Select(c => new CommentDto
+                        {
+                            Id = c.Id,
+                            UserName = c.User?.FullName ?? "",
+                            UserRole = c.UserRole ?? "",
+                            UserAvatar = GetUserAvatar(c.User),
+                            CommentText = c.CommentText ?? "",
+                            CreatedAt = c.CreatedAt.ToString("dd-MM-yyyy HH:mm")
+                        }).ToList() ?? new List<CommentDto>()
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting timesheet {TimesheetId} for review", id);
+                throw;
+            }
+        }
+
         public async Task<List<TimesheetListDto>> GetTimesheetsForReview(int supervisorId, string supervisorRole, string status)
         {
             try
@@ -295,10 +426,12 @@ namespace ATMS.API.Services
                 if (reviewer.Role?.Name == "EcewsSupervisor")
                 {
                     if (action == "Approve")
-                    {
-                        timesheet.Status = "GONReview";
+                    {   
+                        _logger.LogInformation($"ECEWS APPROVING - Setting status to ProgramsReview for timesheet {id}");
+                        timesheet.Status = "ProgramsReview";
                         timesheet.EcewsReviewedAt = DateTime.UtcNow;
                         timesheet.EcewsReviewerId = reviewerId;
+                        
                         
                         // Notify user that timesheet is under ECEWS review
                         await _notificationService.CreateTimesheetUnderReviewNotification(id, timesheet.UserId, "ECEWS");
@@ -322,16 +455,15 @@ namespace ATMS.API.Services
                 {
                     if (action == "Approve")
                     {
-                        timesheet.Status = "Approved";
+                        timesheet.Status = "ProgramsReview";
                         timesheet.GonReviewedAt = DateTime.UtcNow;
                         timesheet.GonReviewerId = reviewerId;
                         
                         // Notify user that timesheet was approved
-                        await _notificationService.CreateTimesheetApprovedNotification(
+                        await _notificationService.CreateTimesheetUnderReviewNotification(
                             id, 
-                            timesheet.UserId, 
-                            reviewer.FullName, 
-                            "GON Supervisor");
+                            timesheet.UserId,  
+                            "Programs");
                     }
                     else if (action == "Reject")
                     {
@@ -479,6 +611,49 @@ namespace ATMS.API.Services
                 _logger.LogError(ex, "Error mapping timesheet entry");
                 throw;
             }
+        }
+
+        private List<WorkflowStageDto> GetDefaultWorkflowStages(string currentStatus)
+        {
+            var stageNames = new[] 
+            { 
+                "Draft", "Submitted", "GON Review", "ECEWS Review", 
+                "Programs Team", "HR", "Processed" 
+            };
+
+            var stages = new List<WorkflowStageDto>();
+            bool foundCurrent = false;
+
+            for (int i = 0; i < stageNames.Length; i++)
+            {
+                bool isCompleted = false;
+                bool isCurrent = false;
+
+                if (!foundCurrent)
+                {
+                    if (stageNames[i] == currentStatus || 
+                        (currentStatus == "GONReview" && stageNames[i] == "GON Review") ||
+                        (currentStatus == "ECEWSReview" && stageNames[i] == "ECEWS Review"))
+                    {
+                        isCurrent = true;
+                        foundCurrent = true;
+                    }
+                    else
+                    {
+                        isCompleted = true;
+                    }
+                }
+
+                stages.Add(new WorkflowStageDto
+                {
+                    Name = stageNames[i],
+                    Completed = isCompleted,
+                    Current = isCurrent,
+                    Order = i + 1
+                });
+            }
+
+            return stages;
         }
 
         private string GetStatusType(string status)
