@@ -21,7 +21,7 @@ namespace ATMS.API.Middleware
                 var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
                 {
-                    // Fire and forget - don't await to avoid slowing down requests
+                    
                     _ = userManagementService.UpdateSessionActivityAsync(userId);
                 }
             }

@@ -615,10 +615,10 @@ namespace ATMS.API.Services
 
         private List<WorkflowStageDto> GetDefaultWorkflowStages(string currentStatus)
         {
-            var stageNames = new[] 
-            { 
-                "Draft", "Submitted", "GON Review", "ECEWS Review", 
-                "Programs Team", "HR", "Processed" 
+            var stageNames = new[]
+            {
+                "Draft", "Submitted", "Facility Supervisor Review", "ECEWS Review",
+                "Programs Team", "HR", "Processed"
             };
 
             var stages = new List<WorkflowStageDto>();
@@ -631,8 +631,8 @@ namespace ATMS.API.Services
 
                 if (!foundCurrent)
                 {
-                    if (stageNames[i] == currentStatus || 
-                        (currentStatus == "GONReview" && stageNames[i] == "GON Review") ||
+                    if (stageNames[i] == currentStatus ||
+                        (currentStatus == "GONReview" && stageNames[i] == "Facility Supervisor Review") ||
                         (currentStatus == "ECEWSReview" && stageNames[i] == "ECEWS Review"))
                     {
                         isCurrent = true;

@@ -15,15 +15,18 @@ namespace ATMS.API.Services
         private readonly ApplicationDbContext _context;
         private readonly ILogger<WorkCycleService> _logger;
         private readonly INotificationService _notificationService;
+        private readonly IAnnouncementService _announcementService;
 
         public WorkCycleService(
             ApplicationDbContext context,
             ILogger<WorkCycleService> logger,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAnnouncementService announcementService)
         {
             _context = context;
             _logger = logger;
             _notificationService = notificationService;
+            _announcementService = announcementService;
         }
 
         public async Task<WorkCycleDto> CreateWorkCycleAsync(int userId, CreateWorkCycleDto dto)
@@ -34,22 +37,24 @@ namespace ATMS.API.Services
                 var currentMonth = now.Month;
                 var currentYear = now.Year;
                 
-                // Calculate start and end dates based on the month
-                var startDate = GetDateForDayInMonth(dto.StartDay, currentMonth, currentYear);
-                var endDate = GetDateForDayInMonth(dto.EndDay, currentMonth, currentYear);
-                
-                // If end date is before start date, assume it's the next month
-                if (endDate < startDate)
-                {
-                    endDate = endDate.AddMonths(1);
-                }
+                // Use the dates directly from the DTO (provided by date picker)
+                var startDate = dto.StartDate.Kind == DateTimeKind.Utc
+                    ? dto.StartDate
+                    : DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc);
+                    
+                var endDate = dto.EndDate.Kind == DateTimeKind.Utc
+                    ? dto.EndDate
+                    : DateTime.SpecifyKind(dto.EndDate, DateTimeKind.Utc);
                 
                 // Set end date to end of day (23:59:59) in UTC
                 endDate = endDate.Date.AddDays(1).AddSeconds(-1);
                 
-                // Ensure both dates are UTC
-                startDate = DateTime.SpecifyKind(startDate.Date, DateTimeKind.Utc);
-                endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                // Normalize start date to start of day
+                startDate = startDate.Date;
+                
+                // Derive day names from the selected dates (for recurring cycle calculations)
+                var startDay = startDate.DayOfWeek.ToString().ToLower();
+                var endDay = endDate.DayOfWeek.ToString().ToLower();
                 
                 // Deactivate any existing active cycle of the same type for this audience
                 var existingCycles = await _context.WorkCycles
@@ -65,12 +70,12 @@ namespace ATMS.API.Services
                 var workCycle = new WorkCycle
                 {
                     CycleType = dto.CycleType,
-                    Month = currentMonth,
-                    Year = currentYear,
+                    Month = startDate.Month,
+                    Year = startDate.Year,
                     StartDate = startDate,
                     EndDate = endDate,
-                    StartDay = dto.StartDay,
-                    EndDay = dto.EndDay,
+                    StartDay = startDay,
+                    EndDay = endDay,
                     Repeat = dto.Repeat,
                     Audience = dto.Audience,
                     CreateAnnouncement = dto.CreateAnnouncement,
@@ -81,6 +86,40 @@ namespace ATMS.API.Services
                 
                 _context.WorkCycles.Add(workCycle);
                 await _context.SaveChangesAsync();
+                
+                // Automatically create an announcement if requested
+                if (dto.CreateAnnouncement)
+                {
+                    try
+                    {
+                        var audienceLabel = dto.Audience?.Replace("-", " ").Replace("staff", "Staff") ?? "All Staff";
+                        var endDateDisplay = endDate.ToString("MMM dd, yyyy");
+                        
+                        // Map work cycle audience values to announcement audience values
+                        var announcementAudience = (dto.Audience?.ToLower()) switch
+                        {
+                            "all-staff" or "everyone" => "Everyone",
+                            "auxilary-staff" => "Ad-Hoc",
+                            "ace-5-staff" or "speed-staff" or "gf-staff" => "Everyone",
+                            _ => "Everyone"
+                        };
+                        
+                        await _announcementService.CreateAnnouncementAsync(userId, new CreateAnnouncementDto
+                        {
+                            Title = $"{dto.CycleType} Cycle Now Open",
+                            Message = $"The {dto.CycleType} cycle has been scheduled for {audienceLabel} and will run until {endDateDisplay}. Please ensure all submissions are completed before the deadline.",
+                            Priority = "Normal",
+                            Audience = announcementAudience,
+                            ExpiresAt = endDate.AddDays(1)
+                        });
+                        
+                        _logger.LogInformation($"Announcement created for work cycle {workCycle.Id}");
+                    }
+                    catch (Exception annEx)
+                    {
+                        _logger.LogWarning(annEx, "Failed to create announcement for work cycle {WorkCycleId}, but cycle was created", workCycle.Id);
+                    }
+                }
                 
                 _logger.LogInformation($"Work cycle created: {dto.CycleType} cycle from {startDate:dd-MM-yyyy} to {endDate:dd-MM-yyyy}");
                 
@@ -103,24 +142,32 @@ namespace ATMS.API.Services
                     throw new Exception("Work cycle not found");
                 }
                 
-                var now = DateTime.UtcNow;
-                var currentMonth = now.Month;
-                var currentYear = now.Year;
+                // Use the dates directly from the DTO (provided by date picker)
+                var startDate = dto.StartDate.Kind == DateTimeKind.Utc
+                    ? dto.StartDate
+                    : DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc);
+                    
+                var endDate = dto.EndDate.Kind == DateTimeKind.Utc
+                    ? dto.EndDate
+                    : DateTime.SpecifyKind(dto.EndDate, DateTimeKind.Utc);
                 
-                // Recalculate dates
-                var startDate = GetDateForDayInMonth(dto.StartDay, currentMonth, currentYear);
-                var endDate = GetDateForDayInMonth(dto.EndDay, currentMonth, currentYear);
+                // Set end date to end of day (23:59:59) in UTC
+                endDate = endDate.Date.AddDays(1).AddSeconds(-1);
                 
-                if (endDate < startDate)
-                {
-                    endDate = endDate.AddMonths(1);
-                }
+                // Normalize start date to start of day
+                startDate = startDate.Date;
+                
+                // Derive day names from the selected dates (for recurring cycle calculations)
+                var startDay = startDate.DayOfWeek.ToString().ToLower();
+                var endDay = endDate.DayOfWeek.ToString().ToLower();
                 
                 workCycle.CycleType = dto.CycleType;
                 workCycle.StartDate = startDate;
                 workCycle.EndDate = endDate;
-                workCycle.StartDay = dto.StartDay;
-                workCycle.EndDay = dto.EndDay;
+                workCycle.StartDay = startDay;
+                workCycle.EndDay = endDay;
+                workCycle.Month = startDate.Month;
+                workCycle.Year = startDate.Year;
                 workCycle.Repeat = dto.Repeat;
                 workCycle.Audience = dto.Audience;
                 workCycle.UpdatedAt = DateTime.UtcNow;
@@ -183,17 +230,26 @@ namespace ATMS.API.Services
                     // For recurring cycles, check if we need to update the dates
                     if (cycle.Repeat == "every-month" && (cycle.Month != currentMonth || cycle.Year != currentYear))
                     {
-                        // Update the dates for the new month
-                        var startDate = GetDateForDayInMonth(cycle.StartDay ?? "monday", currentMonth, currentYear);
-                        var endDate = GetDateForDayInMonth(cycle.EndDay ?? "friday", currentMonth, currentYear);
+                        // Calculate month difference to advance the exact dates
+                        var monthDiff = (currentYear - cycle.Year) * 12 + (currentMonth - cycle.Month);
                         
-                        if (endDate < startDate)
+                        // Advance the original start/end dates by the month difference
+                        // preserving the exact day-of-month
+                        var startDate = cycle.StartDate.AddMonths(monthDiff);
+                        var endDate = cycle.EndDate.AddMonths(monthDiff);
+                        
+                        // Ensure both dates are in the current month context
+                        var expectedStartDate = new DateTime(currentYear, currentMonth, Math.Min(startDate.Day, DateTime.DaysInMonth(currentYear, currentMonth)), 0, 0, 0, DateTimeKind.Utc);
+                        var expectedEndDate = new DateTime(currentYear, currentMonth, Math.Min(endDate.Day, DateTime.DaysInMonth(currentYear, currentMonth)), 23, 59, 59, DateTimeKind.Utc);
+                        
+                        // If end date day is before start date day, adjust end date to next month
+                        if (expectedEndDate < expectedStartDate)
                         {
-                            endDate = endDate.AddMonths(1);
+                            expectedEndDate = expectedEndDate.AddMonths(1);
                         }
                         
-                        cycle.StartDate = startDate;
-                        cycle.EndDate = endDate;
+                        cycle.StartDate = expectedStartDate;
+                        cycle.EndDate = expectedEndDate;
                         cycle.Month = currentMonth;
                         cycle.Year = currentYear;
                         

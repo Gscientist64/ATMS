@@ -7,6 +7,7 @@ namespace ATMS.API.DTOs
         public bool ContractLetters { get; set; }
         public bool UserPermissions { get; set; }
         public bool Onboarding { get; set; }
+        public bool EditStaffDetails { get; set; }
     }
 
     public class UpdatePermissionSettingsDto
@@ -14,6 +15,7 @@ namespace ATMS.API.DTOs
         public bool? ContractLetters { get; set; }
         public bool? UserPermissions { get; set; }
         public bool? Onboarding { get; set; }
+        public bool? EditStaffDetails { get; set; }
     }
 
     public class AssignUserToPermissionDto

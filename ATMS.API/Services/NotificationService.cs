@@ -30,6 +30,7 @@ namespace ATMS.API.Services
         Task CreateConcernRaisedNotification(int concernId, int targetUserId, string raiserName);
         Task CreateContractReadyNotification(int contractId, int userId);
         Task CreateContractSignedNotification(int contractId, int userId);
+        Task CreateContractLetterSignedNotification(int contractLetterId, int generatedByUserId, string staffName);
         Task CreateReminderNotification(int userId, string month, DateTime deadline);
     }
 
@@ -248,6 +249,18 @@ namespace ATMS.API.Services
             }
         }
 
+        // AdHoc staff have a per-timesheet detail page (/timesheet/{id}); Staff role only
+        // has a list page (/staff/timesheet) with no per-id route, so route them there instead.
+        private async Task<string> GetTimesheetActionUrlAsync(Timesheet timesheet, string suffix = "")
+        {
+            var roleName = await _context.Users
+                .Where(u => u.Id == timesheet.UserId)
+                .Select(u => u.Role!.Name)
+                .FirstOrDefaultAsync();
+
+            return roleName == "Staff" ? "/staff/timesheet" : $"/timesheet/{timesheet.Id}{suffix}";
+        }
+
         public async Task CreateTimesheetApprovedNotification(int timesheetId, int userId, string approverName, string approverRole)
         {
             var timesheet = await _context.Timesheets.FindAsync(timesheetId);
@@ -260,7 +273,7 @@ namespace ATMS.API.Services
                 Title = "Timesheet Approved",
                 Message = $"Your timesheet for {timesheet.Month} {timesheet.Year} has been approved by {approverName} ({approverRole})",
                 Data = new { timesheetId, approverName, approverRole, month = timesheet.Month, year = timesheet.Year },
-                ActionUrl = $"/timesheet/{timesheetId}",
+                ActionUrl = await GetTimesheetActionUrlAsync(timesheet),
                 Priority = "Low"
             });
         }
@@ -277,7 +290,7 @@ namespace ATMS.API.Services
                 Title = "Timesheet Returned",
                 Message = $"Your timesheet for {timesheet.Month} {timesheet.Year} has been returned by {reviewerName} ({reviewerRole})",
                 Data = new { timesheetId, reviewerName, reviewerRole, reason, month = timesheet.Month, year = timesheet.Year },
-                ActionUrl = $"/timesheet/{timesheetId}",
+                ActionUrl = await GetTimesheetActionUrlAsync(timesheet),
                 Priority = "High"
             });
         }
@@ -294,7 +307,7 @@ namespace ATMS.API.Services
                 Title = "Timesheet Under Review",
                 Message = $"Your timesheet for {timesheet.Month} {timesheet.Year} is now under {reviewerRole} review",
                 Data = new { timesheetId, reviewerRole, month = timesheet.Month, year = timesheet.Year },
-                ActionUrl = $"/timesheet/{timesheetId}",
+                ActionUrl = await GetTimesheetActionUrlAsync(timesheet),
                 Priority = "Medium"
             });
         }
@@ -311,7 +324,7 @@ namespace ATMS.API.Services
                 Title = "New Comment",
                 Message = $"{commenterName} ({commenterRole}) commented on your timesheet",
                 Data = new { timesheetId, commenterName, commenterRole },
-                ActionUrl = $"/timesheet/{timesheetId}?tab=comments",
+                ActionUrl = await GetTimesheetActionUrlAsync(timesheet, "?tab=comments"),
                 Priority = "Low"
             });
         }
@@ -378,6 +391,20 @@ namespace ATMS.API.Services
                 Data = new { contractId, title = contract.Title },
                 ActionUrl = $"/profile?tab=contract",
                 Priority = "Low"
+            });
+        }
+
+        public async Task CreateContractLetterSignedNotification(int contractLetterId, int generatedByUserId, string staffName)
+        {
+            await CreateNotification(new CreateNotificationDto
+            {
+                UserId = generatedByUserId,
+                Type = "contract",
+                Title = "Contract Letter Signed",
+                Message = $"{staffName} has signed their contract letter",
+                Data = new { contractLetterId, staffName },
+                ActionUrl = $"/hris/ancillary-staff/personnel",
+                Priority = "Medium"
             });
         }
 

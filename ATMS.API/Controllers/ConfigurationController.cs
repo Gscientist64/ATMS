@@ -10,7 +10,7 @@ namespace ATMS.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "HrAdmin,Programs")]  // CHANGE THIS - Add Programs
+    [Authorize(Roles = "HrAdmin,Programs")]  // Only HR and Programs can access configuration endpoints
     public class ConfigurationController : ControllerBase
     {
         private readonly IConfigurationService _configurationService;
@@ -20,6 +20,50 @@ namespace ATMS.API.Controllers
         {
             _configurationService = configurationService;
             _logger = logger;
+        }
+
+        // ========== Departments Endpoints ==========
+        [HttpGet("departments")]
+        public async Task<IActionResult> GetAllDepartments()
+        {
+            var result = await _configurationService.GetAllDepartmentsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("departments/{id}")]
+        public async Task<IActionResult> GetDepartmentById(int id)
+        {
+            var result = await _configurationService.GetDepartmentByIdAsync(id);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpPost("departments")]
+        [Authorize(Roles = "HrAdmin")]
+        public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentDto dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var result = await _configurationService.CreateDepartmentAsync(dto, userId);
+            return Ok(result);
+        }
+
+        [HttpPut("departments/{id}")]
+        [Authorize(Roles = "HrAdmin")]
+        public async Task<IActionResult> UpdateDepartment(int id, [FromBody] UpdateDepartmentDto dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var result = await _configurationService.UpdateDepartmentAsync(id, dto, userId);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpDelete("departments/{id}")]
+        [Authorize(Roles = "HrAdmin")]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            var result = await _configurationService.DeleteDepartmentAsync(id);
+            if (!result) return NotFound();
+            return Ok(new { message = "Department deleted successfully" });
         }
 
         // ========== Projects Endpoints ==========

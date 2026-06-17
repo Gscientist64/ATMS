@@ -17,15 +17,18 @@ namespace ATMS.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<ContractController> _logger;
+        private readonly IContractLetterService _contractLetterService;
 
         public ContractController(
             ApplicationDbContext context,
             IWebHostEnvironment environment,
-            ILogger<ContractController> logger)
+            ILogger<ContractController> logger,
+            IContractLetterService contractLetterService)
         {
             _context = context;
             _environment = environment;
             _logger = logger;
+            _contractLetterService = contractLetterService;
         }
 
         // GET: api/contract/my-contracts
@@ -176,6 +179,45 @@ namespace ATMS.API.Controllers
             {
                 _logger.LogError(ex, "Error downloading contract {ContractId}", id);
                 return StatusCode(500, new { message = "An error occurred while downloading the contract" });
+            }
+        }
+
+        // GET: api/contract/letters/{id}
+        [HttpGet("letters/{id}")]
+        public async Task<IActionResult> GetContractLetter(int id)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                var letter = await _contractLetterService.GetContractLetterByIdAsync(id, userId);
+                if (letter == null)
+                    return NotFound(new { message = "Contract letter not found" });
+
+                return Ok(letter);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching contract letter {LetterId}", id);
+                return StatusCode(500, new { message = "An error occurred while fetching the contract letter" });
+            }
+        }
+
+        // POST: api/contract/letters/{id}/sign
+        [HttpPost("letters/{id}/sign")]
+        public async Task<IActionResult> SignContractLetter(int id, [FromForm] SignContractLetterDto dto)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                var result = await _contractLetterService.MarkContractLetterSignedAsync(id, userId, dto.File);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error signing contract letter {LetterId}", id);
+                return StatusCode(500, new { message = "An error occurred while signing the contract letter" });
             }
         }
     }

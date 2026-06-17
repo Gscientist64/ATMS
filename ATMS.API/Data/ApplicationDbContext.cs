@@ -43,6 +43,13 @@ namespace ATMS.API.Data
         public DbSet<PermissionUserAssignment> PermissionUserAssignments { get; set; }
         
         public DbSet<PermissionMatrix> PermissionMatrix { get; set; }
+        
+        // Staff Module DbSets
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<LeaveBalance> LeaveBalances { get; set; }
+        public DbSet<StaffOnboarding> StaffOnboardings { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -19,7 +19,7 @@ namespace ATMS.API.Services
             _logger = logger;
         }
 
-        public async Task<HrisDashboardDto> GetHrisDashboardAsync()
+        public async Task<HrisDashboardDto> GetHrisDashboardAsync(string? type = null)
         {
             try
             {
@@ -28,24 +28,44 @@ namespace ATMS.API.Services
                     .Include(u => u.Role)
                     .ToListAsync();
 
-                var activeUsers = allUsers.Where(u => u.IsActive).ToList();
-                var totalWorkforce = allUsers.Count;
+                // Filter users based on dashboard type
+                // ECEWS = users whose project indicates ECEWS (or role is EcewsSupervisor)
+                // Ancillary = users with role AdHoc
+                var ecewsUsers = allUsers.Where(u =>
+                    u.Role?.Name == "EcewsSupervisor" ||
+                    u.Project == "ACE-5" ||
+                    u.Project == "SPEED" ||
+                    u.Project == "Global Fund" ||
+                    u.Role?.Name == "Programs").ToList();
+
+                var ancillaryUsers = allUsers.Where(u =>
+                    u.Role?.Name == "AdHoc" ||
+                    u.Role?.Name == "GonSupervisor").ToList();
+
+                // Determine which user set to use based on type
+                var filteredUsers = type?.ToLower() switch
+                {
+                    "ecews" => ecewsUsers,
+                    "ancillary" => ancillaryUsers,
+                    _ => allUsers // unified or null
+                };
+
+                var activeUsers = filteredUsers.Where(u => u.IsActive).ToList();
+                var totalWorkforce = filteredUsers.Count;
                 var activeEmployees = activeUsers.Count;
 
                 // Count active PIPs
                 var activePips = await _context.PerformanceImprovementPlans
                     .CountAsync(p => p.Status == "Active");
 
-                // Count users on leave (if you have a Leave table, otherwise 0)
+                // Count users on leave
                 var onLeave = 0;
 
-                // ECEWS Distribution
-                var ecewsUsers = allUsers.Where(u => u.Role?.Name == "EcewsSupervisor").ToList();
+                // ECEWS Distribution (always show full breakdown)
                 var ecewsTotal = ecewsUsers.Count;
                 var ecewsActive = ecewsUsers.Count(u => u.IsActive);
 
                 // Ancillary Distribution
-                var ancillaryUsers = allUsers.Where(u => u.Role?.Name == "AdHoc").ToList();
                 var ancillaryTotal = ancillaryUsers.Count;
                 var ancillaryActive = ancillaryUsers.Count(u => u.IsActive);
 
@@ -57,28 +77,31 @@ namespace ATMS.API.Services
                     .ToListAsync();
                 var ancillaryFlagged = ancillaryUsers.Count(u => flaggedUserIds.Contains(u.Id));
 
-                // Timesheet compliance - FIXED VERSION
+                // Timesheet compliance (based on filtered users)
                 var currentYear = DateTime.UtcNow.Year;
                 var monthlyCompliance = new List<int>();
+                var filteredUserIds = filteredUsers.Select(u => u.Id).ToHashSet();
+                
                 for (int month = 1; month <= 12; month++)
                 {
                     var startDate = new DateTime(currentYear, month, 1, 0, 0, 0, DateTimeKind.Utc);
                     var endDate = startDate.AddMonths(1);
                     
                     var totalSubmitted = await _context.Timesheets
-                        .CountAsync(t => t.SubmittedAt != null && t.SubmittedAt >= startDate && t.SubmittedAt < endDate);
+                        .CountAsync(t =>
+                            filteredUserIds.Contains(t.UserId) &&
+                            t.SubmittedAt != default &&
+                            t.SubmittedAt >= startDate &&
+                            t.SubmittedAt < endDate);
                     
-                    var totalUsersCount = await _context.Users.CountAsync();
+                    var totalUsersCount = filteredUsers.Count;
                     var compliance = totalUsersCount > 0 ? (int)((double)totalSubmitted / totalUsersCount * 100) : 0;
                     monthlyCompliance.Add(compliance);
                 }
 
-                // Gender distribution
-                int maleCount = 0;
-                int femaleCount = 0;
-
-                maleCount = allUsers.Count(u => u.Gender == "Male" || u.Gender == "M");
-                femaleCount = allUsers.Count(u => u.Gender == "Female" || u.Gender == "F");
+                // Gender distribution (filtered)
+                int maleCount = filteredUsers.Count(u => u.Gender == "Male" || u.Gender == "M");
+                int femaleCount = filteredUsers.Count(u => u.Gender == "Female" || u.Gender == "F");
 
                 var totalWithGender = maleCount + femaleCount;
 

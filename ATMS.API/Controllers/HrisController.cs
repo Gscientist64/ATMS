@@ -29,6 +29,7 @@ namespace ATMS.API.Controllers
         private readonly IEmailService _emailService;
         private readonly ILogger<HrisController> _logger;
         private readonly IContractLetterService _contractLetterService;
+        private readonly IConfigurationService _configurationService;
         private readonly ApplicationDbContext _context;
         public HrisController(
             IPipService pipService,
@@ -41,6 +42,7 @@ namespace ATMS.API.Controllers
             IEmailService emailService,
             ILogger<HrisController> logger,
             IContractLetterService contractLetterService,
+            IConfigurationService configurationService,
             ApplicationDbContext context)
         {
             _pipService = pipService;
@@ -52,6 +54,7 @@ namespace ATMS.API.Controllers
             _userService = userService;
             _emailService = emailService;
             _contractLetterService = contractLetterService;
+            _configurationService = configurationService;
             _logger = logger;
             _context = context;
         }
@@ -229,9 +232,9 @@ namespace ATMS.API.Controllers
         // ========== Analytics Endpoint ==========
         [HttpGet("dashboard")]
         [Authorize(Roles = "HrAdmin,Programs")] // allow Programs as well
-        public async Task<IActionResult> GetHrisDashboard()
+        public async Task<IActionResult> GetHrisDashboard([FromQuery] string? type = null)
         {
-            var result = await _analyticsService.GetHrisDashboardAsync();
+            var result = await _analyticsService.GetHrisDashboardAsync(type);
             return Ok(result);
         }
 
@@ -267,12 +270,73 @@ namespace ATMS.API.Controllers
             return Ok(result);
         }
 
+        [HttpPut("employees/{id}/details")]
+        [Authorize(Roles = "HrAdmin,Programs")]
+        public async Task<IActionResult> UpdateStaffDetails(int id, [FromBody] UpdateStaffDetailsDto dto)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                
+                // Check if user has permission to edit
+                if (userRole == "Programs")
+                {
+                    var hasPermission = await _configurationService.HasPermissionAsync(userId, "editStaffDetails");
+                    if (!hasPermission)
+                    {
+                        return StatusCode(403, new { message = "You don't have permission to edit staff details" });
+                    }
+                }
+                
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+                
+                // Update fields
+                user.PhoneNumber = dto.PhoneNumber ?? user.PhoneNumber;
+                user.EmergencyContactName = dto.EmergencyContactName ?? user.EmergencyContactName;
+                user.EmergencyContactPhone = dto.EmergencyContactPhone ?? user.EmergencyContactPhone;
+                user.BankName = dto.BankName ?? user.BankName;
+                user.AccountNumber = dto.AccountNumber ?? user.AccountNumber;
+                user.AccountName = dto.AccountName ?? user.AccountName;
+                user.NINName = dto.NINName ?? user.NINName;
+                user.NINNumber = dto.NINNumber ?? user.NINNumber;
+                user.TINName = dto.TINName ?? user.TINName;
+                user.TINNumber = dto.TINNumber ?? user.TINNumber;
+                user.UpdatedAt = DateTime.UtcNow;
+                
+                await _context.SaveChangesAsync();
+                
+                return Ok(new { message = "Staff details updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating staff details for user {UserId}", id);
+                return StatusCode(500, new { message = "An error occurred" });
+            }
+        }
+
         // Add to HrisController.cs - Governance Actions Endpoints
         [HttpGet("governance/actions")]
         [Authorize(Roles = "HrAdmin,Programs")]
         public async Task<IActionResult> GetGovernanceActions([FromQuery] string? type, [FromQuery] string? status)
         {
             var result = await _governanceService.GetAllGovernanceActionsAsync(type, status);
+            return Ok(result);
+        }
+
+        [HttpGet("governance/actions/{id}")]
+        [Authorize(Roles = "HrAdmin,Programs")]
+        public async Task<IActionResult> GetGovernanceActionById(int id)
+        {
+            var result = await _governanceService.GetGovernanceActionByIdAsync(id);
+            if (result == null)
+            {
+                return NotFound(new { message = "Governance action not found" });
+            }
             return Ok(result);
         }
 
@@ -361,6 +425,15 @@ namespace ATMS.API.Controllers
         {
             var user = await _userService.GetUserByEmployeeCode(employeeCode);
             if (user == null) return NotFound(new { message = "User not found" });
+            return Ok(user);
+        }
+
+        [HttpGet("employees/{id}")]
+        [Authorize(Roles = "HrAdmin,Programs")]
+        public async Task<IActionResult> GetEmployeeById(int id)
+        {
+            var user = await _userService.GetUserById(id);
+            if (user == null) return NotFound();
             return Ok(user);
         }
 

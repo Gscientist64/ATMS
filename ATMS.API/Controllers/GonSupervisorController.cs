@@ -71,7 +71,7 @@ namespace ATMS.API.Controllers
                 // Supervisees count
                 var superviseesCount = superviseeIds.Count;
 
-                // Active timesheets - ONLY GONReview status
+                // Active timesheets - 
                 var activeTimesheets = await _context.Timesheets
                     .Include(t => t.User)
                     .Where(t => superviseeIds.Contains(t.UserId) && t.Status == "GONReview")
@@ -84,7 +84,7 @@ namespace ATMS.API.Controllers
                         Department = t.User != null ? t.User.Department ?? "Not specified" : "Unknown",
                         Month = $"{t.Month} {t.Year}",
                         SubmissionDate = t.SubmittedAt.ToString("dd-MM-yyyy"),
-                        Status = "GON Review"
+                        Status = "Facility Supervisor Review"
                     })
                     .ToListAsync();
 
@@ -125,7 +125,7 @@ namespace ATMS.API.Controllers
                 switch (tab.ToLower())
                 {
                     case "pending":
-                        // ONLY timesheets that have been approved by ECEWS (GONReview status)
+                        // ONLY timesheets that have been approved by ECEWS 
                         query = query.Where(t => t.Status == "GONReview");
                         break;
                     case "approved":
@@ -495,7 +495,7 @@ namespace ATMS.API.Controllers
         {
             return status switch
             {
-                "GONReview" => "GON Review",
+                "GONReview" => "Facility Supervisor Review",
                 "Approved" => "Approved",
                 "Rejected" => "Returned",
                 "ProgramsTeam" => "Programs Review",
@@ -536,6 +536,8 @@ namespace ATMS.API.Controllers
                 "active" => "active",
                 "expiringsoon" => "expiringsoon",
                 "onpip" => "onpip",
+                "terminated" => "terminated",
+                "terminationpending" => "terminationpending",
                 _ => "active"
             } ?? "active";
         }

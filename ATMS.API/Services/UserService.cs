@@ -51,7 +51,9 @@ namespace ATMS.API.Services
                     FileUrl = cl.FileUrl,
                     FileSize = cl.FileSize,
                     GeneratedAt = cl.GeneratedAt,
-                    GeneratedByUserId = cl.GeneratedByUserId
+                    GeneratedByUserId = cl.GeneratedByUserId,
+                    IsSigned = cl.IsSigned,
+                    SignedAt = cl.SignedAt
                 })
                 .ToListAsync();
 
@@ -112,7 +114,9 @@ namespace ATMS.API.Services
                     FileUrl = cl.FileUrl,
                     FileSize = cl.FileSize,
                     GeneratedAt = cl.GeneratedAt,
-                    GeneratedByUserId = cl.GeneratedByUserId
+                    GeneratedByUserId = cl.GeneratedByUserId,
+                    IsSigned = cl.IsSigned,
+                    SignedAt = cl.SignedAt
                 })
                 .ToListAsync();
             
@@ -175,7 +179,9 @@ namespace ATMS.API.Services
                     FileUrl = cl.FileUrl,
                     FileSize = cl.FileSize,
                     GeneratedAt = cl.GeneratedAt,
-                    GeneratedByUserId = cl.GeneratedByUserId
+                    GeneratedByUserId = cl.GeneratedByUserId,
+                    IsSigned = cl.IsSigned,
+                    SignedAt = cl.SignedAt
                 })
                 .ToListAsync();
             

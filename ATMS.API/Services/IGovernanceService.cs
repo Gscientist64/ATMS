@@ -7,5 +7,6 @@ namespace ATMS.API.Services
     public interface IGovernanceService
     {
         Task<List<GovernanceActionDto>> GetAllGovernanceActionsAsync(string? type, string? status);
+        Task<GovernanceActionDto?> GetGovernanceActionByIdAsync(int id);
     }
 }

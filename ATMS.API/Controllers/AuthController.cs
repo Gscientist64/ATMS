@@ -74,7 +74,7 @@ namespace ATMS.API.Controllers
             var result = await _authService.ForgotPassword(dto.Email);
             if (!result)
             {
-                // Don't reveal that the user doesn't exist for security
+                
                 return Ok(new { message = "If an account with that email exists, a password reset link has been sent." });
             }
             return Ok(new { message = "Password reset link sent to your email." });
