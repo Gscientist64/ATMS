@@ -1,0 +1,57 @@
+.animated-checkmark {
+  display: block;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.animated-checkmark-path {
+  stroke-dasharray: var(--check-length, 0);
+  stroke-dashoffset: var(--check-length, 0);
+  opacity: 0;
+}
+
+.animated-checkmark-path.is-ready {
+  opacity: 1;
+  stroke-dashoffset: var(--check-length);
+}
+
+.animated-checkmark-path.is-ready.animated-checkmark-path--loop {
+  animation: animated-checkmark-draw var(--check-duration, 2.2s) cubic-bezier(0.4, 0, 0.2, 1)
+    infinite;
+}
+
+.animated-checkmark-path.is-ready.animated-checkmark-path--once {
+  animation: animated-checkmark-draw-once var(--check-duration, 0.85s) cubic-bezier(0.4, 0, 0.2, 1)
+    0.15s forwards;
+}
+
+@keyframes animated-checkmark-draw {
+  0% {
+    stroke-dashoffset: var(--check-length);
+  }
+  40% {
+    stroke-dashoffset: 0;
+  }
+  55% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: var(--check-length);
+  }
+}
+
+@keyframes animated-checkmark-draw-once {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-checkmark-path.is-ready {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,1362 @@
+.hris-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hris-header {
+  margin-bottom: 14px;
+}
+
+.hris-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hris-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+
+.hris-header-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 999px;
+  background: #eceff3;
+  gap: 2px;
+}
+
+.hris-header-switch-btn {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.hris-header-switch-btn.active {
+  background: #ffffff;
+  color: #096d49;
+}
+
+.hris-date {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.hris-announcement-card {
+  background: #ffffff;
+  border: 1px solid #e5eeea;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  overflow: visible;
+}
+
+.hris-announcement-header {
+  width: 100%;
+  background: #eff6f3;
+  border: none;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hris-ann-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hris-ann-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #096d49;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hris-ann-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.hris-ann-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.hris-ann-caret {
+  color: #0f8a64;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.hris-ann-caret.open {
+  transform: rotate(0deg);
+}
+
+.hris-announcement-header[aria-expanded='false'] .hris-ann-caret {
+  transform: rotate(180deg);
+}
+
+.hris-announcement-body {
+  padding: 14px 16px 16px;
+  background: #ffffff;
+}
+
+.hris-ann-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.hris-ann-label {
+  font-size: 13px;
+  color: #374151;
+}
+
+.hris-ann-input,
+.hris-ann-textarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.hris-ann-textarea {
+  resize: vertical;
+  min-height: 86px;
+}
+
+.hris-ann-input:focus,
+.hris-ann-textarea:focus {
+  border-color: #096d49;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.12);
+}
+
+.hris-ann-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.hris-ann-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hris-ann-dropdown-btn {
+  border-radius: 6px;
+  min-height: 38px;
+}
+
+.hris-ann-dropdown .app-dropdown-label.placeholder {
+  color: #9ca3af;
+}
+
+.hris-ann-date-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hris-ann-date-wrap .react-datepicker-wrapper,
+.hris-ann-date-wrap .react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+
+.hris-ann-date-wrap .hris-ann-input {
+  width: 100%;
+  padding-right: 32px;
+}
+
+.hris-ann-date-input {
+  color: #374151;
+}
+
+.hris-ann-date-input:hover {
+  border-color: #096d49;
+}
+
+.hris-ann-date-icon {
+  color: #6b7280;
+  display: inline-flex;
+}
+
+.hris-ann-date-icon-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.hris-ann-date-icon-btn:hover {
+  background: #f3f8f6;
+}
+
+.hris-ann-date-icon-btn:hover .hris-ann-date-icon,
+.hris-ann-date-icon-btn:focus-visible .hris-ann-date-icon {
+  color: #096d49;
+}
+
+.hris-ann-date-icon-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.18);
+}
+
+/* React datepicker green theme */
+.react-datepicker {
+  border: 1px solid #dbe6e1;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  font-family: inherit;
+}
+
+.react-datepicker__header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: #111827;
+}
+
+.react-datepicker__day-name {
+  color: #6b7280;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+  background-color: #f3f8f6;
+  color: #096d49;
+  border-radius: 0.3rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--keyboard-selected {
+  background-color: #096d49;
+  color: #ffffff;
+}
+
+.react-datepicker__day--today {
+  color: #096d49;
+  font-weight: 700;
+}
+
+.hris-ann-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.hris-ann-cancel-btn {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+.hris-ann-cancel-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.hris-ann-publish-btn {
+  background-color: #096d49;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+.hris-ann-publish-btn:hover {
+  background-color: #6ba792;
+}
+
+.hris-org-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.hris-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.hris-metric-card {
+  background: #fbfbfc;
+  border: 1px solid #e6e9ed;
+  border-radius: 8px;
+  padding: 18px 22px;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hris-metric-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hris-metric-icon {
+  color: #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hris-metric-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.hris-metric-label {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.hris-metric-value {
+  color: #1f2937;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  margin-left: 26px;
+}
+
+.hris-summary-card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.hris-summary-item {
+  min-width: 0;
+}
+
+.hris-summary-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hris-summary-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f3f5f8;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hris-summary-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.hris-summary-meta {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.hris-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.hris-pill-gray {
+  background: #eceff3;
+  color: #6b7280;
+}
+
+.hris-pill-green {
+  background: #dff3eb;
+  color: #096D49;
+}
+
+.hris-schedule-btn {
+  background: #096d49;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hris-summary-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hris-schedule-btn:hover {
+  background: #6ba792;
+}
+
+.hris-schedule-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.56);
+  z-index: 1600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.hris-schedule-modal {
+  width: min(100%, 420px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.22);
+  padding: 26px 30px 30px;
+  position: relative;
+}
+
+.hris-schedule-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hris-schedule-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.hris-schedule-modal-subtitle {
+  margin: 0 0 16px;
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.hris-schedule-field {
+  margin-bottom: 12px;
+}
+
+.hris-schedule-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.hris-schedule-col {
+  min-width: 0;
+}
+
+.hris-schedule-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.hris-schedule-dropdown {
+  width: 100%;
+}
+
+.hris-schedule-dropdown .app-dropdown-menu {
+  z-index: 1700;
+}
+
+.hris-schedule-dropdown-btn {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f8fafc;
+  padding: 0 12px;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.hris-schedule-dropdown-btn:hover {
+  border-color: #bfc7d2;
+}
+
+.hris-schedule-dropdown-btn:focus-visible {
+  border-color: #6ba792;
+  box-shadow: 0 0 0 3px rgba(107, 167, 146, 0.22);
+}
+
+.hris-schedule-dropdown-btn .app-dropdown-label.placeholder {
+  color: #9ca3af;
+}
+
+.hris-schedule-dropdown-btn .app-dropdown-caret {
+  color: #4b5563;
+}
+
+.hris-schedule-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 10px;
+}
+
+.hris-schedule-toggle {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  border: 0;
+  background: #cfd4db;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.hris-schedule-toggle.active {
+  background: #0a8f5b;
+}
+
+.hris-schedule-toggle-knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
+}
+
+.hris-schedule-toggle.active .hris-schedule-toggle-knob {
+  transform: translateX(18px);
+}
+
+.hris-schedule-toggle-label {
+  color: #333;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.hris-schedule-info {
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #9ca3af;
+  border-radius: 50%;
+  color: #6b7280;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.hris-schedule-modal-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.hris-schedule-cancel-btn {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: #374151;
+  padding: 10px 20px;
+  font-size: 13px;
+  min-width: 76px;
+}
+
+.hris-schedule-cancel-btn:hover {
+  background: #e5e7eb;
+}
+
+.hris-schedule-publish-btn {
+  border-radius: 8px;
+  background: #096d49;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 13px;
+  min-width: 76px;
+}
+
+.hris-schedule-publish-btn:hover {
+  background: #6ba792;
+}
+
+.hris-schedule-active-cycles {
+  margin-top: 12px;
+  background: transparent;
+  border: 0;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hris-schedule-active-cycles.disabled {
+  cursor: default;
+}
+
+.hris-active-cycle-card {
+  margin-top: 8px;
+  border: 1px solid #b7d7cb;
+  background: #edf7f3;
+  border-radius: 8px;
+  min-height: 70px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hris-active-cycle-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hris-active-cycle-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #b7d7cb;
+  color: #096d49;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hris-active-cycle-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.hris-active-cycle-meta {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.2;
+}
+
+.hris-active-cycle-edit {
+  border: 0;
+  background: transparent;
+  color: #111827;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.hris-distribution-card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.hris-distribution-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+.hris-distribution-content {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 18px;
+  align-items: center;
+}
+
+.hris-team-dot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.hris-team-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #096d49;
+}
+
+.hris-team-label {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.hris-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hris-bar-row {
+  border: 1px solid #d6e3de;
+  border-radius: 8px;
+  min-height: 32px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  background: #f9fcfb;
+}
+
+.hris-bar-row.is-highlight {
+  background: #f3faf7;
+  border-color: #9fc8b9;
+}
+
+.hris-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hris-bar-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hris-bar-label {
+  color: #6b7280;
+}
+
+.hris-bar-value {
+  color: #111827;
+  font-weight: 700;
+}
+
+.hris-total-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hris-total-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.hris-total-value {
+  font-size: 12px;
+  color: #111827;
+  font-weight: 700;
+}
+
+.hris-donut-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.hris-donut {
+  width: 212px;
+  height: 212px;
+  border-radius: 50%;
+  background: conic-gradient(#096d49 0deg 320deg, #e5e7eb 320deg 360deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hris-donut-inner {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hris-donut-value {
+  font-size: 38px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.hris-donut-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.hris-analytics {
+  margin-top: 16px;
+}
+
+.hris-analytics-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.hris-analytics-grid-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 0.9fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.hris-analytics-grid-bottom {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 14px;
+}
+
+.hris-analytics-card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.hris-analytics-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.hris-analytics-leave {
+  display: grid;
+  grid-template-columns: 180px 180px;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.hris-leave-distribution {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.hris-leave-status-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hris-leave-status-legend {
+  width: 100%;
+  max-width: 200px;
+}
+
+.hris-leave-types-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 168px;
+}
+
+.hris-leave-types-chart {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hris-pie {
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+}
+
+.hris-pie-leave-main {
+  background: conic-gradient(#3a936e 0deg 216deg, #ece8d7 216deg 360deg);
+}
+
+.hris-pie-leave-types {
+  width: 128px;
+  height: 128px;
+  background: conic-gradient(
+    #e0448c 0deg 180deg,
+    #f5b8d0 180deg 252deg,
+    #e8d4e8 252deg 306deg,
+    #9b7ba8 306deg 360deg
+  );
+}
+
+.hris-leave-callout {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 5px 8px;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  z-index: 1;
+}
+
+.hris-leave-callout.is-annual {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hris-leave-callout.is-maternity {
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-55%);
+}
+
+.hris-leave-callout.is-sick {
+  left: -8px;
+  top: 42%;
+  transform: translateY(-50%);
+}
+
+.hris-leave-callout.is-exam {
+  top: -2px;
+  left: 8px;
+}
+
+.hris-pie-leave-sub {
+  background: conic-gradient(#c767a6 0deg 180deg, #e7d8df 180deg 234deg, #eadfda 234deg 306deg, #d7c9db 306deg 360deg);
+}
+
+.hris-pie-gender {
+  background: conic-gradient(#3a936e 0deg 216deg, #ece8d7 216deg 360deg);
+  margin-bottom: 10px;
+}
+
+.hris-analytics-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hris-legend-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.hris-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.hris-legend-dot.green {
+  background: #3a936e;
+}
+
+.hris-legend-dot.beige {
+  background: #ece8d7;
+}
+
+.hris-legend-label {
+  color: #374151;
+}
+
+.hris-legend-value,
+.hris-legend-pct {
+  color: #111827;
+}
+
+.hris-employment-bar {
+  background: #f1f4f5;
+  border-radius: 6px;
+  height: 14px;
+  overflow: hidden;
+  margin: 12px 0 20px;
+}
+
+.hris-employment-bar-fill {
+  display: block;
+  width: 95%;
+  height: 100%;
+  background: linear-gradient(90deg, #3a936e 0 95%, #ece8d7 95% 100%);
+}
+
+.hris-employment-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+.hris-employment-total strong {
+  color: #111827;
+  font-size: 22px;
+}
+
+.hris-line-chart {
+  height: 170px;
+  border-bottom: 1px solid #eceff3;
+  margin-bottom: 8px;
+}
+
+.hris-line-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hris-month-axis {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.hris-analytics-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hris-mini-legend {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.hris-mini-legend .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.hris-mini-legend .dot.pink {
+  background: #d1709a;
+}
+
+.hris-mini-legend .dot.green {
+  background: #599d8b;
+}
+
+.hris-appraisal-charts-row {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.hris-appraisal-chart-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hris-appraisal-chart-unit {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.hris-appraisal-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 128px;
+  width: 24px;
+  flex-shrink: 0;
+  font-size: 10px;
+  line-height: 1;
+  color: #9ca3af;
+  text-align: right;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.hris-appraisal-plot-area {
+  flex: 1;
+  min-width: 0;
+  height: 128px;
+  border-left: 1px solid #efd8e4;
+  border-bottom: 1px solid #efd8e4;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 0 10px 0 6px;
+  gap: 12px;
+}
+
+.hris-appraisal-bar-wrap {
+  flex: 1;
+  max-width: 48px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hris-appraisal-bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 0;
+}
+
+.hris-appraisal-bar.pink {
+  background: linear-gradient(180deg, #d1709a 0%, rgba(209, 112, 154, 0.08) 100%);
+}
+
+.hris-appraisal-bar.green {
+  background: linear-gradient(180deg, #599d8b 0%, rgba(89, 157, 139, 0.08) 100%);
+}
+
+.hris-appraisal-x-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-left: 30px;
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .hris-ann-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hris-summary-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hris-distribution-content {
+    grid-template-columns: 1fr;
+  }
+
+  .hris-analytics-grid-top,
+  .hris-analytics-grid-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .hris-leave-distribution {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hris-page {
+    overflow-x: hidden;
+  }
+
+  .hris-metrics {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .hris-metric-card {
+    min-width: 0;
+    padding: 14px 16px;
+  }
+
+  .hris-metric-value {
+    margin-left: 0;
+  }
+
+  .hris-summary-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .hris-summary-item,
+  .hris-summary-head {
+    min-width: 0;
+  }
+
+  .hris-summary-action {
+    justify-content: stretch;
+  }
+
+  .hris-schedule-btn {
+    width: 100%;
+  }
+
+  .hris-analytics-card {
+    padding: 12px;
+  }
+
+  .hris-analytics-leave,
+  .hris-leave-distribution {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    justify-items: center;
+  }
+
+  .hris-leave-types-col {
+    min-height: 160px;
+  }
+
+  .hris-pie {
+    width: 112px;
+    height: 112px;
+  }
+
+  .hris-analytics-legend {
+    width: 100%;
+  }
+
+  .hris-legend-row {
+    grid-template-columns: 12px minmax(0, 1fr) auto auto;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .hris-legend-label {
+    overflow-wrap: anywhere;
+  }
+
+  .hris-employment-total strong {
+    font-size: 18px;
+  }
+
+  .hris-appraisal-charts-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .hris-appraisal-plot-area,
+  .hris-appraisal-y-axis {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hris-analytics-title {
+    font-size: 26px;
+  }
+
+  .hris-analytics-card-title {
+    font-size: 13px;
+  }
+
+  .hris-legend-row {
+    grid-template-columns: 12px minmax(0, 1fr) auto;
+  }
+
+  .hris-legend-pct {
+    display: none;
+  }
+}
+

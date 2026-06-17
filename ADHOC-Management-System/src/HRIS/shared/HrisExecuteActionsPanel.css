@@ -1,0 +1,1902 @@
+.agov-pip-execute-wrap {
+  position: relative;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.agov-pip-execute {
+  background: #096D49 !important;
+  color: #fff !important;
+  border: 1px solid #096D49 !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.agov-pip-execute:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-execute-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 50;
+  margin-top: 8px;
+  min-width: 220px;
+  padding: 6px 0;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e8eaef;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1), 0 2px 6px rgba(15, 23, 42, 0.06);
+  box-sizing: border-box;
+}
+
+.agov-pip-execute-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.15s ease;
+}
+
+.agov-pip-execute-item:hover,
+.agov-pip-execute-item:focus-visible {
+  background: #f9fafb;
+  outline: none;
+}
+
+.agov-pip-execute-item-icon {
+  flex-shrink: 0;
+}
+
+.agov-pip-execute-item--green {
+  color: #096D49;
+}
+
+.agov-pip-execute-item--amber {
+  color: #c2410c;
+}
+
+.agov-pip-execute-item--coral {
+  color: #e11d48;
+}
+
+.agov-pip-renew-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-renew-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  pointer-events: auto;
+  cursor: default;
+}
+
+.agov-pip-renew-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 22px 20px;
+  box-sizing: border-box;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.agov-pip-renew-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.agov-pip-renew-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.3;
+}
+
+.agov-pip-renew-close {
+  flex-shrink: 0;
+  margin: -4px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-renew-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-renew-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.agov-pip-renew-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.agov-pip-renew-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.agov-pip-renew-dropdown {
+  width: 100%;
+}
+
+.agov-pip-renew-dropdown .app-dropdown {
+  width: 100%;
+}
+
+.agov-pip-renew-dropdown .app-dropdown-btn {
+  width: 100%;
+  min-width: 0;
+}
+
+.agov-pip-renew-date-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.agov-pip-renew-date-wrap .react-datepicker-wrapper,
+.agov-pip-renew-date-wrap .react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+
+.agov-pip-renew-date-input {
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 40px 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  outline: none;
+  background: #fff;
+}
+
+.agov-pip-renew-date-input::placeholder {
+  color: #9ca3af;
+}
+
+.agov-pip-renew-date-input:focus {
+  border-color: #096D49;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.agov-pip-renew-date-icon-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  line-height: 0;
+  border-radius: 4px;
+}
+
+.agov-pip-renew-date-icon-btn:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-renew-dp-popper {
+  z-index: 4000 !important;
+}
+
+.agov-pip-renew-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.agov-pip-renew-btn {
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid transparent !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-renew-btn--cancel {
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  box-shadow: none !important;
+}
+
+.agov-pip-renew-btn--cancel:hover {
+  background: #e5e7eb !important;
+}
+
+.agov-pip-renew-btn--primary {
+  background: #096D49 !important;
+  color: #fff !important;
+  border-color: #096D49 !important;
+  box-shadow: none !important;
+}
+
+.agov-pip-renew-btn--primary:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-success-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-success-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 22px 24px 24px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-success-head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 0 12px;
+  min-height: 32px;
+  padding: 0 28px;
+}
+
+.agov-pip-success-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.agov-pip-success-close {
+  position: absolute;
+  right: -2px;
+  top: -4px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-success-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-success-text {
+  margin: 0 0 22px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #6b7280;
+  text-align: center;
+}
+
+.agov-pip-success-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.agov-pip-success-ok {
+  min-width: 120px;
+  padding: 10px 32px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid #096D49 !important;
+  background: #096D49 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-success-ok:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-term-success-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1240;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-term-success-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 24px 24px;
+  box-sizing: border-box;
+  pointer-events: auto;
+  text-align: center;
+}
+
+.agov-pip-term-success-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+  z-index: 2;
+}
+
+.agov-pip-term-success-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-term-success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 8px 0;
+}
+
+.agov-pip-term-success-icon-wrap {
+  margin: 0 0 20px;
+  line-height: 0;
+}
+
+.agov-pip-term-success-icon {
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(4, 120, 87, 0.25));
+}
+
+.agov-pip-term-success-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.25;
+}
+
+.agov-pip-term-success-text {
+  margin: 0;
+  max-width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.agov-pip-term-success-text--sub {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.agov-pip-term-success-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.agov-pip-term-success-done {
+  min-width: 120px;
+  padding: 10px 36px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid #096D49 !important;
+  background: #096D49 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-term-success-done:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-pip-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-pip-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  max-height: min(90vh, 900px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 22px 22px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-pip-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.agov-pip-pip-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.3;
+}
+
+.agov-pip-pip-close {
+  flex-shrink: 0;
+  margin: -4px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-pip-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-pip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.agov-pip-pip-row-dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-width: 0;
+}
+
+.agov-pip-pip-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.agov-pip-pip-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.agov-pip-pip-input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  outline: none;
+  background: #fff;
+}
+
+.agov-pip-pip-input::placeholder {
+  color: #9ca3af;
+}
+
+.agov-pip-pip-input:focus {
+  border-color: #096D49;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.agov-pip-pip-quill-wrap {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.agov-pip-pip-quill {
+  display: block;
+  font-family: inherit;
+  font-size: 14px;
+  color: #111827;
+}
+
+.agov-pip-pip-quill .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  flex-wrap: wrap;
+  gap: 2px 0;
+}
+
+.agov-pip-pip-quill .ql-container {
+  font-family: inherit;
+  font-size: 14px;
+  min-height: 200px;
+  border: none;
+  border-top: none;
+}
+
+.agov-pip-pip-quill .ql-editor {
+  min-height: 200px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.agov-pip-pip-quill .ql-editor.ql-blank::before {
+  color: #9ca3af;
+  font-style: normal;
+  left: 12px;
+}
+
+.agov-pip-pip-dp-popper {
+  z-index: 5000 !important;
+}
+
+.agov-pip-confirm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1230;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-confirm-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 22px 20px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-confirm-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.agov-pip-confirm-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.3;
+}
+
+.agov-pip-confirm-close {
+  flex-shrink: 0;
+  margin: -4px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-confirm-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-confirm-text {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.agov-pip-confirm-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.agov-pip-confirm-btn {
+  padding: 10px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid #096D49 !important;
+  background: #096D49 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-confirm-btn:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-gcl-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1225;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-gcl-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 22px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-gcl-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.agov-pip-gcl-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.agov-pip-gcl-close {
+  flex-shrink: 0;
+  margin: -4px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-gcl-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-gcl-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.agov-pip-gcl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.agov-pip-gcl-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.agov-pip-gcl-dropdown .app-dropdown-btn {
+  width: 100%;
+}
+
+.agov-pip-gcl-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  line-height: 1.4;
+  outline: none;
+  background: #fff;
+}
+
+.agov-pip-gcl-input::placeholder {
+  color: #9ca3af;
+}
+
+.agov-pip-gcl-input:focus {
+  border-color: #096D49;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.agov-pip-gcl-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 88px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  line-height: 1.5;
+  outline: none;
+  resize: none;
+  background: #fff;
+}
+
+.agov-pip-gcl-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.agov-pip-gcl-textarea:focus {
+  border-color: #096D49;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.agov-pip-gcl-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.agov-pip-gcl-dp-popper {
+  z-index: 5000 !important;
+}
+
+.agov-pip-gcl-preview-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1230;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-gcl-preview-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  max-height: min(92vh, 980px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 12px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-gcl-preview-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.agov-pip-gcl-preview-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-gcl-preview-paper {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 24px 28px 18px;
+}
+
+.agov-pip-gcl-preview-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.agov-pip-gcl-preview-rc {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.agov-pip-gcl-preview-logo {
+  width: 235px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.agov-pip-gcl-preview-title {
+  margin: 6px 0 8px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.agov-pip-gcl-preview-center {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.agov-pip-gcl-preview-name {
+  margin-bottom: 14px;
+}
+
+.agov-pip-gcl-preview-text {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #374151;
+}
+
+.agov-pip-gcl-preview-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.agov-pip-gcl-preview-list li {
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #374151;
+}
+
+.agov-pip-gcl-preview-subline {
+  margin-top: 4px;
+}
+
+.agov-pip-gcl-preview-bullets {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+}
+
+.agov-pip-gcl-preview-bullets li {
+  margin-bottom: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.agov-pip-gcl-preview-text--ack {
+  margin-top: 8px;
+}
+
+.agov-pip-gcl-preview-sign {
+  margin-top: 12px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.agov-pip-gcl-preview-sign-col {
+  min-width: 0;
+}
+
+.agov-pip-gcl-preview-sign-head {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.agov-pip-gcl-preview-sign-line {
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #6b7280;
+  font-size: 11px;
+  color: #374151;
+}
+
+.agov-pip-gcl-preview-signature-img {
+  display: inline-block;
+  height: 28px;
+  max-width: 140px;
+  object-fit: contain;
+  vertical-align: bottom;
+  margin-left: 6px;
+}
+
+.agov-pip-gcl-preview-sign-role {
+  margin: -2px 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
+}
+
+.agov-pip-gcl-preview-actions {
+  margin-top: 100px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.agov-pip-gcl-preview-download {
+  padding: 10px 18px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+  border: 1px solid #111827 !important;
+  background: #fff !important;
+  color: #111827 !important;
+}
+
+.agov-pip-gcl-preview-forward {
+  padding: 10px 18px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+  border: 1px solid #096d49 !important;
+  background: #096d49 !important;
+  color: #fff !important;
+}
+
+.agov-pip-gcl-preview-forward:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-forward-success-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1232;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-forward-success-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 18px 18px 16px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-forward-success-head {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 32px;
+  margin-bottom: 8px;
+}
+
+.agov-pip-forward-success-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.agov-pip-forward-success-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.agov-pip-forward-success-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-forward-success-text {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #6b7280;
+}
+
+.agov-pip-forward-success-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.agov-pip-forward-success-ok {
+  min-width: 90px;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid #096D49 !important;
+  background: #096D49 !important;
+  color: #fff !important;
+}
+
+.agov-pip-forward-success-ok:hover {
+  background: #6BA792 !important;
+  border-color: #6BA792 !important;
+}
+
+.agov-pip-term-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1235;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.agov-pip-term-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+  max-height: min(92vh, 900px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2), 0 8px 20px rgba(15, 23, 42, 0.1);
+  padding: 20px 22px 22px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.agov-pip-term-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.agov-pip-term-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.3;
+}
+
+.agov-pip-term-close {
+  flex-shrink: 0;
+  margin: -4px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agov-pip-term-close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.agov-pip-term-kicker {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.agov-pip-term-stepper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  margin: 0 0 20px;
+  min-width: 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.agov-pip-term-step {
+  text-align: center;
+  padding: 0 6px 0;
+  min-width: 0;
+}
+
+.agov-pip-term-step-text {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  color: #9ca3af;
+}
+
+.agov-pip-term-step--progress .agov-pip-term-step-text {
+  color: #374151;
+  font-weight: 600;
+}
+
+.agov-pip-term-step--active .agov-pip-term-step-text {
+  color: #111827;
+  font-weight: 700;
+}
+
+.agov-pip-term-step--future .agov-pip-term-step-text {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.agov-pip-term-step-bar {
+  display: block;
+  height: 2px;
+  border-radius: 1px 1px 0 0;
+  background: #e5e7eb;
+  margin: 0 -2px;
+}
+
+.agov-pip-term-step--progress .agov-pip-term-step-bar {
+  background: #096D49;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+}
+
+.agov-pip-term-step--active .agov-pip-term-step-bar {
+  background: #096D49;
+  height: 4px;
+}
+
+.agov-pip-term-step--future .agov-pip-term-step-bar {
+  background: #e5e7eb;
+  height: 2px;
+  border-radius: 1px 1px 0 0;
+}
+
+.agov-pip-term-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.agov-pip-term-warn-icon {
+  flex-shrink: 0;
+  line-height: 0;
+  margin-top: 1px;
+}
+
+.agov-pip-term-warn-body {
+  min-width: 0;
+}
+
+.agov-pip-term-warn-heading {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #7f1d1d;
+}
+
+.agov-pip-term-warn-name {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.agov-pip-term-warn-id {
+  margin: 0;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.agov-pip-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.agov-pip-term-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.agov-pip-term-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.agov-pip-term-required {
+  color: #dc2626;
+  margin-left: 1px;
+}
+
+.agov-pip-term-warning {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.agov-pip-term-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  line-height: 1.5;
+  outline: none;
+  resize: vertical;
+  background: #fff;
+}
+
+.agov-pip-term-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.agov-pip-term-textarea:focus {
+  border-color: #096D49;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.agov-pip-term-dp-popper {
+  z-index: 5000 !important;
+}
+
+.agov-pip-term-exit {
+  margin-bottom: 20px;
+}
+
+.agov-pip-term-exit-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.agov-pip-term-exit-check {
+  flex-shrink: 0;
+  line-height: 0;
+  margin-top: 1px;
+}
+
+.agov-pip-term-exit-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #9a3412;
+}
+
+.agov-pip-term-exit-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #7c2d12;
+}
+
+.agov-pip-term-na-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.agov-pip-term-na {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  min-width: 0;
+  flex: 1;
+}
+
+.agov-pip-term-na-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.agov-pip-term-na-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 22px;
+  background: #e5e7eb;
+  border-radius: 11px;
+  transition: background 0.2s ease;
+}
+
+.agov-pip-term-na-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.agov-pip-term-na-input:checked + .agov-pip-term-na-switch {
+  background: #096D49;
+}
+
+.agov-pip-term-na-input:checked + .agov-pip-term-na-switch::after {
+  transform: translateX(18px);
+}
+
+.agov-pip-term-na-input:focus-visible + .agov-pip-term-na-switch {
+  outline: 2px solid #096D49;
+  outline-offset: 2px;
+}
+
+.agov-pip-term-na-label {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.4;
+}
+
+.agov-pip-term-hint {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid #9ca3af;
+  background: #fff;
+  color: #6b7280;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+  cursor: default;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.agov-pip-exit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agov-pip-exit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.agov-pip-exit-check {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #096D49;
+}
+
+.agov-pip-exit-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.agov-pip-exit-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.agov-pip-exit-item-sub {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+.agov-pip-term-body--review {
+  margin-bottom: 20px;
+}
+
+.agov-pip-term-review-hint {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.agov-pip-term-btn-prev {
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-term-btn-prev:hover {
+  background: #e5e7eb !important;
+}
+
+.agov-pip-term-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.agov-pip-term-final {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  margin-bottom: 20px;
+}
+
+.agov-pip-term-final-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.agov-pip-term-final-warn-icon {
+  flex-shrink: 0;
+  line-height: 0;
+  margin-top: 1px;
+}
+
+.agov-pip-term-final-warn-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.35;
+}
+
+.agov-pip-term-final-warn-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.agov-pip-term-panel {
+  padding: 14px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.agov-pip-term-panel-title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.agov-pip-term-dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agov-pip-term-dl-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.agov-pip-term-dl-row dt {
+  margin: 0;
+  font-weight: 600;
+  color: #374151;
+}
+
+.agov-pip-term-dl-row dd {
+  margin: 0 0 0 auto;
+  font-weight: 700;
+  color: #111827;
+  text-align: right;
+}
+
+.agov-pip-term-final-clearance {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.agov-pip-term-final-clearance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1f2937;
+}
+
+.agov-pip-term-final-clearance-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.agov-pip-term-final-clearance-label {
+  min-width: 0;
+  flex: 1;
+}
+
+.agov-pip-term-final-check {
+  flex-shrink: 0;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agov-pip-term-attest {
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.agov-pip-term-attest-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.agov-pip-term-attest-check {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #096D49;
+}
+
+.agov-pip-term-attest-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.agov-pip-term-btn-terminate {
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border: 1px solid #dc2626 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agov-pip-term-btn-terminate:hover {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+}
+
+.agov-pip-pip-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+/* Improve PDF generation quality */
+.agov-pip-gcl-preview-paper {
+    background: white;
+    padding: 20px;
+    width: 800px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Ensure proper font rendering in PDF */
+.agov-pip-gcl-preview-paper * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+}
+
+@media (max-width: 640px) {
+  .agov-pip-execute-wrap {
+    width: 100%;
+  }
+
+  .agov-pip-pip-row-dates {
+    grid-template-columns: 1fr;
+  }
+
+  .agov-pip-execute {
+    width: 100%;
+  }
+
+  .agov-pip-execute-menu {
+    left: 0;
+    right: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .agov-pip-execute-item {
+    white-space: normal;
+  }
+}

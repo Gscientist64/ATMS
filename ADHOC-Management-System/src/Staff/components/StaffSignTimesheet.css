@@ -1,0 +1,569 @@
+.staff-sign-timesheet-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 24px;
+}
+
+.staff-sign-timesheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.staff-sign-timesheet-user {
+  min-width: 0;
+}
+
+.staff-sign-timesheet-name {
+  margin: 0 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.staff-sign-timesheet-id {
+  margin: 0;
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.staff-sign-timesheet-cancel {
+  flex-shrink: 0;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 8px 18px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+
+.staff-sign-timesheet-cancel:hover {
+  background: #f9fafb !important;
+  border-color: #9ca3af !important;
+}
+
+.staff-sign-timesheet-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.staff-sign-timesheet-card-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.staff-sign-timesheet-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.staff-sign-timesheet-summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.staff-sign-timesheet-period {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.staff-sign-timesheet-working-days {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.staff-sign-timesheet-hours-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.staff-sign-timesheet-card--grid {
+  padding-bottom: 24px;
+}
+
+.staff-sign-timesheet-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  user-select: none;
+}
+
+.staff-sign-timesheet-select-all input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #096d49;
+  cursor: pointer;
+}
+
+.staff-sign-timesheet-grid {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.staff-sign-timesheet-grid-row {
+  display: grid;
+  grid-template-columns: 88px repeat(7, minmax(0, 1fr));
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.staff-sign-timesheet-grid-row:last-child {
+  border-bottom: none;
+}
+
+.staff-sign-timesheet-week-label {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+}
+
+.staff-sign-timesheet-day-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 72px;
+  padding: 12px 8px;
+  text-align: center;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+.staff-sign-timesheet-day-cell:last-child {
+  border-right: none;
+}
+
+.staff-sign-timesheet-day-cell--empty {
+  background: #fafafa;
+}
+
+.staff-sign-timesheet-day-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  line-height: 1.2;
+}
+
+.staff-sign-timesheet-day-hours-input {
+  width: 100%;
+  max-width: 56px;
+  margin: 0;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.2;
+  text-align: center;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.staff-sign-timesheet-day-hours-input:hover {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+}
+
+.staff-sign-timesheet-day-hours-input:focus {
+  outline: none;
+  border-color: #096d49;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.12);
+}
+
+.staff-sign-timesheet-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.staff-sign-timesheet-continue-btn {
+  background: #096d49 !important;
+  color: #ffffff !important;
+  border: 1px solid #096d49 !important;
+  border-radius: 8px !important;
+  padding: 12px 28px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.staff-sign-timesheet-continue-btn:hover {
+  background: #075a3c !important;
+  border-color: #075a3c !important;
+}
+
+@media (max-width: 900px) {
+  .staff-sign-timesheet-grid-row {
+    grid-template-columns: 72px repeat(7, minmax(64px, 1fr));
+    overflow-x: auto;
+  }
+
+  .staff-sign-timesheet-grid {
+    overflow-x: auto;
+  }
+}
+
+.staff-ts-confirm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.staff-ts-confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.staff-ts-confirm-layer.is-visible .staff-ts-confirm-backdrop {
+  opacity: 1;
+}
+
+.staff-ts-confirm-dialog {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+  padding: 24px 28px 28px;
+  transform: translateY(100vh);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.staff-ts-confirm-dialog.is-visible {
+  transform: translateY(0);
+}
+
+.staff-ts-confirm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.staff-ts-confirm-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.35;
+}
+
+.staff-ts-confirm-close {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.staff-ts-confirm-close:hover {
+  color: #6b7280;
+}
+
+.staff-ts-confirm-message {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+.staff-ts-confirm-summary {
+  background: #eef6f1;
+  border-radius: 10px;
+  padding: 16px 18px 18px;
+  margin-bottom: 24px;
+}
+
+.staff-ts-confirm-summary-title {
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d1ddd6;
+  font-size: 15px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.staff-ts-confirm-summary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.staff-ts-confirm-summary-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.staff-ts-confirm-summary-list strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+.staff-ts-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.staff-ts-confirm-cancel-btn {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 10px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.staff-ts-confirm-cancel-btn:hover {
+  background: #f9fafb !important;
+  border-color: #9ca3af !important;
+}
+
+.staff-ts-confirm-submit-btn {
+  background: #096d49 !important;
+  color: #ffffff !important;
+  border: 1px solid #096d49 !important;
+  border-radius: 8px !important;
+  padding: 10px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+}
+
+.staff-ts-confirm-submit-btn:hover {
+  background: #075a3c !important;
+  border-color: #075a3c !important;
+}
+
+.staff-ts-success-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.staff-ts-success-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.staff-ts-success-layer.is-visible .staff-ts-success-backdrop {
+  opacity: 1;
+}
+
+.staff-ts-success-dialog {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: translateY(100vh);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: auto;
+}
+
+.staff-ts-success-dialog.is-visible {
+  transform: translateY(0);
+}
+
+.staff-ts-success-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 2;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 22px;
+  line-height: 1;
+  padding: 4px 6px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.staff-ts-success-close:hover {
+  color: #6b7280;
+}
+
+.staff-ts-success-icon {
+  color: #096d49;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.staff-ts-success-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.3;
+}
+
+.staff-ts-success-message {
+  margin: 0 0 28px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #6b7280;
+  max-width: 320px;
+}
+
+.staff-ts-success-okay-btn {
+  position: relative;
+  z-index: 2;
+  background: #096d49 !important;
+  color: #ffffff !important;
+  border: 1px solid #096d49 !important;
+  border-radius: 8px !important;
+  padding: 12px 48px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  min-width: 140px;
+  pointer-events: auto;
+}
+
+.staff-ts-success-okay-btn:hover {
+  background: #075a3c !important;
+  border-color: #075a3c !important;
+}
+
+@media (max-width: 640px) {
+  .staff-ts-success-layer {
+    padding: 16px;
+  }
+
+  .staff-ts-success-dialog {
+    padding: 32px 20px 24px;
+  }
+
+  .staff-ts-success-okay-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .staff-ts-confirm-layer {
+    padding: 16px;
+  }
+
+  .staff-ts-confirm-dialog {
+    padding: 20px 18px 22px;
+  }
+
+  .staff-ts-confirm-actions {
+    flex-direction: column-reverse;
+  }
+
+  .staff-ts-confirm-cancel-btn,
+  .staff-ts-confirm-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .staff-sign-timesheet-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .staff-sign-timesheet-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .staff-sign-timesheet-card {
+    padding: 16px;
+  }
+
+  .staff-sign-timesheet-footer {
+    justify-content: stretch;
+  }
+
+  .staff-sign-timesheet-continue-btn {
+    width: 100%;
+  }
+}

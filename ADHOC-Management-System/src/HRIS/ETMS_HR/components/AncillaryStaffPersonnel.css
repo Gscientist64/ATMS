@@ -1,0 +1,454 @@
+.asp-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+}
+
+.asp-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.asp-list-status.danger {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+.asp-status-pill.terminated {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+/* For list view */
+.asp-list-status.warning {
+  background-color: #fffbeb;
+  color: #92400e;
+}
+
+/* For grid view pill */
+.asp-status-pill.onpip {
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.asp-status-pill.terminationpending {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.asp-status-pill.expiringsoon {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* For list view */
+.asp-list-status.terminationpending {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.asp-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 4px;
+}
+
+.asp-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.asp-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  border: 1px solid #eef0f3;
+  padding: 18px 18px 20px;
+}
+
+.asp-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.asp-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.asp-toolbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.asp-search {
+  position: relative;
+  min-width: 240px;
+}
+
+.asp-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.asp-search-input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px 10px 36px;
+  font-size: 13px;
+  outline: none;
+}
+
+.asp-search-input:focus {
+  border-color: #3e8e75;
+  box-shadow: 0 0 0 2px rgba(62, 142, 117, 0.2);
+}
+
+.asp-dropdown {
+  min-width: 120px;
+}
+
+.asp-dropdown-btn {
+  min-width: 120px;
+}
+
+.asp-view-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.asp-toggle-btn {
+  padding: 9px 10px;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+}
+
+.asp-toggle-btn.active {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.asp-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  padding: 10px 2px 2px;
+}
+
+.asp-list-wrap {
+  margin-top: 10px;
+  border: 1px solid #eef0f3;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.asp-list-head {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.1fr 0.8fr 1fr;
+  gap: 16px;
+  padding: 10px 14px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.asp-list-th-action {
+  text-align: center;
+}
+
+.asp-list-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.asp-list-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.1fr 0.8fr 1fr;
+  gap: 16px;
+  padding: 16px 14px;
+  align-items: center;
+  border-top: 1px solid #f3f4f6;
+}
+
+.asp-list-td {
+  font-size: 12px;
+  color: #374151;
+}
+
+.asp-list-name {
+  color: #111827;
+  font-weight: 500;
+}
+
+.asp-list-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.asp-list-status.success {
+  background: #ecfdf3;
+  color: #047857;
+}
+
+.asp-list-status.danger {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.asp-list-flags {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.asp-list-none {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.asp-list-action {
+  display: flex;
+  justify-content: center;
+}
+
+.asp-list-view-btn {
+  background: #ffffff;
+  border: 1px solid rgba(62, 142, 117, 0.35);
+  color: #3e8e75;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.asp-list-view-btn:hover {
+  border-color: #3e8e75;
+  background: #f3faf7;
+}
+
+.asp-person-card {
+  border: 1px solid #eef0f3;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 12px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 212px;
+  position: relative;
+}
+
+.asp-status-pill {
+  align-self: flex-start;
+  background: #ecfdf3;
+  color: #047857;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.asp-avatar {
+  margin-top: 12px;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: #096D49;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.asp-name {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.asp-role {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.asp-staffid {
+  margin-top: 6px;
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.asp-view-details-btn {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 12px;
+  color: #3e8e75;
+  background: transparent;
+  border: none;
+  font-weight: 500;
+}
+
+.asp-view-details-btn:hover {
+  text-decoration: underline;
+}
+
+.asp-pagination-outer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+  padding-right: 4px;
+}
+
+.asp-page-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asp-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.asp-page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.asp-page-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  font-size: 12px;
+}
+
+.asp-page-num.active {
+  border-color: #3e8e75;
+  color: #3e8e75;
+  box-shadow: 0 0 0 1px rgba(62, 142, 117, 0.25);
+}
+
+.asp-page-dots {
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 0 4px;
+}
+
+@media (max-width: 1200px) {
+  .asp-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .asp-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .asp-toolbar-right {
+    width: 100%;
+  }
+
+  .asp-search {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .asp-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .asp-list-wrap {
+    overflow-x: auto;
+  }
+
+  .asp-list-head,
+  .asp-list-row {
+    min-width: 860px;
+  }
+}
+
+@media (max-width: 640px) {
+  .asp-title {
+    font-size: 22px;
+  }
+
+  .asp-card {
+    padding: 14px 12px 12px;
+  }
+
+  .asp-search {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .asp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .asp-pagination-outer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .asp-grid {
+    grid-template-columns: 1fr;
+  }
+}

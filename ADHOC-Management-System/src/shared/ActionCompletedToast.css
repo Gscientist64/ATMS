@@ -1,0 +1,112 @@
+.action-completed-toast-layer {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 2100;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  
+  .action-completed-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: min(360px, calc(100vw - 48px));
+    padding: 14px 16px;
+    background: #d8f3e5;
+    border: 1px solid #9fd9b8;
+    border-radius: 10px;
+    box-shadow: 0 10px 28px rgba(9, 109, 73, 0.14);
+    animation: actionCompletedToastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .action-completed-toast.is-exiting {
+    animation: actionCompletedToastOut 0.25s ease forwards;
+  }
+  
+  @keyframes actionCompletedToastIn {
+    from {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes actionCompletedToastOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+  }
+  
+  .action-completed-toast-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #096d49;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  
+  .action-completed-toast-message {
+    margin: 0;
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #065f46;
+  }
+  
+  .action-completed-toast-close {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: #047857;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0 2px;
+    cursor: pointer;
+  }
+  
+  .action-completed-toast-close:hover {
+    color: #064e3b;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .action-completed-toast {
+      animation: none;
+    }
+  
+    .action-completed-toast.is-exiting {
+      animation: none;
+      opacity: 0;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .action-completed-toast-layer {
+      top: 16px;
+      right: 0;
+      left: 0;
+      justify-content: center;
+    }
+  
+    .action-completed-toast {
+      width: calc(100% - 24px);
+    }
+  }

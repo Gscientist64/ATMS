@@ -1,0 +1,603 @@
+.staff-onb-wizard {
+  display: flex;
+  align-items: flex-start;
+  gap: 56px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 40px 48px;
+  box-sizing: border-box;
+}
+
+.staff-onb-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.staff-onb-wizard-sidebar {
+  flex: 0 0 240px;
+  padding-top: 8px;
+}
+
+.staff-onb-step-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-onb-step-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-onb-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.staff-onb-step-circle {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  box-sizing: border-box;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.staff-onb-step.is-upcoming .staff-onb-step-circle {
+  background: #fff;
+  color: #9ca3af;
+  border: 1px solid #d1d5db;
+}
+
+.staff-onb-step.is-active .staff-onb-step-circle {
+  background: #ffffff;
+  color: #096d49;
+  border: 2px solid #096d49;
+}
+
+.staff-onb-step.is-complete .staff-onb-step-circle {
+  background: #096d49;
+  color: #ffffff;
+  border: 2px solid #096d49;
+}
+
+.staff-onb-step-check-icon {
+  display: block;
+}
+
+.staff-onb-step-label {
+  font-size: 13px;
+  line-height: 1.35;
+  padding-top: 6px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.staff-onb-step.is-active .staff-onb-step-label {
+  color: #096d49;
+  font-weight: 700;
+}
+
+.staff-onb-step.is-complete .staff-onb-step-label {
+  color: #096d49;
+  font-weight: 600;
+}
+
+.staff-onb-step-line.is-complete {
+  background: #096d49;
+}
+
+.staff-onb-step-line {
+  display: block;
+  width: 1px;
+  min-height: 20px;
+  margin: 4px 0 4px 15px;
+  background: #e5e7eb;
+}
+
+.staff-onb-wizard-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 640px;
+}
+
+.staff-onb-wizard-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.staff-onb-wizard-panel--placeholder {
+  padding-top: 4px;
+}
+
+.staff-onb-wizard-form-title {
+  margin: 0 0 6px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #096d49;
+  line-height: 1.2;
+}
+
+.staff-onb-wizard-form-title--dark {
+  color: #111827;
+}
+
+.staff-onb-instruction {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.5;
+}
+
+.staff-onb-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.staff-onb-subsection-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.35;
+}
+
+.staff-onb-section-title {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.45;
+}
+
+.staff-onb-section-title--certs {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.staff-onb-wizard-placeholder-text {
+  margin: 0;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.staff-onb-wizard-row {
+  display: grid;
+  gap: 16px;
+}
+
+.staff-onb-wizard-row--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.staff-onb-wizard-row--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.staff-onb-wizard-row--pension {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.staff-onb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.staff-onb-gender-field {
+  gap: 10px;
+}
+
+.staff-onb-legend {
+  padding: 0;
+  margin: 0 0 2px;
+  float: none;
+  width: 100%;
+}
+
+.staff-onb-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.staff-onb-label--muted {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.staff-onb-input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #111827;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.staff-onb-input::placeholder {
+  color: #9ca3af;
+}
+
+.staff-onb-input:focus {
+  border-color: #096d49;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.12);
+}
+
+.staff-onb-passport-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.staff-onb-passport-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.staff-onb-passport-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.staff-onb-upload-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #096d49 !important;
+  background: #ffffff !important;
+  border: 1px solid #096d49 !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+}
+
+.staff-onb-upload-btn:hover {
+  background: #f0faf5 !important;
+}
+
+.staff-onb-upload-btn--light {
+  background: #d8f3e5 !important;
+  border: 1px solid #d8f3e5 !important;
+  color: #096d49 !important;
+}
+
+.staff-onb-upload-btn--light:hover {
+  background: #c8ebd8 !important;
+  border-color: #c8ebd8 !important;
+}
+
+.staff-onb-cert-upload-field {
+  gap: 10px;
+}
+
+.staff-onb-cert-upload-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #096d49 !important;
+  background: #d8f3e5 !important;
+  border: 1px solid #d8f3e5 !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.staff-onb-cert-upload-btn:hover {
+  background: #c8ebd8 !important;
+  border-color: #c8ebd8 !important;
+}
+
+.staff-onb-cert-file-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+.staff-onb-cert-file-list li {
+  padding: 4px 0;
+}
+
+.staff-onb-submit-btn {
+  width: 50%;
+  margin-top: 16px;
+  background: #096d49;
+  color: #ffffff;
+  border: 1px solid #096d49;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.staff-onb-submit-btn:hover {
+  background: #075a3c;
+  border-color: #075a3c;
+}
+
+.staff-onb-dropdown.app-dropdown {
+  width: 100%;
+}
+
+.staff-onb-dropdown-btn {
+  width: 100%;
+  min-width: 0 !important;
+  justify-content: space-between !important;
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb !important;
+  background: #ffffff !important;
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #111827 !important;
+}
+
+.staff-onb-dropdown-btn .app-dropdown-label.placeholder {
+  color: #9ca3af;
+}
+
+.staff-onb-date-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.staff-onb-date-wrap .react-datepicker-wrapper,
+.staff-onb-date-wrap .react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+
+.staff-onb-input--date {
+  padding-right: 44px;
+  width: 100%;
+}
+
+.staff-onb-date-icon {
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+}
+
+.staff-onb-date-icon-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none !important;
+  background: transparent !important;
+  padding: 4px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: none !important;
+}
+
+.staff-onb-date-icon-btn:hover {
+  background: #f3f8f6 !important;
+}
+
+.staff-onb-date-icon-btn:hover .staff-onb-date-icon,
+.staff-onb-date-icon-btn:focus-visible .staff-onb-date-icon {
+  color: #096d49;
+}
+
+.staff-onb-gender-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+}
+
+.staff-onb-radio-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.staff-onb-radio-row input[type='radio'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #096d49;
+  cursor: pointer;
+}
+
+.staff-onb-save-btn {
+  width: 50%;
+  margin-top: 8px;
+  background: #096d49;
+  color: #ffffff;
+  border: 1px solid #096d49;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.staff-onb-save-btn:hover {
+  background: #075a3c;
+  border-color: #075a3c;
+}
+
+/* React datepicker — green theme (calendar popover) */
+.react-datepicker {
+  border: 1px solid #dbe6e1;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  font-family: inherit;
+}
+
+.react-datepicker__header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: #111827;
+}
+
+.react-datepicker__day-name {
+  color: #6b7280;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+  background-color: #f3f8f6;
+  color: #096d49;
+  border-radius: 0.3rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--keyboard-selected {
+  background-color: #096d49;
+  color: #ffffff;
+}
+
+.react-datepicker__day--today {
+  color: #096d49;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .staff-onb-wizard {
+    flex-direction: column;
+    gap: 32px;
+    padding: 0 20px 40px;
+  }
+
+  .staff-onb-wizard-sidebar {
+    flex: none;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .staff-onb-step-list {
+    flex-direction: row;
+    gap: 8px;
+    min-width: max-content;
+  }
+
+  .staff-onb-step-item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .staff-onb-step-line {
+    width: 24px;
+    min-height: 1px;
+    height: 1px;
+    margin: 0 4px;
+  }
+
+  .staff-onb-step-label {
+    white-space: nowrap;
+    max-width: 140px;
+  }
+
+  .staff-onb-wizard-main {
+    max-width: none;
+    width: 100%;
+  }
+
+  .staff-onb-wizard-row--3 {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-onb-wizard-row--pension {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .staff-onb-wizard-row--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-onb-wizard-form-title {
+    font-size: 24px;
+  }
+
+  .staff-onb-save-btn {
+    width: 100%;
+  }
+
+  .staff-onb-submit-btn {
+    width: 100%;
+  }
+}

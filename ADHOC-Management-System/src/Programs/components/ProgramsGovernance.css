@@ -1,0 +1,276 @@
+.pgg-page {
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .pgg-header {
+    margin-bottom: 18px;
+  }
+  
+  .pgg-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px;
+  }
+  
+  .pgg-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+  }
+  
+  .pgg-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .pgg-metric-card {
+    background: #ffffff;
+    border: 1px solid #eef0f3;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  }
+  
+  .pgg-metric-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #111827;
+  }
+  
+  .pgg-icon-green {
+    background: #ecfdf3;
+    color: #10b981;
+  }
+  
+  .pgg-icon-amber {
+    background: #fff7ed;
+    color: #f59e0b;
+  }
+  
+  .pgg-icon-red {
+    background: #fce7f3;
+    color: #fb7185;
+  }
+  
+  .pgg-metric-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .pgg-metric-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 600;
+  }
+  
+  .pgg-metric-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+  }
+  
+  .pgg-card {
+    background: #ffffff;
+    border: 1px solid #eef0f3;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  }
+  
+  .pgg-table-card {
+    padding: 14px 14px 6px;
+  }
+  
+  .pgg-staff-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .pgg-staff-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+  }
+  
+  .pgg-filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .pgg-filter-btn {
+    min-width: 200px;
+  }
+  
+  .pgg-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .pgg-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pgg-table thead {
+    background-color: #f3f4f6;
+  }
+  
+  .pgg-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    padding: 12px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  
+  .pgg-table th.pgg-th-action {
+    text-align: center;
+  }
+  
+  .pgg-table td {
+    padding: 14px 14px;
+    font-size: 13px;
+    color: #111827;
+    border-top: 1px solid #f3f4f6;
+    white-space: nowrap;
+  }
+  
+  .pgg-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  .pgg-pill-red {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+  
+  .pgg-table td.pgg-td-action {
+    text-align: center;
+  }
+  
+  .pgg-review-btn {
+    background-color: #096d49;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pgg-review-btn:hover {
+    background-color: #6ba792;
+  }
+  
+  .pgg-empty {
+    text-align: center;
+    padding: 28px 14px;
+    color: #9ca3af;
+    font-style: italic;
+  }
+  
+  .pgg-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 0 6px;
+  }
+  
+  .pgg-page-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  
+  .pgg-page-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  
+  .pgg-page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .pgg-page-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #111827;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pgg-page-num.active {
+    border-color: rgba(9, 109, 73, 0.55);
+    box-shadow: 0 0 0 1px rgba(9, 109, 73, 0.2);
+  }
+  
+  .pgg-page-dots {
+    color: #9ca3af;
+    font-size: 12px;
+    padding: 0 4px;
+  }
+  
+  @media (max-width: 960px) {
+    .pgg-metrics {
+      grid-template-columns: 1fr;
+    }
+  
+    .pgg-staff-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .pgg-filters {
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+  
+    .pgg-filter-btn {
+      min-width: 160px;
+    }
+  }
