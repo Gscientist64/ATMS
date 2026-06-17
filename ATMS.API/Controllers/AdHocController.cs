@@ -24,7 +24,7 @@ namespace ATMS.API.Controllers
             IUserService userService, 
             IPdfService pdfService)
         {
-            _context = context;  // ADD THIS LINE - was missing
+            _context = context;  
             _timesheetService = timesheetService;
             _userService = userService;
             _pdfService = pdfService;
@@ -50,7 +50,17 @@ namespace ATMS.API.Controllers
                     FileUrl = cl.FileUrl,
                     FileSize = cl.FileSize,
                     GeneratedAt = cl.GeneratedAt,
-                    GeneratedByUserId = cl.GeneratedByUserId
+                    GeneratedByUserId = cl.GeneratedByUserId,
+                    JobRoleLabel = cl.JobRoleLabel,
+                    ProjectLabel = cl.ProjectLabel,
+                    StartDate = cl.StartDate,
+                    EndDate = cl.EndDate,
+                    Location = cl.Location,
+                    ReportingLine = cl.ReportingLine,
+                    Salary = cl.Salary,
+                    ContractDate = cl.ContractDate,
+                    IsSigned = cl.IsSigned,
+                    SignedAt = cl.SignedAt
                 })
                 .ToListAsync();
             

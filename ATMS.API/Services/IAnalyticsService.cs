@@ -7,6 +7,6 @@ namespace ATMS.API.Services
 {
     public interface IAnalyticsService
     {
-        Task<HrisDashboardDto> GetHrisDashboardAsync();
+        Task<HrisDashboardDto> GetHrisDashboardAsync(string? type = null);
     }
 }

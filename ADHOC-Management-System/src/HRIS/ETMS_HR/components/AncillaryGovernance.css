@@ -1,0 +1,146 @@
+.agov-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 32px;
+  box-sizing: border-box;
+}
+
+.agov-header {
+  margin-bottom: 20px;
+}
+
+.agov-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.agov-subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.agov-card {
+  background: #fff;
+  border: 1px solid #e8eaef;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  padding: 20px 22px 24px;
+}
+
+.agov-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 16px;
+}
+
+.agov-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid #e8eaef;
+  background: #fafafa;
+}
+
+.agov-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  color: #111827;
+}
+
+.agov-table thead th {
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  background: #e8eaed;
+  padding: 12px 16px;
+  border: none;
+  font-size: 13px;
+}
+
+.agov-table thead th:first-child {
+  border-top-left-radius: 9px;
+}
+
+.agov-table thead th:last-child {
+  border-top-right-radius: 9px;
+}
+
+.agov-table tbody td {
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid #eef0f3;
+  vertical-align: middle;
+  color: #1f2937;
+}
+
+.agov-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.agov-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.agov-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+.agov-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.agov-badge.is-pip {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.agov-badge.is-renewal {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.agov-badge.is-termination {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.agov-review-btn {
+  background: transparent !important;
+  color: #096D49 !important;
+  border: 1px solid rgba(15, 118, 110, 0.45) !important;
+  border-radius: 8px !important;
+  padding: 6px 16px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.agov-review-btn:hover {
+  background: #f0fdfa !important;
+  border-color: #096D49 !important;
+  color: #0d5f59 !important;
+}
+
+@media (max-width: 640px) {
+  .agov-title {
+    font-size: 24px;
+  }
+}

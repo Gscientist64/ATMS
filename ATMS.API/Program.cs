@@ -73,6 +73,7 @@ builder.Services.AddScoped<IPipService, PipService>();
 builder.Services.AddScoped<ITerminationService, TerminationService>();
 builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
 builder.Services.AddScoped<IWorkCycleService, WorkCycleService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IGovernanceService, GovernanceService>();
 builder.Services.Configure<GraphSettings>(builder.Configuration.GetSection("MicrosoftGraph"));
@@ -86,6 +87,8 @@ builder.Services.Configure<LoginSettings>(builder.Configuration.GetSection("Logi
 
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -93,10 +96,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
-
 app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 // app.UseMiddleware<SessionTrackingMiddleware>();

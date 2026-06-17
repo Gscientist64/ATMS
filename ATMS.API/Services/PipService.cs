@@ -122,17 +122,55 @@ namespace ATMS.API.Services
 
         public async Task<List<PipDto>> GetAllActivePipsAsync()
         {
-            var pips = await _context.PerformanceImprovementPlans
-                .Include(p => p.User)
-                .Include(p => p.InitiatedBy)
-                .Include(p => p.Reviews)
-                .Where(p => p.Status == "Active")
-                .OrderByDescending(p => p.StartDate)
+            // Find all users currently marked "On PIP" and return their most recent PIP record.
+            // This covers users who have a PIP record as well as those whose contract status
+            // was set to "On PIP" but whose PIP record was completed/missing.
+            var pipUsers = await _context.Users
+                .Where(u => u.ContractStatus == "On PIP")
+                .Select(u => u.Id)
                 .ToListAsync();
 
             var dtos = new List<PipDto>();
-            foreach (var pip in pips)
-                dtos.Add(await MapToDto(pip));
+
+            foreach (var userId in pipUsers)
+            {
+                var pip = await _context.PerformanceImprovementPlans
+                    .Include(p => p.User)
+                    .Include(p => p.Reviews)
+                    .Where(p => p.UserId == userId)
+                    .OrderByDescending(p => p.StartDate)
+                    .FirstOrDefaultAsync();
+
+                if (pip != null)
+                {
+                    dtos.Add(await MapToDto(pip));
+                }
+                else
+                {
+                    // User is "On PIP" in contract status but has no PIP record yet
+                    var user = await _context.Users.FindAsync(userId);
+                    if (user != null)
+                    {
+                        dtos.Add(new PipDto
+                        {
+                            Id = 0,
+                            UserId = userId,
+                            UserFullName = user.FullName ?? "",
+                            UserEmployeeCode = user.EmployeeCode ?? "",
+                            UserDesignation = user.Designation ?? "",
+                            UserContractStatus = user.ContractStatus ?? "",
+                            StartDate = DateTime.UtcNow,
+                            EndDate = DateTime.UtcNow,
+                            Duration = "—",
+                            Objective = "PIP record pending creation",
+                            ActionPlan = "",
+                            Status = "Active",
+                            Reviews = new()
+                        });
+                    }
+                }
+            }
+
             return dtos;
         }
 
@@ -198,15 +236,20 @@ namespace ATMS.API.Services
             pip.CompletionOutcome = dto.Outcome;
             pip.UpdatedAt = DateTime.UtcNow;
 
-            if (dto.Outcome == "Success")
+            var user = await _context.Users.FindAsync(pip.UserId);
+
+            // Restore contract status based on outcome
+            var outcome = dto.Outcome?.ToLower();
+            if (outcome == "success" && user != null)
             {
-                var user = await _context.Users.FindAsync(pip.UserId);
-                if (user != null && user.ContractStatus == "On PIP")
-                {
-                    user.ContractStatus = "Active";
-                    await _context.SaveChangesAsync();
-                }
+                user.ContractStatus = user.ContractStatus == "On PIP" ? "Active" : user.ContractStatus;
             }
+            else if (outcome == "unsuccessful" && user != null)
+            {
+                // Unsuccessful - mark for termination review
+                user.ContractStatus = "Termination Pending";
+            }
+            // If outcome is "extend", keep PIP status as-is
 
             await _context.SaveChangesAsync();
 
@@ -235,6 +278,7 @@ namespace ATMS.API.Services
                 UserFullName = user?.FullName ?? "",
                 UserEmployeeCode = user?.EmployeeCode ?? "",
                 UserDesignation = user?.Designation ?? "",
+                UserContractStatus = user?.ContractStatus ?? "",
                 StartDate = pip.StartDate,
                 EndDate = pip.EndDate,
                 Duration = $"{duration} Days",

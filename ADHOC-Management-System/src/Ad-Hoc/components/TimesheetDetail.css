@@ -1,0 +1,529 @@
+.ts-detail-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+  padding-bottom: 24px;
+}
+
+.view-more-btn, .view-less-btn {
+  background: none;
+  border: none;
+  color: #2c7da0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+}
+
+.ts-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ts-detail-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ts-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #096D49;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.ts-back-link:hover {
+  text-decoration: underline;
+}
+
+.ts-detail-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.ts-detail-user {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.ts-detail-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ts-edit-draft-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fff;
+  color: #096D49;
+  border: 1px solid #096D49;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ts-edit-draft-btn:hover {
+  background-color: #096D49;
+  color: #fff;
+}
+
+.ts-download-pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: #333;
+  border: 1px solid transparent;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ts-download-pdf-btn:hover {
+  background-color: #F9FAFB;
+  border-color: #096D49;
+}
+
+.ts-detail-workflow {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.ts-workflow-tracker {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+}
+
+.ts-workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ts-workflow-stage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: #e0e0e0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid transparent;
+}
+
+.ts-workflow-stage.completed {
+  background-color: #096D49;
+  color: #fff;
+}
+
+.ts-workflow-stage.current {
+  background-color: #fff;
+  color: #096D49;
+  border-color: #096D49;
+}
+
+.ts-workflow-number {
+  display: block;
+}
+
+.ts-workflow-connector {
+  flex: 1;
+  height: 2px;
+  background-color: #e0e0e0;
+  min-width: 20px;
+  margin: 18px 8px 0;
+  align-self: flex-start;
+}
+
+.ts-workflow-label {
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.ts-workflow-label.current {
+  color: #096D49;
+  font-weight: 600;
+}
+
+.ts-detail-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.ts-detail-tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 0 24px;
+  background-color: #f9f9f9;
+}
+
+.ts-tab {
+  background: none;
+  border: none;
+  padding: 16px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  margin-bottom: -2px;
+}
+
+.ts-tab:hover {
+  color: #333;
+}
+
+.ts-tab.active {
+  color: #096D49;
+  border-bottom: 2px solid #096D49;
+}
+
+.ts-detail-content {
+  padding: 24px;
+}
+
+.ts-employee-info {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.ts-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ts-info-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.ts-info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.ts-detail-status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.ts-entries-table-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ts-entries-table {
+  width: auto;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.ts-entries-table thead {
+  background-color: #f5f5f5;
+}
+
+.ts-entries-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.ts-entries-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+
+.ts-entries-table .ts-hours-cell {
+  font-weight: 600;
+}
+
+.ts-total-hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: -1px;
+}
+
+.ts-total-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.ts-total-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.ts-comments-content {
+  padding: 24px;
+}
+
+.ts-comment-card {
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.ts-comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.ts-comment-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ts-comment-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #096D49;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ts-comment-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ts-comment-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.ts-comment-role {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+}
+
+.ts-comment-date {
+  font-size: 13px;
+  color: #666;
+}
+
+.ts-comment-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  padding-left: 56px;
+}
+
+@media (max-width: 768px) {
+  .ts-detail-page {
+    padding: 0 16px 24px;
+  }
+
+  .ts-detail-header {
+    flex-direction: column;
+  }
+
+  .ts-detail-title {
+    font-size: 20px;
+  }
+
+  .ts-detail-user {
+    font-size: 14px;
+  }
+
+  .ts-download-pdf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ts-detail-workflow {
+    padding: 16px;
+    margin: 0 -16px 16px;
+  }
+
+  .ts-workflow-tracker {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ts-workflow-step {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .ts-workflow-stage {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .ts-workflow-label {
+    font-size: 12px;
+    margin-top: 0;
+    margin-left: 12px;
+    text-align: left;
+  }
+
+  .ts-workflow-connector {
+    display: none;
+  }
+
+  .ts-detail-tabs {
+    padding: 0 12px;
+  }
+
+  .ts-tab {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .ts-detail-content {
+    padding: 16px;
+  }
+
+  .ts-employee-info {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ts-entries-table-container {
+    margin: 0;
+  }
+
+  .ts-entries-table {
+    width: auto;
+    min-width: 650px;
+  }
+
+  .ts-entries-table th,
+  .ts-entries-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .ts-total-hours-row {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ts-total-label,
+  .ts-total-value {
+    font-size: 13px;
+  }
+
+  .ts-comments-content {
+    padding: 16px;
+  }
+
+  .ts-comment-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ts-comment-date {
+    padding-left: 56px;
+    align-self: flex-start;
+  }
+
+  .ts-comment-text {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ts-detail-title {
+    font-size: 18px;
+  }
+
+  .ts-workflow-stage {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .ts-workflow-label {
+    font-size: 9px;
+  }
+
+  .ts-tab {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .ts-info-value,
+  .ts-detail-status-badge {
+    font-size: 13px;
+  }
+}

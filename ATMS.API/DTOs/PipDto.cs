@@ -33,6 +33,7 @@ namespace ATMS.API.DTOs
         public string UserFullName { get; set; } = string.Empty;
         public string UserEmployeeCode { get; set; } = string.Empty;
         public string UserDesignation { get; set; } = string.Empty;
+        public string UserContractStatus { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Duration { get; set; } = string.Empty;

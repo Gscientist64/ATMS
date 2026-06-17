@@ -1,0 +1,805 @@
+.sign-timesheet-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+  padding-bottom: 48px;
+}
+
+.sign-timesheet-header {
+  margin-bottom: 24px;
+}
+
+
+.view-more-btn, .view-less-btn {
+  background: none;
+  border: none;
+  color: #2c7da0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+}
+
+.sign-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-confirm-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+}
+
+.sign-confirm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sign-confirm-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.sign-confirm-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.sign-confirm-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.sign-confirm-body p {
+  margin: 0.5rem 0;
+}
+
+.sign-confirm-body p:first-child {
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.sign-confirm-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  justify-content: flex-end;
+}
+
+.sign-confirm-cancel,
+.sign-confirm-submit {
+  min-width: 96px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.sign-confirm-cancel {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.sign-confirm-submit {
+  background: #dc2626;
+  color: white;
+}
+
+.sign-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #096D49;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.sign-back-link:hover {
+  text-decoration: underline;
+}
+
+.sign-timesheet-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.sign-timesheet-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.sign-staff-card,
+.sign-entries-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.sign-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.sign-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.sign-expand-icon {
+  color: #666;
+  transition: transform 0.2s ease;
+}
+
+.sign-expand-icon.collapsed {
+  transform: rotate(180deg);
+}
+
+.sign-staff-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 0 24px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.sign-staff-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sign-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sign-info-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.sign-info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.sign-summary-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.sign-summary-month {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.sign-summary-sep {
+  width: 1px;
+  height: 20px;
+  background-color: #e0e0e0;
+}
+
+.sign-summary-days {
+  font-size: 15px;
+  color: #333;
+}
+
+.sign-summary-hours {
+  margin-left: auto;
+  background-color: #D1D5DC;
+  color: #333;
+  padding: 6px 33px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sign-entries-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.sign-add-entry-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #096D49;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sign-add-entry-btn:hover {
+  background-color: #6BA792;
+}
+
+.sign-entries-table-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 24px 16px;
+}
+
+.sign-entries-table {
+  width: auto;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.sign-entries-table thead {
+  background-color: #f5f5f5;
+}
+
+.sign-entries-table th {
+  padding: 14px 12px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.sign-entries-table td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+
+.sign-input {
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+  max-width: 120px;
+}
+
+.sign-input-sm {
+  max-width: 80px;
+}
+
+.sign-input-wide {
+  max-width: 100%;
+}
+
+.sign-input::placeholder {
+  color: #999;
+}
+
+.sign-hours-display {
+  font-weight: 600;
+  color: #333;
+}
+
+.sign-cell-value {
+  display: block;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.sign-cell-value-sm {
+  max-width: 80px;
+}
+
+.sign-cell-value-wide {
+  max-width: 100%;
+  min-height: 1.5em;
+}
+
+.sign-cell-placeholder {
+  color: #999;
+}
+
+.sign-action-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.sign-icon-btn {
+  background: none;
+  border: none;
+  color: #666;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-icon-btn:hover {
+  color: #333;
+}
+
+.sign-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.sign-total-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.sign-total-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.sign-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.sign-save-draft-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sign-save-draft-btn:hover {
+  background-color: #f9f9f9;
+}
+
+.sign-submit-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b0b0b0;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+  font-family: inherit;
+}
+
+.sign-submit-btn:not(:disabled) {
+  background-color: #096D49;
+  cursor: pointer;
+}
+
+.sign-submit-btn:not(:disabled):hover {
+  background-color: #6BA792;
+}
+
+/* Entry Details Modal */
+.entry-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.entry-modal {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.entry-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.entry-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.entry-modal-close {
+  background: none;
+  border: none;
+  color: #666;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-modal-close:hover {
+  color: #333;
+}
+
+.entry-modal-body {
+  padding: 24px;
+}
+
+.entry-modal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.entry-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entry-modal-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.entry-modal-input-wrap {
+  position: relative;
+}
+
+.entry-modal-input {
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.entry-modal-calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.entry-modal-input-wrap .entry-modal-input {
+  padding-right: 36px;
+}
+
+.entry-modal-input-wrap .entry-modal-date-input {
+  padding-right: 12px;
+}
+
+.entry-modal-input-wrap:has(.entry-modal-date-input) .entry-modal-calendar-icon {
+  display: none;
+}
+
+.entry-modal-editor {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.entry-modal-quill .ql-container {
+  min-height: 140px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.entry-modal-quill .ql-editor {
+  min-height: 140px;
+}
+
+.entry-modal-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.entry-toolbar-select {
+  padding: 4px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #fff;
+}
+
+.entry-toolbar-size {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.entry-toolbar-btn {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.entry-toolbar-btn:hover {
+  background-color: #e8e8e8;
+}
+
+.entry-toolbar-size-val {
+  font-size: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.entry-toolbar-divider {
+  width: 1px;
+  height: 18px;
+  background-color: #e0e0e0;
+  margin: 0 4px;
+}
+
+.entry-modal-textarea {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.entry-modal-textarea:focus {
+  outline: none;
+}
+
+.entry-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.entry-modal-done-btn {
+  background-color: #096D49;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.entry-modal-done-btn:hover {
+  background-color: #6BA792;
+}
+
+@media (max-width: 768px) {
+  .sign-timesheet-page {
+    padding: 0 16px 32px;
+  }
+
+  .sign-timesheet-title {
+    font-size: 22px;
+  }
+
+  .sign-staff-info {
+    grid-template-columns: 1fr;
+  }
+
+  .sign-summary-bar {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
+  .sign-summary-hours {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .sign-entries-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .sign-entries-table-container {
+    padding: 0 0 12px;
+  }
+
+  .sign-entries-table {
+    width: auto;
+    min-width: 650px;
+  }
+
+  .sign-entries-table th,
+  .sign-entries-table td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .sign-total-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .sign-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sign-save-draft-btn,
+  .sign-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .entry-modal-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== Confirm Submit Modal (Timesheet) ===== */
+
+.sign-modal-overlay {
+  backdrop-filter: blur(2px);
+}
+
+.sign-confirm-modal {
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  animation: signConfirmPop 0.15s ease-out;
+}
+
+.sign-confirm-header {
+  background: #f9fafb;
+}
+
+.sign-confirm-header h3 {
+  color: #333;
+  font-weight: 700;
+}
+
+.sign-confirm-close {
+  transition: color 0.2s ease;
+}
+
+.sign-confirm-close:hover {
+  color: #111;
+}
+
+.sign-confirm-body p:first-child {
+  background: #FEF3C7;
+  color: #92400E;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border-left: 3px solid #F59E0B;
+  text-align: left;
+}
+
+.sign-confirm-footer {
+  background: #fafafa;
+}
+
+/* Cancel button */
+.sign-confirm-cancel {
+  transition: background 0.2s ease;
+}
+
+.sign-confirm-cancel:hover {
+  background: #e5e7eb;
+}
+
+/* Submit button */
+.sign-confirm-submit {
+  background: #096D49;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sign-confirm-submit:hover {
+  background: #6BA792;
+}
+
+.sign-confirm-submit:active {
+  transform: scale(0.98);
+}
+
+/* Animation */
+@keyframes signConfirmPop {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

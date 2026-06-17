@@ -1,0 +1,133 @@
+.staff-onb-success-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f6f8;
+  padding: 48px 24px;
+  box-sizing: border-box;
+}
+
+.staff-onb-success-content {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.staff-onb-success-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.staff-onb-success-logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+
+.staff-onb-success-tagline {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #096d49;
+  line-height: 1.4;
+}
+
+.staff-onb-success-icon {
+  color: #096d49;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.staff-onb-success-reveal {
+  opacity: 0;
+  animation: staff-onb-success-fade-in 0.4s ease forwards;
+}
+
+.staff-onb-success-reveal--after-check {
+  animation-delay: 1.05s;
+  pointer-events: auto;
+}
+
+@keyframes staff-onb-success-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .staff-onb-success-reveal,
+  .staff-onb-success-reveal--after-check {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.staff-onb-success-title {
+  margin: 0 0 16px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.3;
+  max-width: 480px;
+}
+
+.staff-onb-success-message {
+  margin: 0 0 36px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #374151;
+  max-width: 440px;
+}
+
+.staff-onb-success-btn {
+  width: 100%;
+  max-width: 420px;
+  background: #096d49;
+  color: #ffffff;
+  border: 1px solid #096d49;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.staff-onb-success-btn:hover {
+  background: #075a3c;
+  border-color: #075a3c;
+}
+
+@media (max-width: 640px) {
+  .staff-onb-success-page {
+    padding: 32px 20px;
+  }
+
+  .staff-onb-success-brand {
+    margin-bottom: 32px;
+  }
+
+  .staff-onb-success-title {
+    font-size: 22px;
+  }
+
+  .staff-onb-success-message {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+}

@@ -1,0 +1,521 @@
+.asd-page {
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .asd-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #096d49;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .asd-name {
+    margin: 8px 0 2px;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #30343b;
+    font-weight: 500;
+  }
+  
+  .asd-role {
+    margin: 0 0 18px;
+    font-size: 15px;
+    color: #5f6672;
+    font-weight: 400;
+  }
+  
+  .asd-profile-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 215px 1fr;
+    gap: 20px;
+  }
+  
+  .asd-photo {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    background: linear-gradient(150deg, #565d68 0%, #a1a7b1 100%);
+  }
+  
+  .asd-profile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .asd-profile-img {
+    width: 100%;
+    height: 120%;
+    object-fit: fill;
+    max-height: 200px;
+    object-position: center;
+  }
+
+  .asd-profile-initials {
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    object-position: center;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .asd-profile-name {
+    margin: 0;
+    font-size: 30px;
+    color: #30343b;
+    font-weight: 600;
+  }
+  
+  .asd-actions-btn {
+    border: none;
+    background: transparent;
+    color: #30343b;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .asd-actions-dots {
+    display: inline-flex;
+  }
+  
+  .asd-divider {
+    margin: 14px 0 18px;
+    height: 1px;
+    background: #e9ecef;
+  }
+  
+  .asd-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 28px;
+  }
+  
+  .asd-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .asd-meta-label {
+    color: #5f6672;
+    font-size: 13px;
+  }
+  
+  .asd-meta-value {
+    color: #30343b;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .asd-status-pill {
+    display: inline-flex;
+    width: fit-content;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .asd-status-pill-active {
+    background: #e6f5ef;
+    color: #096d49;
+  }
+
+  .asd-status-pill-onpip {
+    background: #fffbeb;
+    color: #92400e;
+  }
+
+  .asd-status-pill-terminated {
+    background: #fef2f2;
+    color: #b91c1c;
+  }
+
+  .asd-status-pill-terminationpending {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  .asd-status-pill-expiringsoon {
+    background: #fef2f2;
+    color: #b91c1c;
+  }
+  
+  .asd-tabs {
+    margin: 20px 0;
+    background: #eff1f4;
+    border-radius: 999px;
+    padding: 6px;
+    display: inline-flex;
+    gap: 8px;
+  }
+  
+  .asd-tab {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #7d8490;
+    padding: 12px 24px;
+  }
+  
+  .asd-tab.active {
+    background: #ffffff;
+    color: #30343b;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  }
+  
+  .asd-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  
+  .asd-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 22px;
+  }
+  
+  .asd-card-title {
+    margin: 0;
+    font-size: 15px;
+    color: #30343b;
+    font-weight: 600;
+  }
+  
+  .asd-card-divider {
+    margin: 16px 0;
+    height: 1px;
+    background: #e9ecef;
+  }
+  
+  .asd-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 24px;
+  }
+  
+  .asd-fields-grid-contract {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .asd-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .asd-field-label {
+    color: #5f6672;
+    font-size: 12px;
+  }
+  
+  .asd-field-value {
+    color: #30343b;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .asd-edit-btn {
+    margin-top: 16px;
+    width: 100%;
+    border: none;
+    background: #f4f6f8;
+    color: #30343b;
+    border-radius: 8px;
+    font-size: 13px;
+    padding: 14px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .asd-empty-state {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 26px;
+    font-size: 13px;
+    color: #5f6672;
+  }
+  
+  .asd-timesheet-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  
+  .asd-timesheet-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .asd-timesheet-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 760px;
+  }
+  
+  .asd-timesheet-table thead th {
+    background: #eff1f4;
+    color: #8b93a1;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    padding: 7px 12px;
+  }
+  
+  .asd-timesheet-table thead th:first-child {
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  
+  .asd-timesheet-table thead th:last-child {
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
+  
+  .asd-timesheet-table tbody td {
+    color: #4b5563;
+    font-size: 12px;
+    padding: 14px 12px 10px;
+    vertical-align: middle;
+  }
+  
+  .asd-timesheet-status-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    background: #ddf4e8;
+    color: #1b8a5f;
+    font-size: 12px;
+    padding: 2px 7px;
+  }
+  
+  .asd-timesheet-view-btn {
+    background: transparent;
+    border: none;
+    color: #096d49;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0;
+  }
+  
+  .asd-timesheet-view-btn:hover {
+    text-decoration: underline;
+  }
+  
+  .asd-contract-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 18px 18px 16px;
+  }
+  
+  .asd-contract-title {
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: #30343b;
+    font-weight: 600;
+  }
+  
+  .asd-contract-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .asd-contract-item {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .asd-contract-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 16px;
+    bottom: -2px;
+    width: 1px;
+    background: #d9dee4;
+  }
+  
+  .asd-contract-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    flex: 0 0 14px;
+    margin-top: 3px;
+  }
+  
+  .asd-contract-dot-green {
+    background: #2f8a65;
+  }
+  
+  .asd-contract-dot-amber {
+    background: #f1ad35;
+  }
+  
+  .asd-contract-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .asd-contract-name {
+    font-size: 13px;
+    color: #30343b;
+    font-weight: 600;
+  }
+  
+  .asd-contract-label {
+    font-size: 13px;
+    color: #5f6672;
+  }
+  
+  .asd-contract-date {
+    font-size: 12px;
+    color: #9aa2ad;
+  }
+  
+  @media (max-width: 1200px) {
+    .asd-name {
+      font-size: 24px;
+    }
+  
+    .asd-role {
+      font-size: 14px;
+    }
+  
+    .asd-profile-name {
+      font-size: 24px;
+    }
+  
+    .asd-actions-btn {
+      font-size: 15px;
+    }
+  
+    .asd-meta-label {
+      font-size: 16px;
+    }
+  
+    .asd-meta-value {
+      font-size: 18px;
+    }
+  
+    .asd-status-pill {
+      font-size: 14px;
+    }
+  
+    .asd-tab {
+      font-size: 14px;
+      padding: 10px 16px;
+    }
+  
+    .asd-card-title {
+      font-size: 15px;
+    }
+  
+    .asd-field-label {
+      font-size: 16px;
+    }
+  
+    .asd-field-value {
+      font-size: 18px;
+    }
+  
+    .asd-edit-btn {
+      font-size: 18px;
+    }
+  
+    .asd-contract-title {
+      font-size: 15px;
+    }
+  
+    .asd-contract-name {
+      font-size: 13px;
+    }
+  
+    .asd-contract-label {
+      font-size: 13px;
+    }
+  
+    .asd-contract-date {
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .asd-profile-card {
+      grid-template-columns: 1fr;
+    }
+  
+    .asd-photo {
+      max-width: 240px;
+      height: 220px;
+    }
+  
+    .asd-meta-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  
+    .asd-cards {
+      grid-template-columns: 1fr;
+    }
+  
+    .asd-fields-grid-contract {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .asd-profile-top {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+  
+    .asd-profile-top .agov-pip-execute-wrap {
+      width: 100%;
+    }
+  
+    .asd-actions-btn {
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .asd-meta-grid,
+    .asd-fields-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .asd-tabs {
+      width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  
+    .asd-timesheet-card {
+      padding: 12px;
+    }
+  }

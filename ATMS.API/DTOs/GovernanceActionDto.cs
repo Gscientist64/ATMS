@@ -5,13 +5,15 @@ namespace ATMS.API.DTOs
     public class GovernanceActionDto
     {
         public int Id { get; set; }
-        public string Type { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
         public string StaffName { get; set; } = string.Empty;
         public string StaffRole { get; set; } = string.Empty;
-        public string InitiatedBy { get; set; } = string.Empty;
-        public DateTime InitiatedDate { get; set; }
+        public string RaisedBy { get; set; } = string.Empty;
+        public DateTime DateRaised { get; set; }
+        public string Justification { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
-        public string? Justification { get; set; }
-        public int TargetUserId { get; set; }
+        public string PublicId { get; set; } = string.Empty;
+        public string EmployeeCode { get; set; } = string.Empty;
+        public string StaffEmail { get; set; } = string.Empty;
     }
 }

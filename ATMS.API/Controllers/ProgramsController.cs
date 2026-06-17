@@ -237,6 +237,7 @@ namespace ATMS.API.Controllers
 
                 var query = _context.Timesheets
                     .Include(t => t.User)
+                        .ThenInclude(u => u.EcewsSupervisor)
                     .Where(t => staffIds.Contains(t.UserId));
                 
                 // Apply status filter
@@ -262,13 +263,20 @@ namespace ATMS.API.Controllers
                     .OrderByDescending(t => t.SubmittedAt)
                     .ToListAsync();
 
-                // Generate CSV export
+                // Generate CSV export - Updated columns with LGA
                 var csvBuilder = new StringBuilder();
-                csvBuilder.AppendLine("ID,Staff Name,Staff Email,Staff State,Month,Year,Status,Submitted Date,Total Hours,Total Days");
+                csvBuilder.AppendLine("Staff Name,Staff ID,Facility Name,LGA,ECEWS Supervisor,Month,Year,Status,Submitted Date,Total Hours,Total Days");
 
                 foreach (var t in timesheets)
                 {
-                    csvBuilder.AppendLine($"{t.Id},{t.User?.FullName},{t.User?.Email},{t.User?.State},{t.Month},{t.Year},{t.Status},{t.SubmittedAt:dd-MM-yyyy},{t.TotalHours},{t.TotalDaysWorked}");
+                    var staffName = t.User?.FullName ?? "";
+                    var staffId = t.User?.EmployeeCode ?? "";
+                    var facilityName = t.User?.HealthFacility ?? "";
+                    var lga = t.User?.LGA ?? "";
+                    var ecewsSupervisorName = t.User?.EcewsSupervisor?.FullName ?? "Not Assigned";
+                    
+                    // Escape quotes in fields that might contain commas
+                    csvBuilder.AppendLine($"\"{staffName}\",\"{staffId}\",\"{facilityName}\",\"{lga}\",\"{ecewsSupervisorName}\",{t.Month},{t.Year},{t.Status},{t.SubmittedAt:dd-MM-yyyy},{t.TotalHours},{t.TotalDaysWorked}");
                 }
 
                 var csvBytes = Encoding.UTF8.GetBytes(csvBuilder.ToString());
@@ -607,8 +615,8 @@ namespace ATMS.API.Controllers
                     CreatedAt = c.RaisedAt.ToString("dd-MM-yyyy HH:mm")
                 }).ToList();
 
-                // Check if GON approved (status ProgramsReview means GON approved)
                 bool gonApproved = timesheet.Status == "ProgramsReview" || timesheet.Status == "Approved";
+                bool ecewsApproved = timesheet.EcewsReviewedAt.HasValue;
                 bool gonFlagged = await _context.Concerns.AnyAsync(c => c.TargetUserId == timesheet.UserId && c.Status == "Open");
 
                 var detail = new ProgramsTimesheetDetailDto
@@ -625,7 +633,7 @@ namespace ATMS.API.Controllers
                     EcewsSupervisorName = timesheet.User.EcewsSupervisor?.FullName ?? "Not assigned",
                     GonApproved = gonApproved,
                     GonFlagged = gonFlagged,
-                    EcewsApproved = gonApproved,
+                    EcewsApproved = ecewsApproved,
                     Status = GetTimesheetStatusDisplay(timesheet.Status),
                     Entries = timesheet.Entries.Select(e => new ProgramsTimesheetEntryDto
                     {
@@ -758,6 +766,55 @@ namespace ATMS.API.Controllers
             {
                 _logger.LogError(ex, "Error declining timesheet {TimesheetId}", id);
                 return StatusCode(500, new { message = "An error occurred while declining timesheet" });
+            }
+        }
+
+        [HttpGet("search-supervisors")]
+        public async Task<IActionResult> SearchSupervisors([FromQuery] string searchTerm, [FromQuery] string type)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm.Length < 2)
+                {
+                    return Ok(new List<object>());
+                }
+                
+                var searchLower = searchTerm.ToLower();
+                
+                IQueryable<User> query = _context.Users;
+                
+                if (type == "ecews")
+                {
+                    query = query.Where(u => u.Role.Name == "EcewsSupervisor");
+                }
+                else if (type == "gon")
+                {
+                    query = query.Where(u => u.Role.Name == "GonSupervisor");
+                }
+                else
+                {
+                    return Ok(new List<object>());
+                }
+                
+                var supervisors = await query
+                    .Where(u => u.FullName.ToLower().Contains(searchLower) ||
+                                (u.EmployeeCode != null && u.EmployeeCode.ToLower().Contains(searchLower)))
+                    .Select(u => new
+                    {
+                        id = u.Id,
+                        name = u.FullName,
+                        employeeCode = u.EmployeeCode,
+                        state = u.State
+                    })
+                    .Take(10)
+                    .ToListAsync();
+                
+                return Ok(supervisors);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching supervisors");
+                return StatusCode(500, new { message = "An error occurred" });
             }
         }
 

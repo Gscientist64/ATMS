@@ -6,6 +6,13 @@ namespace ATMS.API.Services
 {
     public interface IConfigurationService
     {
+        // Departments
+        Task<List<DepartmentDto>> GetAllDepartmentsAsync();
+        Task<DepartmentDto> GetDepartmentByIdAsync(int id);
+        Task<DepartmentDto> CreateDepartmentAsync(CreateDepartmentDto dto, int userId);
+        Task<DepartmentDto> UpdateDepartmentAsync(int id, UpdateDepartmentDto dto, int userId);
+        Task<bool> DeleteDepartmentAsync(int id);
+        
         // Projects
         Task<List<ProjectDto>> GetAllProjectsAsync();
         Task<ProjectDto> GetProjectByIdAsync(int id);

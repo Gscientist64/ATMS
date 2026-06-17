@@ -1,0 +1,397 @@
+.gon-sup-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+}
+
+.gon-sup-header {
+  margin-bottom: 24px;
+}
+
+.gon-sup-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+}
+
+.gon-sup-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.gon-sup-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  padding: 20px 18px 18px;
+}
+
+.gon-sup-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gon-sup-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.gon-sup-filter {
+  position: relative;
+}
+
+.gon-sup-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.gon-sup-filter-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  min-width: 140px;
+  padding: 4px 0;
+  z-index: 20;
+}
+
+.gon-sup-filter-item {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 13px;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.gon-sup-filter-item:hover {
+  background-color: #f3f4f6;
+}
+
+.gon-sup-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gon-sup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gon-sup-table thead {
+  background-color: #f3f4f6;
+}
+
+.gon-sup-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.gon-sup-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #111827;
+  border-top: 1px solid #f3f4f6;
+}
+
+.gon-sup-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.gon-sup-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gon-sup-status-active {
+  background-color: #ecfdf3;
+  color: #047857;
+}
+
+.gon-sup-status-expiringsoon {
+  background-color: #fff7ed;
+  color: #ea580c;
+}
+
+.gon-sup-status-onpip {
+  background-color: #fffbeb;
+  color: #92400e;
+}
+
+.gon-sup-status-terminated {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.gon-sup-status-terminationpending {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.gon-sup-raise-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 9px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gon-sup-raise-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #fecaca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.gon-sup-raise-btn:hover {
+  background-color: #fee2e2;
+}
+
+@media (max-width: 640px) {
+  .gon-sup-page {
+    max-width: 100%;
+  }
+
+  .gon-sup-title {
+    font-size: 22px;
+  }
+
+  .gon-sup-card {
+    padding: 16px 12px;
+  }
+
+  .gon-sup-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .gon-sup-filter-btn {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .gon-sup-table th,
+  .gon-sup-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* Raise Concern Modal */
+.gon-sup-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.gon-sup-modal {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 420px;
+  max-width: calc(100% - 32px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  padding: 20px 24px 18px;
+}
+
+.gon-sup-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.gon-sup-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.gon-sup-modal-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.gon-sup-modal-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 16px;
+}
+
+.gon-sup-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.gon-sup-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gon-sup-modal-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.gon-sup-modal-select,
+.gon-sup-modal-textarea {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  font-family: inherit;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.gon-sup-modal-select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #9ca3af 50%),
+    linear-gradient(135deg, #9ca3af 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.gon-sup-modal-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.gon-sup-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.gon-sup-modal-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+}
+
+.gon-sup-modal-btn-cancel {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.gon-sup-modal-btn-submit {
+  background-color: #f97373;
+  color: #fff;
+}
+
+.gon-sup-modal-btn-submit:hover {
+  background-color: #ef4444;
+}
+
+.gon-sup-success-modal {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 340px;
+  max-width: calc(100% - 32px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  padding: 20px 24px 18px;
+  position: relative;
+  text-align: center;
+}
+
+.gon-sup-success-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+}
+
+.gon-sup-success-body {
+  padding: 16px 0 20px;
+}
+
+.gon-sup-success-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.gon-sup-success-message {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.gon-sup-success-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.gon-sup-success-ok-btn {
+  padding: 9px 28px;
+  border-radius: 9px;
+  border: none;
+  background-color: #096D49;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gon-sup-success-ok-btn:hover {
+  background-color: #6BA792;
+}
+
+

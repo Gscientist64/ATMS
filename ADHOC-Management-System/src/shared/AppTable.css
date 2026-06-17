@@ -1,0 +1,65 @@
+.app-table-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.app-table-empty-cell {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.app-table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.app-table-page-btn {
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.app-table-page-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+
+.app-table-page-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.app-table-page-info {
+  margin: 0 4px;
+}
+
+@media (max-width: 640px) {
+  .app-table {
+    width: auto;
+    min-width: 650px;
+    font-size: 13px;
+  }
+
+  .app-table th,
+  .app-table td {
+    white-space: nowrap;
+  }
+}
+

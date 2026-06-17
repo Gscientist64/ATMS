@@ -1,0 +1,84 @@
+/**
+ * Standard app popup: panel slides in slowly from below the viewport.
+ * Import in main.jsx (already) or the feature module.
+ *
+ * Structure (backdrop must be a SIBLING behind the panel so fade does not affect the panel):
+ *   <div class="...layer (fixed, flex, pointer-events: none)">
+ *     <div class="...backdrop app-popup-overlay--enter" onClick=close />
+ *     <div class="...panel app-popup-panel--slide-from-bottom" onClick=stop>…</div>
+ *   </div>
+ *
+ * Classes:
+ *   - Backdrop: `app-popup-overlay--enter`; on close add `app-popup-overlay--exiting` (replaces or stacks — use exiting only when closing)
+ *   - Content: `app-popup-panel--slide-from-bottom` (+ `is-exiting` for exit)
+ * Unmount when the panel’s `animationend` fires in the exiting state (e.target === e.currentTarget).
+ */
+
+.app-popup-overlay--enter {
+  animation: appPopupOverlayIn 0.55s ease forwards;
+}
+
+.app-popup-overlay--exiting {
+  pointer-events: none;
+  animation: appPopupOverlayOut 0.42s ease forwards;
+}
+
+.app-popup-panel--slide-from-bottom {
+  animation: appPopupSlideInFromBottom 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+.app-popup-panel--slide-from-bottom.is-exiting {
+  animation: appPopupSlideOutToBottom 0.45s ease-in both;
+  will-change: transform, opacity;
+}
+
+@keyframes appPopupOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes appPopupOverlayOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes appPopupSlideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes appPopupSlideOutToBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-popup-overlay--enter,
+  .app-popup-overlay--exiting,
+  .app-popup-panel--slide-from-bottom,
+  .app-popup-panel--slide-from-bottom.is-exiting {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

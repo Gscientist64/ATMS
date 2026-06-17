@@ -1,0 +1,262 @@
+.hris-header {
+  margin-bottom: 14px;
+}
+
+.hris-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hris-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+
+.hris-header-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 999px;
+  background: #eceff3;
+  gap: 2px;
+}
+
+.hris-header-switch-btn {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.hris-header-switch-btn.active {
+  background: #ffffff;
+  color: #096d49;
+}
+
+.hris-date {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.hris-announcement-card {
+  background: #ffffff;
+  border: 1px solid #e5eeea;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  overflow: visible;
+}
+
+.hris-announcement-header {
+  width: 100%;
+  background: #eff6f3;
+  border: none;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hris-ann-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hris-ann-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #096d49;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hris-ann-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.hris-ann-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.hris-ann-caret {
+  color: #0f8a64;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.hris-ann-caret.open {
+  transform: rotate(0deg);
+}
+
+.hris-announcement-header[aria-expanded='false'] .hris-ann-caret {
+  transform: rotate(180deg);
+}
+
+.hris-announcement-body {
+  padding: 14px 16px 16px;
+  background: #ffffff;
+}
+
+.hris-ann-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.hris-ann-label {
+  font-size: 13px;
+  color: #374151;
+}
+
+.hris-ann-input,
+.hris-ann-textarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.hris-ann-textarea {
+  resize: vertical;
+  min-height: 86px;
+}
+
+.hris-ann-input:focus,
+.hris-ann-textarea:focus {
+  border-color: #096d49;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.12);
+}
+
+.hris-ann-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.hris-ann-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hris-ann-dropdown-btn {
+  border-radius: 6px;
+  min-height: 38px;
+}
+
+.hris-ann-dropdown .app-dropdown-label.placeholder {
+  color: #9ca3af;
+}
+
+.hris-ann-date-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hris-ann-date-wrap .react-datepicker-wrapper,
+.hris-ann-date-wrap .react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+
+.hris-ann-date-wrap .hris-ann-input {
+  width: 100%;
+  padding-right: 32px;
+}
+
+.hris-ann-date-input {
+  color: #374151;
+}
+
+.hris-ann-date-input:hover {
+  border-color: #096d49;
+}
+
+.hris-ann-date-icon {
+  color: #6b7280;
+  display: inline-flex;
+}
+
+.hris-ann-date-icon-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.hris-ann-date-icon-btn:hover {
+  background: #f3f8f6;
+}
+
+.hris-ann-date-icon-btn:hover .hris-ann-date-icon,
+.hris-ann-date-icon-btn:focus-visible .hris-ann-date-icon {
+  color: #096d49;
+}
+
+.hris-ann-date-icon-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(9, 109, 73, 0.18);
+}
+
+.hris-ann-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.hris-ann-cancel-btn {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+.hris-ann-cancel-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.hris-ann-publish-btn {
+  background-color: #096d49;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+.hris-ann-publish-btn:hover {
+  background-color: #6ba792;
+}

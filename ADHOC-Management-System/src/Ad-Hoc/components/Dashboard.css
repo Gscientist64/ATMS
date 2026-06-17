@@ -1,0 +1,335 @@
+.dashboard {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.welcome-section {
+  margin-bottom: 24px;
+}
+
+.welcome-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.welcome-date {
+  font-size: 16px;
+  color: #666;
+}
+
+.alert-banner {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.alert-content {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.alert-icon {
+  color: #2196f3;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-text {
+  flex: 1;
+}
+
+.alert-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 4px;
+}
+
+.alert-message {
+  font-size: 14px;
+  color: #1565c0;
+  line-height: 1.5;
+}
+
+.alert-close {
+  background: none;
+  border: none;
+  color: #1976d2;
+  padding: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.alert-close:hover {
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+.overview-section {
+  margin-bottom: 24px;
+}
+
+.overview-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  margin-left: 0;
+}
+
+.overview-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.overview-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.overview-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.overview-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.overview-icon {
+  color: #999;
+}
+
+.overview-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overview-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.overview-month {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+.status-badge {
+  background-color: #e0e0e0;
+  color: #666;
+  padding: 6px 72px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+  cursor: default;
+}
+
+.create-timesheet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background-color: #096D49;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.create-timesheet-btn:hover {
+  background-color: #6BA792;
+}
+
+.timesheet-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  margin-left: 0;
+}
+
+.timesheet-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.timesheet-table-container {
+  overflow-x: auto;
+  background-color: #fff;
+}
+
+.timesheet-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timesheet-table thead {
+  background-color: #f5f5f5;
+}
+
+.timesheet-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.timesheet-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.timesheet-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* Ensure full-width Recent Timesheet table on desktop even with AppTable styles */
+@media (min-width: 769px) {
+  .timesheet-table {
+    width: 100% !important;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  color: #999;
+  padding: 40px 16px !important;
+  font-style: italic;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 0;
+  }
+
+  .welcome-title {
+    font-size: 24px;
+  }
+
+  .welcome-date {
+    font-size: 14px;
+  }
+
+  .alert-banner {
+    padding: 12px 16px;
+    flex-direction: column;
+  }
+
+  .alert-content {
+    width: 100%;
+  }
+
+  .alert-close {
+    align-self: flex-end;
+  }
+
+  .overview-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .overview-card {
+    padding: 16px;
+  }
+
+  .overview-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .create-timesheet-btn {
+    width: 100%;
+    padding: 14px 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .timesheet-table {
+    font-size: 12px;
+  }
+
+  .timesheet-table th,
+  .timesheet-table td {
+    padding: 10px 8px;
+  }
+
+  .timesheet-table th:nth-child(2),
+  .timesheet-table th:nth-child(3),
+  .timesheet-table th:nth-child(4),
+  .timesheet-table td:nth-child(2),
+  .timesheet-table td:nth-child(3),
+  .timesheet-table td:nth-child(4) {
+    display: none;
+  }
+
+  .timesheet-table th:first-child,
+  .timesheet-table td:first-child {
+    width: 60%;
+  }
+
+  .timesheet-table th:last-child,
+  .timesheet-table td:last-child {
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title {
+    font-size: 20px;
+  }
+
+  .overview-month {
+    font-size: 18px;
+  }
+
+  .create-timesheet-btn {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+}

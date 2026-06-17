@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ehSpcRDGERE=",
+  "dgSpecHash": "FGxKal2A15Q=",
   "success": true,
   "projectFilePath": "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj",
   "expectedPackageFiles": [
@@ -67,5 +67,18 @@
     "C:\\Users\\Isaac\\.nuget\\packages\\system.memory.data\\1.0.2\\system.memory.data.1.0.2.nupkg.sha512",
     "C:\\Users\\Isaac\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.7.0\\system.security.cryptography.protecteddata.4.7.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.Kiota.Abstractions' 1.8.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-7j59-v9qr-6fq9",
+      "projectPath": "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\ATMS_New\\ATMS.API\\ATMS.API.csproj",
+      "libraryId": "Microsoft.Kiota.Abstractions",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

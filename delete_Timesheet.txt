@@ -19,10 +19,9 @@ DELETE FROM "Advisories" WHERE "TimesheetId" IS NOT NULL;
 -- Delete concerns that reference timesheets
 DELETE FROM "Concerns" WHERE "TimesheetId" IS NOT NULL;
 
--- Finally delete the timesheets
+
 DELETE FROM "Timesheets";
 
--- Reset sequences to start from 1
 SELECT setval(pg_get_serial_sequence('"Timesheets"', 'Id'), 1, false);
 SELECT setval(pg_get_serial_sequence('"TimesheetEntries"', 'Id'), 1, false);
 SELECT setval(pg_get_serial_sequence('"Comments"', 'Id'), 1, false);
@@ -32,5 +31,7 @@ SELECT setval(pg_get_serial_sequence('"ContractRecommendations"', 'Id'), 1, fals
 SELECT setval(pg_get_serial_sequence('"Advisories"', 'Id'), 1, false);
 SELECT setval(pg_get_serial_sequence('"Concerns"', 'Id'), 1, false);
 
--- Verify deletion
+-- Verify delete
 SELECT COUNT(*) AS TimesheetCount FROM "Timesheets";
+
+

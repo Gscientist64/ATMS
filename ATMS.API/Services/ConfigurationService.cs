@@ -21,6 +21,84 @@ namespace ATMS.API.Services
             _logger = logger;
         }
 
+        // ========== Departments ==========
+        public async Task<List<DepartmentDto>> GetAllDepartmentsAsync()
+        {
+            var departments = await _context.Departments
+                .Where(d => d.IsActive)
+                .OrderBy(d => d.Name)
+                .ToListAsync();
+
+            return departments.Select(d => new DepartmentDto
+            {
+                Id = d.Id,
+                Name = d.Name,
+                IsActive = d.IsActive,
+                CreatedAt = d.CreatedAt
+            }).ToList();
+        }
+
+        public async Task<DepartmentDto> GetDepartmentByIdAsync(int id)
+        {
+            var dept = await _context.Departments.FindAsync(id);
+            if (dept == null) return null;
+            return new DepartmentDto
+            {
+                Id = dept.Id,
+                Name = dept.Name,
+                IsActive = dept.IsActive,
+                CreatedAt = dept.CreatedAt
+            };
+        }
+
+        public async Task<DepartmentDto> CreateDepartmentAsync(CreateDepartmentDto dto, int userId)
+        {
+            var dept = new Department
+            {
+                Name = dto.Name,
+                IsActive = true,
+                CreatedById = userId,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.Departments.Add(dept);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Department created: {Name}", dto.Name);
+            return new DepartmentDto
+            {
+                Id = dept.Id,
+                Name = dept.Name,
+                IsActive = dept.IsActive,
+                CreatedAt = dept.CreatedAt
+            };
+        }
+
+        public async Task<DepartmentDto> UpdateDepartmentAsync(int id, UpdateDepartmentDto dto, int userId)
+        {
+            var dept = await _context.Departments.FindAsync(id);
+            if (dept == null) return null;
+            if (dto.Name != null) dept.Name = dto.Name;
+            if (dto.IsActive.HasValue) dept.IsActive = dto.IsActive.Value;
+            dept.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return new DepartmentDto
+            {
+                Id = dept.Id,
+                Name = dept.Name,
+                IsActive = dept.IsActive,
+                CreatedAt = dept.CreatedAt
+            };
+        }
+
+        public async Task<bool> DeleteDepartmentAsync(int id)
+        {
+            var dept = await _context.Departments.FindAsync(id);
+            if (dept == null) return false;
+            dept.IsActive = false;
+            dept.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         // ========== Projects ==========
         public async Task<List<ProjectDto>> GetAllProjectsAsync()
         {
@@ -104,7 +182,8 @@ namespace ATMS.API.Services
             {
                 ContractLetters = settings.FirstOrDefault(s => s.PermissionKey == "contractLetters")?.IsEnabled ?? false,
                 UserPermissions = settings.FirstOrDefault(s => s.PermissionKey == "userPermissions")?.IsEnabled ?? false,
-                Onboarding = settings.FirstOrDefault(s => s.PermissionKey == "onboarding")?.IsEnabled ?? false
+                Onboarding = settings.FirstOrDefault(s => s.PermissionKey == "onboarding")?.IsEnabled ?? false,
+                EditStaffDetails = settings.FirstOrDefault(s => s.PermissionKey == "editStaffDetails")?.IsEnabled ?? false
             };
         }
 
@@ -113,6 +192,7 @@ namespace ATMS.API.Services
             await UpdateOrCreateSetting("contractLetters", dto.ContractLetters, userId);
             await UpdateOrCreateSetting("userPermissions", dto.UserPermissions, userId);
             await UpdateOrCreateSetting("onboarding", dto.Onboarding, userId);
+            await UpdateOrCreateSetting("editStaffDetails", dto.EditStaffDetails, userId);
 
             return await GetPermissionSettingsAsync();
         }
