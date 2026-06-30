@@ -13,22 +13,35 @@ export const useAuth = () => {
     return context;
 };
 
+// Decode JWT expiry without a server round-trip
+const isTokenExpired = (token) => {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp < Date.now() / 1000;
+    } catch {
+        return true;
+    }
+};
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check if user is logged in on mount
         const currentUser = authService.getCurrentUser();
-        
-        if (currentUser) {
+        const token = localStorage.getItem('token');
+
+        if (currentUser && token && !isTokenExpired(token)) {
+            // Token is still valid — use cached user instantly, no server call
             setUser(currentUser);
-            // Verify token with backend
+            setLoading(false);
+        } else if (currentUser && token) {
+            // Token exists but may be expired — verify with backend
             authService.getMe().then(userData => {
                 setUser(userData);
+                localStorage.setItem('user', JSON.stringify({ ...currentUser, ...userData }));
                 setLoading(false);
             }).catch(() => {
-                // Token invalid, logout
                 authService.logout();
                 setUser(null);
                 setLoading(false);

@@ -41,25 +41,14 @@ const Login = () => {
         }
         
         const user = await login(loginData);
-        
-        setTimeout(() => {
-            switch(user.role) {
-                case 'AdHoc':
-                    window.location.href = '/dashboard';
-                    break
-                case 'EcewsSupervisor':
-                    window.location.href = '/ecews-supervisor';
-                    break
-                case 'GonSupervisor':
-                    window.location.href = '/gon-supervisor';
-                    break;
-                case 'Programs':
-                    window.location.href = '/programs';
-                    break;
-                default:
-                    window.location.href = '/dashboard';
-            }
-        }, 100);
+
+        switch(user.role) {
+            case 'AdHoc':       navigate('/dashboard'); break;
+            case 'EcewsSupervisor': navigate('/ecews-supervisor'); break;
+            case 'GonSupervisor':   navigate('/gon-supervisor'); break;
+            case 'Programs':        navigate('/programs'); break;
+            default:                navigate('/dashboard');
+        }
         
     } catch (err) {
         // Handle lockout message

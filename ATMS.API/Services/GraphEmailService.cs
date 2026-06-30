@@ -16,11 +16,13 @@ namespace ATMS.API.Services
     {
         private readonly GraphSettings _graphSettings;
         private readonly ILogger<GraphEmailService> _logger;
+        private readonly string _appBaseUrl;
 
-        public GraphEmailService(IOptions<GraphSettings> graphSettings, ILogger<GraphEmailService> logger)
+        public GraphEmailService(IOptions<GraphSettings> graphSettings, ILogger<GraphEmailService> logger, IConfiguration configuration)
         {
             _graphSettings = graphSettings.Value;
             _logger = logger;
+            _appBaseUrl = configuration["AppBaseUrl"] ?? "http://localhost:3000";
         }
 
         public async Task SendContractLetterAsync(string toEmail, string staffName, string subject, string htmlContent)
@@ -213,8 +215,8 @@ namespace ATMS.API.Services
                 <p><strong>For security reasons, you will be required to change your password upon first login.</strong></p>
             </div>
             <p>Use the link below to log in:</p>
-            <p><a href='http://localhost:3000/login' class='button'>Login to ECEWS</a></p>
-            <p>If the button doesn't work, copy and paste this URL into your browser:<br>http://localhost:3000/login</p>
+            <p><a href='{_appBaseUrl}/login' class='button'>Login to ECEWS</a></p>
+            <p>If the button doesn't work, copy and paste this URL into your browser:<br>{_appBaseUrl}/login</p>
             <p>After logging in, please update your password by clicking on your profile icon and selecting ""Change Password"".</p>
         </div>
         <div class='footer'>

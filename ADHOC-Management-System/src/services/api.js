@@ -1175,7 +1175,12 @@ export const getGovernanceActions = async (type, status) => {
     return handleResponse(response);
 };
 
-export const getGovernanceActionById = (id) => hrisFetch(`/hris/governance/actions/${id}`);
+export const getGovernanceActionById = async (id) => {
+    const response = await fetch(`${API_BASE_URL}/hris/governance/actions/${id}`, {
+        headers: getHeaders()
+    });
+    return handleResponse(response);
+};
 
 // Programs Service
 export const programsService = {

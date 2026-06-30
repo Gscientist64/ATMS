@@ -36,7 +36,8 @@ namespace ATMS.API.Services
         private readonly IUserManagementService _userManagementService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly LoginSettings _loginSettings;
-        
+        private readonly IServiceScopeFactory _scopeFactory;
+
         public AuthService(
             ApplicationDbContext context,
             IOptions<JwtSettings> jwtSettings,
@@ -44,7 +45,8 @@ namespace ATMS.API.Services
             IEmailService emailService,
             IUserManagementService userManagementService,
             IHttpContextAccessor httpContextAccessor,
-            IOptions<LoginSettings> loginSettings)
+            IOptions<LoginSettings> loginSettings,
+            IServiceScopeFactory scopeFactory)
         {
             _context = context;
             _jwtSettings = jwtSettings.Value;
@@ -53,6 +55,7 @@ namespace ATMS.API.Services
             _userManagementService = userManagementService;
             _httpContextAccessor = httpContextAccessor;
             _loginSettings = loginSettings.Value;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task<LoginResponseDto> Authenticate(LoginDto loginDto)
@@ -119,13 +122,17 @@ namespace ATMS.API.Services
                 await _context.SaveChangesAsync();
 
                 var token = GenerateJwtToken(user);
-                
-                // Track the session
+
+                // Track the session in the background — do not block the login response
+                var userId = user.Id;
                 var userAgent = _httpContextAccessor?.HttpContext?.Request.Headers["User-Agent"].ToString() ?? "Unknown";
                 var ipAddress = _httpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
-                var location = "Unknown";
-                
-                await _userManagementService.TrackUserSessionAsync(user.Id, token, userAgent, ipAddress, location);
+                _ = Task.Run(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mgmtService = scope.ServiceProvider.GetRequiredService<IUserManagementService>();
+                    await mgmtService.TrackUserSessionAsync(userId, token, userAgent, ipAddress, "Unknown");
+                });
                 
                 _logger.LogInformation($"User {user.Email} logged in with role: {user.Role?.Name}");
 
@@ -286,7 +293,8 @@ namespace ATMS.API.Services
             await _context.SaveChangesAsync();
             
             // Send email with reset link (you'll need to implement this)
-            var resetLink = $"http://localhost:3000/reset-password?token={token}";
+            var baseUrl = "https://atms.ecews.org"; // set via AppBaseUrl in appsettings
+            var resetLink = $"{baseUrl}/reset-password?token={token}";
             await _emailService.SendPasswordResetEmailAsync(user.Email, user.FullName, resetLink);
             
             return true;

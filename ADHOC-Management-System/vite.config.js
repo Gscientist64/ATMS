@@ -16,7 +16,18 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // jspdf + html2canvas are dynamically imported — keep them as lazy async chunks
+            if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('canvg') || id.includes('fflate')) {
+              return undefined;
+            }
+            if (id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            return 'vendor';
+          }
+        },
       },
     },
   },

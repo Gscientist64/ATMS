@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
+// jspdf + html2canvas are loaded lazily inside generateContractLetterPdfFile
+// so their ~1.2MB weight is not part of the initial page load
 
 // html2canvas can produce duplicated/glitched output when the captured element
 // sits inside a scrolled or overflow-constrained ancestor (e.g. a modal body
@@ -54,6 +54,11 @@ const cropCanvasBand = (masterCanvas, srcYPx, srcHeightPx) => {
 // Elements marked with [data-no-split] (e.g. the signature block) are kept whole
 // on a single page rather than being sliced across a page break.
 export const generateContractLetterPdfFile = async (element, fileName) => {
+  const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+    import('html2canvas'),
+    import('jspdf'),
+  ])
+
   const pdfWidth = 210
   const pdfHeight = 297
   const margin = 15

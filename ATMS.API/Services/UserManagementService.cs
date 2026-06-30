@@ -25,31 +25,26 @@ namespace ATMS.API.Services
 
         public async Task<List<SystemUserDto>> GetAllSystemUsersAsync(string? team = null)
         {
-            var sysUsers = await _context.SystemUsers.ToListAsync();
-            var result = new List<SystemUserDto>();
-            
-            foreach (var sysUser in sysUsers)
-            {
-                var user = await _context.Users.FindAsync(sysUser.UserId);
-                if (user != null)
-                {
-                    result.Add(new SystemUserDto
+            var result = await _context.SystemUsers
+                .Join(_context.Users,
+                    su => su.UserId,
+                    u => u.Id,
+                    (su, u) => new SystemUserDto
                     {
-                        Id = sysUser.Id,
-                        UserId = sysUser.UserId,
-                        UserName = user.FullName,
-                        UserEmail = user.Email,
-                        Role = sysUser.Role,
-                        Permissions = string.IsNullOrEmpty(sysUser.Permissions) 
-                            ? new Dictionary<string, bool>() 
-                            : JsonSerializer.Deserialize<Dictionary<string, bool>>(sysUser.Permissions) ?? new Dictionary<string, bool>(),
-                        IsActive = sysUser.IsActive,
-                        LastActive = user.LastLoginAt?.ToString("dd-MM-yyyy") ?? "Never",
-                        CreatedAt = sysUser.CreatedAt
-                    });
-                }
-            }
-            
+                        Id = su.Id,
+                        UserId = su.UserId,
+                        UserName = u.FullName,
+                        UserEmail = u.Email,
+                        Role = su.Role,
+                        Permissions = string.IsNullOrEmpty(su.Permissions)
+                            ? new Dictionary<string, bool>()
+                            : JsonSerializer.Deserialize<Dictionary<string, bool>>(su.Permissions) ?? new Dictionary<string, bool>(),
+                        IsActive = su.IsActive,
+                        LastActive = u.LastLoginAt != null ? u.LastLoginAt.Value.ToString("dd-MM-yyyy") : "Never",
+                        CreatedAt = su.CreatedAt
+                    })
+                .ToListAsync();
+
             return result;
         }
 

@@ -5,8 +5,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
+// jspdf + html2canvas are large (~1.2MB) — loaded on demand only when generating a PDF
 import AppButton from '../../shared/AppButton'
 import AppDropdown from '../../shared/AppDropdown'
 import ContractLetterTemplate from './ContractLetterTemplate'
@@ -411,6 +410,10 @@ const HrisExecuteActionsPanel = ({
       return
     }
     try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ])
       const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false })
       const imgData = canvas.toDataURL('image/png')
       const pdf = new jsPDF('p', 'mm', 'a4')
